@@ -787,7 +787,7 @@ $('#burger').onclick=()=>{const o=$('#drawer').classList.toggle('open');$('#burg
 const tile=k=>{const p=PAGES[k];return `<a class="tile" href="/${k}/">${p.b?`<span class="bd ${p.b}">${p.b==='new'?'NEW':'HOT'}</span>`:''}${med(p.i)}<span><h3>${p.t}</h3><p>${p.d}</p></span></a>`};
 $('#homeTools').innerHTML=['starter',...GROUPS[0].k].map(tile).join('');
 $('#homeGuides').innerHTML=['systems','weapons','bm','coupons'].map(tile).join('');
-const UPD=[['11.26','상점 완전 분석: 다이아 단가 22원 · 골드 소환권 · 베니스의 가호 10단계 · 템빨 코인 · 시즌 패스'],['11.26','상점 가격표(₩9,900~₩55,000) · 제작 실측 추가'],['11.26','8주 미션 전 주차 완성 · 장비 강화 지원 미션 · 퀘스트 구조(메인 8막 · 서브 · 히든)'],['11.26','이벤트: 14일 출석부 보상표 · 8주 미션 주차별 목표 · 학살자 보상 제한 주의'],['11.26','장비 강화 실측(100% · 1,000골드 · 안전 구간 · 파괴 보호권) · 펫 도감 34종 정리'],['11.26','갓 핸드 메모리 27종 수치 · 레전드리/유니크 짝 분석 · 무기 개조 도감 · 게임 메뉴 추가'],['11.26','정식 출시 — PC·모바일 사양, 서버, 무기 개조, 템빨 코인, 무료 편의 기능 추가'],['11.25','사이트 전면 개편 — 새 디자인, 3D 첫 화면, 메뉴와 검색'],['11.25','강화 기대값 계산기 · 갓 핸드 프리셋 · 첫날 가이드 추가'],['11.25','오픈 — 강화 기록기, 숙제, 무기 추천, 공개 정보 정리'],['예정','출시 후 클래스별 스킬, 강화 비용표, 쿠폰을 순서대로 채움']];
+const UPD=[['11.26','에픽 클래스 8종 능력치 · 특화 옵션 정리 (활 2 · 지팡이 1 · 바이블 5)'],['11.26','상점 완전 분석: 다이아 단가 22원 · 골드 소환권 · 베니스의 가호 10단계 · 템빨 코인 · 시즌 패스'],['11.26','상점 가격표(₩9,900~₩55,000) · 제작 실측 추가'],['11.26','8주 미션 전 주차 완성 · 장비 강화 지원 미션 · 퀘스트 구조(메인 8막 · 서브 · 히든)'],['11.26','이벤트: 14일 출석부 보상표 · 8주 미션 주차별 목표 · 학살자 보상 제한 주의'],['11.26','장비 강화 실측(100% · 1,000골드 · 안전 구간 · 파괴 보호권) · 펫 도감 34종 정리'],['11.26','갓 핸드 메모리 27종 수치 · 레전드리/유니크 짝 분석 · 무기 개조 도감 · 게임 메뉴 추가'],['11.26','정식 출시 — PC·모바일 사양, 서버, 무기 개조, 템빨 코인, 무료 편의 기능 추가'],['11.25','사이트 전면 개편 — 새 디자인, 3D 첫 화면, 메뉴와 검색'],['11.25','강화 기대값 계산기 · 갓 핸드 프리셋 · 첫날 가이드 추가'],['11.25','오픈 — 강화 기록기, 숙제, 무기 추천, 공개 정보 정리'],['예정','출시 후 클래스별 스킬, 강화 비용표, 쿠폰을 순서대로 채움']];
 $('#upd').innerHTML=UPD.map(u=>`<li><b style="color:var(--champ)">${u[0]}</b> ${u[1]}</li>`).join('');
 
 /* 공식 채널 · 원작 */
@@ -825,14 +825,14 @@ tick();cdI=setInterval(tick,1000);
 
 /* 무기 */
 const WEAPONS=[
- {k:'staff',n:'지팡이',art:'w-staff',f:'원거리',role:'광역 마법 화력',d:'여러 적을 한 번에 쓸어 담는 마법 화력 담당.',cls:[]},
+ {k:'staff',n:'지팡이',art:'w-staff',f:'원거리',role:'광역 마법 화력',d:'여러 적을 한 번에 쓸어 담는 마법 화력 담당.',cls:[{n:'화염술사 (에픽)',d:'지력 33 · HP 725 · MP 300 · 스킬 치명타 1% · 화상 적중 1%'}]},
  {k:'sword',n:'대검',art:'w-sword',f:'근거리',role:'최전선 · 방어 · 기절',d:'높은 방어력과 기절 효과로 맨 앞에서 버티는 무기.',cls:[{n:'블러드 워리어',d:'출혈과 HP 흡수로 오래 버티는 역할'},{n:'크러셔',d:'끌어오기와 기절 등 군중 제어 특화'}]},
- {k:'bow',n:'활',art:'w-bow',f:'원거리',role:'원거리 · 거리 유지',d:'적과 거리를 벌리며 꾸준히 공격하는 무기.',cls:[]},
- {k:'bible',n:'바이블',art:'w-bible',f:'지원',role:'회복 · 방해',d:'아군을 회복하고 적을 방해하는 지원형 무기.',cls:[]}];
+ {k:'bow',n:'활',art:'w-bow',f:'원거리',role:'원거리 · 거리 유지',d:'적과 거리를 벌리며 꾸준히 공격하는 무기.',cls:[{n:'명사수 (에픽)',d:'민첩 30 · HP 775 · 원거리 방어력 무시 5 · 원거리 치명타 1% → 한 방 화력형'},{n:'정예 궁사 (에픽)',d:'민첩 28 · HP 775 · 원거리 명중 2 · 회피 2 → 맞히고 피하는 안정형'}]},
+ {k:'bible',n:'바이블',art:'w-bible',f:'지원',role:'회복 · 방해',d:'아군을 회복하고 적을 방해하는 지원형 무기.',cls:[{n:'세인트 (에픽)',d:'지력 33 · MP 회복량 2 · 디버프 저항 1% → 힐러'},{n:'구도자 (에픽)',d:'지력 33 · 스킬 공격력 2 · 저주 적중 1% → 저주 딜러'},{n:'몽크 (에픽)',d:'근력 20 · 지력 30 · 일반 공격력 2 · 마법 치명타 피해 3% → 때리는 바이블'},{n:'도미니언교 사제 (에픽)',d:'지력 27 · 체력 20 · 마법 방어력 무시 5 · 피해 감소 3 → 버티는 딜러'},{n:'쥬다르교 사제 (에픽)',d:'지력 30 · 체력 20 · 방어력 5 · 상태이상 저항 1% → 탱커형'}]}];
 $('#homeWeapons').innerHTML=WEAPONS.map(w=>`<a class="wsh" href="/weapons/">${med(w.art,'lg')}<h3 class="gt">${w.n}</h3><p>${w.role}</p></a>`).join('');
 let wf='전체';
 function wRender(){$('#wpChips').innerHTML=['전체','근거리','원거리','지원'].map(c=>`<button type="button" class="${c===wf?'on':''}" data-c="${c}">${c}</button>`).join('');
-  $('#wpNote').innerHTML='클래스는 <b>소환 상품</b>으로도, <b>게임 플레이</b>로도 얻을 수 있어요. 3개월 차에 신규 클래스, 6개월 차에 새 무기 계열이 추가될 예정입니다.';$('#wpList').innerHTML=WEAPONS.filter(w=>wf==='전체'||w.f===wf).map(w=>`<div class="card wcard">${med(w.art,'lg')}<div><h3 class="gt" style="font-size:24px;font-weight:900">${w.n}</h3><span class="pill">${w.role}</span><span class="pill">${w.f}</span><p style="margin:6px 0 10px">${w.d}</p>${
+  $('#wpNote').innerHTML='클래스 메뉴: 관리 · 합성 · 도감 · 확정 · 초월자, 등급은 레전드리 · 유니크 · 에픽 · 레어 · 노멀. 모든 클래스 공격 속도 28% · 시전 속도 15%로 같고, 차이는 <b>기본 능력치와 특화 옵션 2개 + 클래스 스킬 3개</b>예요. 클래스는 <b>소환 상품</b>으로도, <b>게임 플레이</b>로도 얻을 수 있어요. 3개월 차에 신규 클래스, 6개월 차에 새 무기 계열이 추가될 예정입니다.';$('#wpList').innerHTML=WEAPONS.filter(w=>wf==='전체'||w.f===wf).map(w=>`<div class="card wcard">${med(w.art,'lg')}<div><h3 class="gt" style="font-size:24px;font-weight:900">${w.n}</h3><span class="pill">${w.role}</span><span class="pill">${w.f}</span><p style="margin:6px 0 10px">${w.d}</p>${
   w.cls.length?'<b class="small" style="color:var(--gold)">공개된 클래스</b><ul class="facts">'+w.cls.map(c=>`<li><b>${c.n}</b> — ${c.d}</li>`).join('')+'</ul>':'<p class="small mute" style="margin:0">이 무기의 클래스 이름은 확인되는 대로 추가합니다.</p>'}</div></div>`).join('')}
 $('#wpChips').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;wf=b.dataset.c;wRender()});
 wRender();
