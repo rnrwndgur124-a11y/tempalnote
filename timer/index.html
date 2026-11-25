@@ -1486,5 +1486,30 @@ route();
 }
 </script>
 <script data-goatcounter="https://tempalnote.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script>
+/* 운영자 전용 접속자 표시: 주소에 ?k=코드 로 한 번 열면 이 브라우저에서만 보임 */
+(function(){
+  var H='f4c7e457288081b49b546c3494dd03f9d876743bb83ac57dd3ad7e9b90a143c0', LS='tn_owner';
+  function kst(d){return new Date(d.getTime()+9*3600e3).toISOString().slice(0,10)}
+  async function sha(s){var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+  async function unlock(){
+    var u=new URL(location.href), k=u.searchParams.get('k'); if(!k) return;
+    u.searchParams.delete('k'); history.replaceState(null,'',u.pathname+(u.search||'')+u.hash);
+    try{ if(k==='off'){localStorage.removeItem(LS);localStorage.removeItem('skipgc');return}
+      if(await sha('tn:'+k)===H){localStorage.setItem(LS,'1');localStorage.setItem('skipgc','t')} }catch(e){}
+  }
+  function owner(){try{return localStorage.getItem(LS)==='1'}catch(e){return false}}
+  async function num(q){var r=await fetch('https://tempalnote.goatcounter.com/counter/TOTAL.json'+q,{cache:'no-store'}); if(!r.ok) throw r.status; var j=await r.json(); return j.count}
+  async function draw(){
+    var el=document.getElementById('ownerStat');
+    if(!el){el=document.createElement('div');el.id='ownerStat';el.style.cssText='position:fixed;left:12px;bottom:12px;z-index:9999;background:rgba(8,16,34,.94);border:1px solid #c9a24a;border-radius:12px;padding:10px 14px;font:600 13px/1.5 system-ui,sans-serif;color:#f3e7c4;box-shadow:0 6px 20px rgba(0,0,0,.4)';document.body.appendChild(el)}
+    var today=kst(new Date());
+    try{ var t=await num('?start='+today), a=await num('');
+      el.innerHTML='<div style="font-size:11px;color:#c9a24a;letter-spacing:.08em">운영자만 보임</div>오늘 <b style="font-size:17px">'+t+'</b>명 · 누적 <b style="font-size:17px">'+a+'</b>명<br><a href="https://tempalnote.goatcounter.com/" target="_blank" rel="noopener" style="color:#9fc3ff;font-size:12px">자세히 (유입 경로·인기 페이지)</a>';
+    }catch(e){ el.innerHTML='<div style="font-size:11px;color:#c9a24a">운영자만 보임</div>접속자 통계 준비 중<br><span style="font-size:12px;color:#aab">GoatCounter 가입·설정 후 표시돼요</span>' }
+  }
+  unlock().then(function(){ if(owner()){ draw(); setInterval(draw,60000) } });
+})();
+</script>
 </body>
 </html>
