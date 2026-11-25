@@ -147,6 +147,13 @@ input,select{font:inherit;font-size:16px;min-height:46px;padding:9px 12px;border
 input:focus,select:focus{border-color:var(--gold2);outline:none;box-shadow:0 0 0 3px #e3c27a22}
 label{font-weight:700;font-size:13.5px;display:block;margin-bottom:6px;color:#c9d3e3}
 .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;align-items:end}
+.hcgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:12px}
+.hc{display:block;text-decoration:none;color:inherit;border:1px solid var(--line2);border-radius:10px;padding:14px 16px;background:linear-gradient(160deg,#ffffff08,#ffffff02);transition:transform .15s,border-color .15s}
+.hc:hover{transform:translateY(-2px);border-color:var(--gold)}
+.hc .t{font-size:11.5px;font-weight:800;letter-spacing:.04em}
+.hc.L{border-color:#c99a4e88;background:linear-gradient(160deg,#c99a4e22,#ffffff03)} .hc.L .t{color:#f6d58a}
+.hc.U .t{color:#e58aa8} .hc.E .t{color:#b48cf0} .hc.R .t{color:#7fb2e5}
+.hc h3{margin:4px 0 6px;font-size:18px} .hc p{margin:0;font-size:13px;color:#c9d3e3;line-height:1.5}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
 .chips button{background:#ffffff06;color:#c9d3e3;border:1px solid var(--line2);min-height:38px;padding:4px 16px;border-radius:99px;font-weight:700;font-size:14px}
 .chips button.on{background:linear-gradient(#f6e2a8,#c99a4e);color:#1b1206;border-color:#f6e6bd}
@@ -307,6 +314,15 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
       <div><small>무기 계열</small><b>4종</b></div>
     </div>
   </div>
+
+  <div class="band"><div class="wrap">
+    <div class="sh"><div><span class="k">CLASSES</span><h2 class="gt">클래스 도감</h2></div><a href="/weapons/">전체 스킬 보기 →</a></div>
+    <p class="small" style="margin:-6px 0 14px;color:var(--champ)">정식 서비스 화면에서 직접 확인한 클래스 · 능력치 · 스킬. 최종 목표는 레전드리 4종을 모아 여는 <b>초월자</b>(HP 5,000 · 공속 70%).</p>
+    <div class="chips" id="hcChips"></div>
+    <div class="hcgrid" id="hcList"></div>
+  </div></div>
+
+  <div class="orn"><i></i></div>
 
   <div class="band"><div class="wrap">
     <div class="sh"><div><span class="k">TOOLS</span><h2 class="gt">장인의 도구</h2></div><a href="#" id="hsBtn">무엇이든 검색 →</a></div>
@@ -765,7 +781,7 @@ const PAGES={
  godhand:{t:'갓 핸드 프리셋 메모',d:'슬롯 조합을 상황별로 저장',i:'i-hand',b:'new'},
  homework:{t:'오늘의 숙제',d:'자정에 초기화되는 체크리스트',i:'i-check'},
  starter:{t:'첫날 가이드',d:'출시 첫날 해야 할 여덟 가지',i:'i-guide',b:'hot'},
- weapons:{t:'무기·클래스 도감',d:'지팡이·대검·활·바이블',i:'w-sword'},
+ weapons:{t:'클래스 도감',d:'레전드리·유니크·에픽 클래스와 스킬',i:'w-sword'},
  systems:{t:'시스템 한눈에',d:'오버기어드·갓 핸드·차원 리그',i:'i-anvil'},
  roadmap:{t:'6개월 로드맵',d:'레이드·공성전·신규 클래스',i:'i-map'},
  bm:{t:'상점 정리',d:'파는 것과 팔지 않는 것',i:'i-coin'},
@@ -775,7 +791,7 @@ const PAGES={
  privacy:{t:'개인정보처리방침',d:'쿠키와 광고 안내',i:'i-sig'},
  terms:{t:'이용약관',d:'사이트 이용 안내',i:'i-guide'},
  about:{t:'사이트 소개',d:'비공식 팬 사이트 안내',i:'logo'}};
-const GROUPS=[{n:'도구',e:'TOOLS',k:['quiz','enhance','calc','godhand','homework']},{n:'가이드',e:'GUIDES',k:['starter','weapons','systems']},{n:'정보',e:'INFO',k:['official','roadmap','bm','coupons','about']}];
+const GROUPS=[{n:'도구',e:'TOOLS',k:['quiz','enhance','calc','godhand','homework']},{n:'가이드',e:'GUIDES',k:['weapons','starter','systems']},{n:'정보',e:'INFO',k:['official','roadmap','bm','coupons','about']}];
 const link=k=>`<a href="/${k}/" data-k="${k}">${med(PAGES[k].i,'sm')}<span>${PAGES[k].t}<small>${PAGES[k].d}</small></span></a>`;
 $('#menu').innerHTML=GROUPS.map((g,gi)=>`<div class="dd" data-g="${gi}"><button type="button" aria-haspopup="true">${g.n}</button><div class="ddm">${g.k.map(link).join('')}</div></div>`).join('');
 $('#drawer').innerHTML=GROUPS.map(g=>`<h4>${g.e}</h4>${g.k.map(link).join('')}`).join('');
@@ -864,6 +880,18 @@ const WM=[['지팡이',['제국 마도학자의 지팡이','스틱세이의 지�
  ['활',['제국 사수의 활','섬광의 활'],['용맹의 활','절명의 활','달빛 참나무 활','낙원의 활','사수의 활']],
  ['바이블',['제국 사제의 바이블','릴리스의 마도서','신탁의 바이블','금단의 바이블'],['사제의 바이블','낙원의 바이블','용맹의 바이블','계시의 바이블','불꽃 루비 장식 바이블']]];
 $('#wmList').innerHTML=WM.map(w=>`<div class="card"><h3 class="gt" style="margin:0 0 10px">${w[0]}</h3><b class="small" style="color:#e58aa8">유니크 · 4부위</b><div style="margin:6px 0 10px">${w[1].length?w[1].map(n=>`<span class="pill">${n}</span>`).join(''):'<span class="small mute">확인 중</span>'}</div><b class="small" style="color:#b48cf0">에픽 · 3부위</b><div style="margin-top:6px">${w[2].map(n=>`<span class="pill">${n}</span>`).join('')}</div></div>`).join('');
+
+/* 홈 클래스 도감 */
+const HC=[];WEAPONS.forEach(w=>w.cls.forEach(c=>{const m=c.n.match(/\((레전드리|유니크|에픽)\)/);const tier=m?m[1]:(c.n.includes('레어')?'레어':'에픽');
+  const name=c.n.replace(/\s*\(.*\)/,'');const tmp=document.createElement('div');tmp.innerHTML=c.d;const txt=tmp.textContent;
+  const role=txt.includes('→')?txt.split('→').pop().trim():txt.split('.')[0].slice(0,60);
+  HC.push({name,tier,w:w.n,role})}));
+const TO={레전드리:0,유니크:1,에픽:2,레어:3};HC.sort((a,b)=>TO[a.tier]-TO[b.tier]);
+let hcf='전체';
+function hcRender(){$('#hcChips').innerHTML=['전체','레전드리','유니크','에픽','대검','활','지팡이','바이블'].map(c=>`<button type="button" class="${c===hcf?'on':''}" data-c="${c}">${c}${TO[c]!=null?' '+HC.filter(h=>h.tier===c).length:''}</button>`).join('');
+  $('#hcList').innerHTML=HC.filter(h=>hcf==='전체'||h.tier===hcf||h.w===hcf).filter(h=>h.tier!=='레어').map(h=>`<a class="hc ${({레전드리:'L',유니크:'U',에픽:'E',레어:'R'})[h.tier]}" href="/weapons/"><span class="t">${h.tier} · ${h.w}</span><h3>${h.name}</h3><p>${h.role}</p></a>`).join('')}
+$('#hcChips').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;hcf=b.dataset.c;hcRender()});
+hcRender();
 
 /* 시스템 */
 const SYS=[
