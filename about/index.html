@@ -884,7 +884,8 @@ $('#wmList').innerHTML=WM.map(w=>`<div class="card"><h3 class="gt" style="margin
 const HC=[];WEAPONS.forEach(w=>w.cls.forEach(c=>{const m=c.n.match(/\((레전드리|유니크|에픽)\)/);const tier=m?m[1]:(c.n.includes('레어')?'레어':'에픽');
   const name=c.n.replace(/\s*\(.*\)/,'');const tmp=document.createElement('div');tmp.innerHTML=c.d;const txt=tmp.textContent;
   const role=txt.includes('→')?txt.split('→').pop().trim():txt.split('.')[0].slice(0,60);
-  HC.push({name,tier,w:w.n,role})}));
+  const RO={'서사시의 마검사':'기절시키고 연살로 추가 피해, 근접 폭딜','궁성':'매의 발톱 → 무아지경으로 연사 난사, 원거리 폭딜','신궁':'갑옷 파괴 → 확정 치명타 → 종말, 마무리 특화','정예 마법사':'마법 공격력 · MP 절약형'};
+  HC.push({name,tier,w:w.n,role:RO[name]||role})}));
 const TO={레전드리:0,유니크:1,에픽:2,레어:3};HC.sort((a,b)=>TO[a.tier]-TO[b.tier]);
 let hcf='전체';
 function hcRender(){$('#hcChips').innerHTML=['전체','레전드리','유니크','에픽','대검','활','지팡이','바이블'].map(c=>`<button type="button" class="${c===hcf?'on':''}" data-c="${c}">${c}${TO[c]!=null?' '+HC.filter(h=>h.tier===c).length:''}</button>`).join('');
