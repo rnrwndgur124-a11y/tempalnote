@@ -234,6 +234,36 @@ label{font-weight:700;font-size:13.5px;display:block;margin-bottom:6px;color:#c9
 .tmr{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:12px 0;border-top:1px solid #ffffff12}
 .tmr .cd{font:800 22px/1 ui-monospace,Menlo,monospace;color:var(--champ);min-width:96px;text-align:right}
 .tmr.soon .cd{color:#ff8f7a}.tmr.ready .cd{color:#7de0a8}
+.hero2{min-height:min(78vh,700px)}
+.hero2 .hbg{position:absolute;inset:0;background:linear-gradient(90deg,#050a14 0%,#050a14e6 32%,#050a1466 62%,#050a1422 100%),linear-gradient(0deg,#050a14 0%,transparent 40%),url(/img/ui/art.webp) 70% 25%/cover no-repeat}
+@media(max-width:760px){.hero2 .hbg{background:linear-gradient(0deg,#050a14 8%,#050a14cc 55%,#050a1466 100%),url(/img/ui/art.webp) 62% 20%/cover no-repeat}}
+.hsearch{display:flex;align-items:center;gap:10px;width:min(100%,480px);min-height:54px;padding:0 16px;margin:0 0 10px;border-radius:12px;border:1px solid #e3c27a77;background:#06101fcc;color:#aab8cf;font:inherit;font-size:15.5px;text-align:left;box-shadow:0 8px 30px #0008;cursor:text}
+.hsearch:hover{border-color:var(--gold)}.hsearch span{flex:1}.hsearch .i{width:20px;height:20px;color:var(--gold)}
+.hsearch kbd{font-size:12px;border:1px solid var(--line2);border-radius:4px;padding:1px 6px;color:var(--mute)}
+.hkw{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;margin:0 0 22px;font-size:13.5px}
+.hkw b{color:var(--gold);font-size:12px;letter-spacing:.08em}.hkw a{color:#dfe6f2;text-decoration:none}.hkw a:hover{color:var(--champ);text-decoration:underline}
+.nstrip{display:flex;align-items:center;gap:12px;margin:14px 0 0;padding:12px 16px;border-radius:12px;border:1px solid var(--line2);background:linear-gradient(90deg,#3a2a10aa,#0b1729);text-decoration:none;color:var(--ink);position:relative;z-index:2}
+.nstrip:hover{border-color:var(--gold)}.nb{flex:none;font-size:11px;font-weight:900;padding:2px 8px;border-radius:4px;background:linear-gradient(#f6e2a8,#c99a4e);color:#1b1206}
+.nt{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700}.na{flex:none;color:var(--gold);font-size:13px;font-weight:700}
+.featg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+@media(max-width:1000px){.featg{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:420px){.featg{gap:10px}.fc h3{font-size:16px}.fc p{font-size:12px}}
+.fc{position:relative;display:block;border-radius:14px;overflow:hidden;text-decoration:none;color:var(--ink);border:1px solid var(--line2);background:#0a1426;transition:transform .15s,border-color .15s,box-shadow .15s}
+.fc:hover{transform:translateY(-4px);border-color:var(--gold);box-shadow:0 14px 36px #000a}
+.fc .ft{aspect-ratio:16/10;background:#0b1426 center/cover no-repeat;position:relative}
+.fc .ft::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 55%,#0a1426)}
+.fc .fb{position:absolute;top:10px;left:10px;z-index:1;font-size:11px;font-weight:900;padding:2px 8px;border-radius:4px}
+.fb.hot{background:#e2614a;color:#fff}.fb.new{background:linear-gradient(#f6e2a8,#c99a4e);color:#1b1206}
+.fc h3{margin:-6px 14px 2px;position:relative;z-index:1;font-size:18px}.fc p{margin:0 14px 14px;font-size:13px;color:var(--mute)}
+.ev{display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:center;padding:11px 0;border-top:1px solid #ffffff10;text-decoration:none;color:var(--ink)}
+.ev:first-child{border-top:0}.ev b{font-size:15px}.ev .evd{font:900 15px/1 ui-monospace,Menlo,monospace;color:var(--champ)}
+.ev .evd.hot{color:#ff8f7a}.ev small{color:var(--mute);font-size:12px}.ev .bar{grid-column:1/-1;height:5px;border-radius:9px;background:#ffffff12;overflow:hidden}
+.ev .bar i{display:block;height:100%;background:linear-gradient(90deg,#c99a4e,#f6e2a8)}
+.mg{margin-bottom:18px}.mg h3{display:flex;align-items:center;gap:8px;margin:0 0 10px;font-size:15px;color:var(--gold);letter-spacing:.04em}
+.mg h3 small{font-family:Cinzel,serif;color:var(--mute);font-size:11px;letter-spacing:.15em}
+.tiles.sm{grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:10px}
+.tiles.sm .tile{padding:12px 14px;gap:12px;overflow:visible}.tiles.sm .bd{top:-8px;right:10px}
+@media(max-width:760px){.hero2{min-height:auto;padding-bottom:40px}.hero2 .kick{letter-spacing:.08em;font-size:11px}}.tiles.sm .tile h3{font-size:15px}.tiles.sm .tile p{font-size:12.5px}.tiles.sm .med{width:40px;height:40px}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
 .chips button{background:#ffffff06;color:#c9d3e3;border:1px solid var(--line2);min-height:38px;padding:4px 16px;border-radius:99px;font-weight:700;font-size:14px}
 .chips button.on{background:linear-gradient(#f6e2a8,#c99a4e);color:#1b1206;border-color:#f6e6bd}
@@ -375,28 +405,48 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
 <main>
 <!-- 홈 -->
 <section class="view" data-v="home">
-  <div class="hero">
-    <canvas id="scene" aria-hidden="true"></canvas>
+  <div class="hero hero2">
+    <div class="hbg" role="img" aria-label="템빨: 오버기어드 클래스 아트"></div>
     <div class="hin"><div class="htxt">
-      <div class="kick">TEMPPAL · OVERGEARED 비공식 팬 도구</div>
+      <div class="kick">TEMPPAL · OVERGEARED 비공식 팬 사이트</div>
       <h1 class="logoT gt"><span class="nw">템빨 :</span> <span class="nw">대장간노트</span></h1>
-      <p class="hsub">강화 기록부터 기대값 계산, 매일의 숙제까지. 장비가 곧 힘인 세계를 걷는 이들을 위한 장인의 작업 노트.</p>
+      <p class="hsub">정식 서비스 화면으로 직접 정리한 <b>클래스 55종 · 스킬 87개 · 갓 핸드 · 펫 · 무기 개조</b> 도감과 강화 계산기, 보스 타이머까지.</p>
+      <button type="button" class="hsearch" id="hsBtn"><svg class="i"><use href="#i-search"/></svg><span>클래스, 스킬, 갓 핸드, 펫 이름으로 검색</span><kbd>/</kbd></button>
+      <div class="hkw"><b>인기</b><a href="/weapons/">1 클래스 도감</a><a href="/coupons/">2 쿠폰·이벤트</a><a href="/godhand/">3 갓 핸드</a><a href="/bm/">4 상점 가격</a><a href="/pets/">5 펫 도감</a></div>
       <div class="cdl" id="cdTitle">정식 출시까지 · 11월 26일(목) 00:00</div>
       <div class="cd" id="cd"><div><b id="cdD">-</b><span>DAYS</span></div><div><b id="cdH">-</b><span>HOURS</span></div><div><b id="cdM">-</b><span>MIN</span></div><div><b id="cdS">-</b><span>SEC</span></div></div>
-      <div class="cta"><a class="btn" href="/quiz/">내 무기 찾기 <svg class="i"><use href="#i-arrow"/></svg></a><a class="btn ghost" href="/enhance/">강화 기록 시작</a></div>
     </div></div>
   </div>
   <div class="wrap" style="padding:0 max(4vw,16px)">
     <div class="facts4">
-      <div><small>정식 출시</small><b>11.26 00:00</b></div>
-      <div><small>플랫폼</small><b>PC · 모바일</b></div>
-      <div><small>사전 선점</small><b>20개 서버 마감</b></div>
-      <div><small>무기 계열</small><b>4종</b></div>
+      <div><small>클래스</small><b>55종</b></div>
+      <div><small>클래스 스킬</small><b>87개</b></div>
+      <div><small>갓 핸드 메모리</small><b>27종</b></div>
+      <div><small>펫 · 개조 무기</small><b>28 · 30종</b></div>
     </div>
+    <a class="nstrip" id="nstrip" href="/coupons/"><span class="nb">NEW</span><span class="nt" id="nstripT">업데이트 소식</span><span class="na">바로가기 →</span></a>
   </div>
 
+  <div class="band" style="padding-bottom:20px"><div class="wrap">
+    <div class="sh"><div><span class="k">FEATURED</span><h2 class="gt">지금 많이 보는 곳</h2></div></div>
+    <div class="featg" id="homeFeat"></div>
+  </div></div>
+
+  <div class="band" style="padding-top:20px"><div class="wrap">
+    <div class="two">
+      <div class="card"><div class="ch"><span class="med sm"><svg><use href="#i-gift"/></svg></span><h3>진행 중 이벤트</h3><a class="small" href="/coupons/" style="margin-left:auto">전체 →</a></div><div id="homeEv"></div></div>
+      <div>
+        <div class="card"><div class="ch"><span class="med sm"><svg><use href="#i-coin"/></svg></span><h3>쿠폰 번호</h3><a class="small" href="/coupons/" style="margin-left:auto">쓰는 법 →</a></div>
+          <div class="empty" style="padding:16px"><b style="color:var(--champ)">공식 쿠폰 대기 중</b><p class="small" style="margin:6px 0 0">공식 채널에 올라온 쿠폰만 올려요. 출처 없는 코드는 올리지 않습니다.</p></div></div>
+        <div class="card" style="margin-top:16px"><div class="ch"><span class="med sm"><svg><use href="#i-news"/></svg></span><h3>업데이트 기록</h3></div><ul class="facts small" id="upd" style="margin:0"></ul></div>
+      </div>
+    </div>
+  </div></div>
+
+  <div class="orn"><i></i></div>
+
   <div class="band"><div class="wrap">
-    <div class="sh"><div><span class="k">CLASSES</span><h2 class="gt">클래스 도감</h2></div><a href="/weapons/">전체 스킬 보기 →</a></div>
+    <div class="sh"><div><span class="k">CLASSES</span><h2 class="gt">클래스 도감</h2></div><a href="/weapons/">전체 55종 · 스킬 보기 →</a></div>
     <p class="small" style="margin:-6px 0 14px;color:var(--champ)">카드를 누르면 외형 · 능력치 · 스킬 창이 바로 열려요. 최종 목표는 레전드리 4종을 모아 여는 <b>초월자</b>(HP 5,000 · 공속 70%).</p>
     <div class="chips" id="hcChips"></div>
     <div class="cdgrid" id="hcList"></div>
@@ -405,9 +455,23 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
   <div class="orn"><i></i></div>
 
   <div class="band"><div class="wrap">
-    <div class="sh"><div><span class="k">VIDEOS</span><h2 class="gt">추천 영상</h2></div><a href="/videos/">전체 보기 →</a></div>
-    <p class="small" style="margin:-6px 0 14px;color:var(--champ)">유튜브 조회수 1만 회 이상, 오픈 전에 보기 좋은 템빨 영상</p>
+    <div class="sh"><div><span class="k">ALL MENU</span><h2 class="gt">전체 메뉴</h2></div></div>
+    <div id="homeMenu"></div>
+  </div></div>
+
+  <div class="orn"><i></i></div>
+
+  <div class="band"><div class="wrap">
+    <div class="sh"><div><span class="k">VIDEOS</span><h2 class="gt">추천 영상</h2></div><a href="/videos/">전체 15편 →</a></div>
+    <p class="small" style="margin:-6px 0 14px;color:var(--champ)">유튜브 조회수 1만 회 이상만 골랐어요</p>
     <div class="vgrid" id="homeVids"></div>
+  </div></div>
+
+  <div class="orn"><i></i></div>
+
+  <div class="band"><div class="wrap">
+    <div class="sh"><div><span class="k">WEAPONS</span><h2 class="gt">네 가지 무기 계열</h2></div><a href="/weapons/">무기 비교표 →</a></div>
+    <div class="wgrid" id="homeWeapons"></div>
   </div></div>
 
   <div class="orn"><i></i></div>
@@ -421,21 +485,7 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
 
   <div class="band"><div class="wrap">
     <div class="sh"><div><span class="k">SCREENSHOTS</span><h2 class="gt">정식 서비스 화면</h2></div><a href="/starter/">첫날 가이드 →</a></div>
-    <div class="shots"><figure class="shot"><img loading="lazy" src="https://tempalnote.com/img/ui/art.webp" alt="템빨: 오버기어드 클래스 아트" width="1280" height="591" data-zoom="1"><figcaption>템빨: 오버기어드 클래스 아트</figcaption></figure><figure class="shot"><img loading="lazy" src="https://tempalnote.com/img/ui/fight2.webp" alt="실제 전투 화면" width="1280" height="591" data-zoom="1"><figcaption>실제 전투 화면</figcaption></figure><figure class="shot"><img loading="lazy" src="https://tempalnote.com/img/ui/select.webp" alt="무기 계열 선택" width="1280" height="591" data-zoom="1"><figcaption>무기 계열 선택</figcaption></figure></div>
-  </div></div>
-
-  <div class="orn"><i></i></div>
-
-  <div class="band"><div class="wrap">
-    <div class="sh"><div><span class="k">TOOLS</span><h2 class="gt">장인의 도구</h2></div><a href="#" id="hsBtn">무엇이든 검색 →</a></div>
-    <div class="tiles" id="homeTools"></div>
-  </div></div>
-
-  <div class="orn"><i></i></div>
-
-  <div class="band"><div class="wrap">
-    <div class="sh"><div><span class="k">WEAPONS</span><h2 class="gt">네 가지 무기 계열</h2></div><a href="/weapons/">무기 도감 →</a></div>
-    <div class="wgrid" id="homeWeapons"></div>
+    <div class="shots"><figure class="shot"><img loading="lazy" src="https://tempalnote.com/img/ui/fight2.webp" alt="실제 전투 화면" width="1280" height="591" data-zoom="1"><figcaption>실제 전투 화면</figcaption></figure><figure class="shot"><img loading="lazy" src="https://tempalnote.com/img/ui/select.webp" alt="무기 계열 선택" width="1280" height="591" data-zoom="1"><figcaption>무기 계열 선택</figcaption></figure><figure class="shot"><img loading="lazy" src="https://tempalnote.com/img/ui/ghsum.webp" alt="갓 핸드 소환" width="1280" height="591" data-zoom="1"><figcaption>갓 핸드 소환</figcaption></figure></div>
   </div></div>
 
   <div class="orn"><i></i></div>
@@ -445,20 +495,11 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
     <div class="rmh" id="homeRoad"></div>
   </div></div>
 
-  <div class="orn"><i></i></div>
-
-  <div class="band"><div class="wrap">
+  <div class="band" style="padding-top:0"><div class="wrap">
     <div class="sh"><div><span class="k">OFFICIAL & ORIGINAL</span><h2 class="gt">공식 채널 · 원작 보기</h2></div><a href="/official/">전체 보기 →</a></div>
     <div class="tiles" id="homeOfficial"></div>
-  </div></div>
-
-  <div class="band" style="padding-top:0"><div class="wrap">
-    <div class="sh"><div><span class="k">GUIDES</span><h2 class="gt">가이드 · 정보</h2></div></div>
-    <div class="tiles" id="homeGuides" style="margin-bottom:22px"></div>
-    <div class="two">
-      <div class="card"><div class="ch"><span class="med sm"><svg><use href="#i-news"/></svg></span><h3>업데이트 기록</h3></div><ul class="facts small" id="upd"></ul></div>
-      <div class="card"><div class="ch"><span class="med sm"><svg><use href="#i-info"/></svg></span><h3>즐겨찾기 해 두세요</h3></div><p class="small mute" style="margin:0">PC는 Ctrl+D, 휴대폰은 브라우저 메뉴의 <b style="color:var(--champ)">홈 화면에 추가</b>. 숙제와 강화 기록은 이 기기에 저장돼 매일 이어서 쓸 수 있어요.</p><p class="small" style="margin:10px 0 0;color:#c9d3e3">광고·제휴 문의 <a href="mailto:rnrwndgur124@naver.com">rnrwndgur124@naver.com</a></p></div>
-    </div>
+    <div class="card" style="margin-top:16px"><div class="ch"><span class="med sm"><svg><use href="#i-info"/></svg></span><h3>즐겨찾기 해 두세요</h3></div><p class="small mute" style="margin:0">PC는 <b>Ctrl+D</b>, 휴대폰은 브라우저 메뉴의 <b>홈 화면에 추가</b>. 게임 업데이트가 나오면 바로 정리해 둡니다.</p></div>
+    <div hidden><div id="homeTools"></div><div id="homeGuides"></div></div>
   </div></div>
 </section>
 
@@ -933,7 +974,6 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
 </div></footer>
 <div class="toast" id="toast"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 {
 const $=s=>document.querySelector(s);
@@ -978,10 +1018,19 @@ document.addEventListener('click',e=>{if(!e.target.closest('.dd'))document.query
 $('#burger').onclick=()=>{const o=$('#drawer').classList.toggle('open');$('#burger').setAttribute('aria-expanded',o)};
 
 const tile=k=>{const p=PAGES[k];return `<a class="tile" href="/${k}/">${p.b?`<span class="bd ${p.b}">${p.b==='new'?'NEW':'HOT'}</span>`:''}${med(p.i)}<span><h3>${p.t}</h3><p>${p.d}</p></span></a>`};
+const FEAT=[['weapons','클래스 도감','55종 외형 · 스킬 87개 · 스킬 창 원본','ui/feat-cls.webp','hot','인기'],['godhand','갓 핸드','메모리 27종 수치 · 짝 분석','ui/ghsum.webp','hot','인기'],['bm','상점 정리','다이아 단가 · 골드 소환권 · 가호 10단계','ui/dia.webp','',''],['coupons','쿠폰 · 이벤트','출석부 · 8주 미션 · 강화 지원','ui/attend.webp','new','NEW'],['pets','펫 도감','동행 · 비행 펫 28종','ui/feat-pet.webp','new','NEW'],['weapons','무기 개조 도감','개조 무기 30종 이미지','ui/feat-wpn.webp','new','NEW'],['timer','보스 타이머','처치 기록 · 1분 전 알림 · 일정표','ui/fight1.webp','new','NEW'],['videos','추천 영상','조회수 1만+ 템빨 영상 15편','ui/fight2.webp','','']];
+$('#homeFeat').innerHTML=FEAT.map(f=>`<a class="fc" href="#${f[0]}"><div class="ft" style="background-image:url(${IB}${f[3]})">${f[5]?`<span class="fb ${f[4]}">${f[5]}</span>`:''}</div><h3>${f[1]}</h3><p>${f[2]}</p></a>`).join('');
+const EVS=[['런칭 기념 14일 출석부','2026-12-16','#coupons'],['장비 강화 지원 미션','2026-12-09','#coupons'],['런칭 소환 · 성물 패키지','2026-12-09','#bm'],['첫걸음 응원 패키지 ₩9,900','2026-12-09','#bm'],['프리미엄 시즌 패스','2027-01-01','#bm'],['새로운 전설의 시작! 8주 미션','2027-01-21','#coupons']];
+function evRender(){const st=new Date('2026-11-26T00:00:00+09:00').getTime(),now=Date.now();
+  $('#homeEv').innerHTML=EVS.map(e=>{const end=new Date(e[1]+'T05:00:00+09:00').getTime(),d=Math.ceil((end-now)/864e5),pc=Math.min(100,Math.max(0,(now-st)/(end-st)*100));const [y,m,dd]=e[1].split('-');
+    return `<a class="ev" href="${e[2]}"><b>${e[0]}</b><span class="evd ${d<=3?'hot':''}">${d>0?'D-'+d:'종료'}</span><small>${+m}월 ${+dd}일 새벽까지${e[0].includes('8주')?' (8주차 기준 예상)':''}</small><span></span><span class="bar"><i style="width:${pc}%"></i></span></a>`}).join('')}
+evRender();
+$('#homeMenu').innerHTML=GROUPS.map(g=>`<div class="mg"><h3>${g.n} <small>${g.e}</small></h3><div class="tiles sm">${g.k.map(tile).join('')}</div></div>`).join('');
 $('#homeTools').innerHTML=['starter',...GROUPS[0].k].map(tile).join('');
 $('#homeGuides').innerHTML=['systems','weapons','bm','coupons'].map(tile).join('');
 const UPD=[['11.26','이미지 대규모 추가: 무기 개조 30종 · 갓 핸드 27종 아이콘 · 펫 28종 · 상점/이벤트 화면 / 새 도구: 무기 비교표 · 보스 타이머 · 일정표 · 백업 · 피드백'],['11.26','추천 영상 추가: 조회수 1만 이상 템빨 유튜브 15편'],['11.26','클래스 도감 전면 개편: 클래스 55종 외형 이미지 · 능력치 · 스킬 87개 설명 + 게임 스킬 창 원본'],['11.26','유니크 활 6종 전체 스킬 · 대검 유니크 근위 기사 · 에픽 → 유니크 계승 짝 7쌍'],['11.26','레전드리 3종(서사시의 마검사 · 궁성 · 교황) 스킬 27개 · 공통 패시브 불사 · 초월자 정리'],['11.26','클래스 30종 정리: 에픽 14종 특화 옵션 · 레어 16종 규칙 (무명=공격 · 중급=명중 · 능숙한=생존)'],['11.26','상점 완전 분석: 다이아 단가 22원 · 골드 소환권 · 베니스의 가호 10단계 · 템빨 코인 · 시즌 패스'],['11.26','상점 가격표(₩9,900~₩55,000) · 제작 실측 추가'],['11.26','8주 미션 전 주차 완성 · 장비 강화 지원 미션 · 퀘스트 구조(메인 8막 · 서브 · 히든)'],['11.26','이벤트: 14일 출석부 보상표 · 8주 미션 주차별 목표 · 학살자 보상 제한 주의'],['11.26','장비 강화 실측(100% · 1,000골드 · 안전 구간 · 파괴 보호권) · 펫 도감 34종 정리'],['11.26','갓 핸드 메모리 27종 수치 · 레전드리/유니크 짝 분석 · 무기 개조 도감 · 게임 메뉴 추가'],['11.26','정식 출시 — PC·모바일 사양, 서버, 무기 개조, 템빨 코인, 무료 편의 기능 추가'],['11.25','사이트 전면 개편 — 새 디자인, 3D 첫 화면, 메뉴와 검색'],['11.25','강화 기대값 계산기 · 갓 핸드 프리셋 · 첫날 가이드 추가'],['11.25','오픈 — 강화 기록기, 숙제, 무기 추천, 공개 정보 정리'],['예정','출시 후 클래스별 스킬, 강화 비용표, 쿠폰을 순서대로 채움']];
-$('#upd').innerHTML=UPD.map(u=>`<li><b style="color:var(--champ)">${u[0]}</b> ${u[1]}</li>`).join('');
+$('#nstripT').textContent=UPD[0][0]+' 업데이트 · '+UPD[0][1];
+$('#upd').innerHTML=UPD.slice(0,7).map(u=>`<li><b style="color:var(--champ)">${u[0]}</b> ${u[1]}</li>`).join('');
 
 /* 공식 채널 · 원작 */
 const OFF_GAME=[
