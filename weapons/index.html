@@ -201,6 +201,15 @@ label{font-weight:700;font-size:13.5px;display:block;margin-bottom:6px;color:#c9
 .sk details img{display:block;margin-top:8px;max-width:min(100%,420px);border-radius:8px;border:1px solid var(--line2)}
 .cdpanel img{width:100%;border-radius:8px;border:1px solid var(--line2);margin-top:10px}
 .cup{display:inline-flex;align-items:center;gap:6px;margin:2px 6px 2px 0;padding:3px 10px;border-radius:99px;background:#ffffff0c;border:1px solid var(--line2);font-size:13px;font-weight:700;color:#dfe6f2;cursor:pointer;min-height:0;box-shadow:none}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:14px;margin-bottom:14px}
+.vc{display:block;text-decoration:none;color:inherit;border:1px solid var(--line2);border-radius:10px;overflow:hidden;background:#0a1426;transition:transform .15s,border-color .15s}
+.vc:hover{transform:translateY(-3px);border-color:var(--gold)}
+.vc .th{position:relative;aspect-ratio:16/9;background:#000 center/cover}
+.vc .th::after{content:"▶";position:absolute;inset:0;display:grid;place-items:center;font-size:30px;color:#fff;text-shadow:0 2px 12px #000;opacity:.85}
+.vc .du{position:absolute;right:6px;bottom:6px;z-index:1;background:#000c;color:#fff;font-size:12px;font-weight:700;padding:1px 6px;border-radius:4px}
+.vc .vb{position:absolute;left:6px;top:6px;z-index:1;background:#e2614a;color:#fff;font-size:12px;font-weight:900;padding:2px 8px;border-radius:99px}
+.vc h3{margin:10px 12px 4px;font-size:15.5px;line-height:1.4}
+.vc p{margin:0 12px 12px;font-size:13px;color:var(--mute)}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
 .chips button{background:#ffffff06;color:#c9d3e3;border:1px solid var(--line2);min-height:38px;padding:4px 16px;border-radius:99px;font-weight:700;font-size:14px}
 .chips button.on{background:linear-gradient(#f6e2a8,#c99a4e);color:#1b1206;border-color:#f6e6bd}
@@ -367,6 +376,14 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
     <p class="small" style="margin:-6px 0 14px;color:var(--champ)">카드를 누르면 외형 · 능력치 · 스킬 창이 바로 열려요. 최종 목표는 레전드리 4종을 모아 여는 <b>초월자</b>(HP 5,000 · 공속 70%).</p>
     <div class="chips" id="hcChips"></div>
     <div class="cdgrid" id="hcList"></div>
+  </div></div>
+
+  <div class="orn"><i></i></div>
+
+  <div class="band"><div class="wrap">
+    <div class="sh"><div><span class="k">VIDEOS</span><h2 class="gt">추천 영상</h2></div><a href="/videos/">전체 보기 →</a></div>
+    <p class="small" style="margin:-6px 0 14px;color:var(--champ)">유튜브 조회수 1만 회 이상, 오픈 전에 보기 좋은 템빨 영상</p>
+    <div class="vgrid" id="homeVids"></div>
   </div></div>
 
   <div class="orn"><i></i></div>
@@ -734,6 +751,14 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
 </div></div></section>
 
 <!-- 공식 채널 · 원작 -->
+<section class="view" data-v="videos"><div class="band pagetop"><div class="wrap">
+  <div class="pk">VIDEOS</div>
+  <div class="ph"><span class="med lg"><svg><use href="#i-play"/></svg></span><h1 class="gt">추천 영상</h1></div>
+  <p class="lead">유튜브에서 <b>조회수 1만 회 이상</b> 나온 템빨: 오버기어드 영상만 골랐어요. 누르면 유튜브에서 열립니다.</p>
+  <div class="chips" id="vdChips"></div>
+  <div class="vgrid" id="vdList"></div>
+  <p class="small mute">조회수는 2026년 11월 26일 새벽 기준이에요. 각 영상의 권리는 원 채널에 있습니다.</p>
+</div></div></section>
 <section class="view" data-v="official"><div class="band pagetop"><div class="wrap">
   <div class="pk">OFFICIAL & ORIGINAL</div>
   <div class="ph"><span class="med lg"><svg><use href="#i-home"/></svg></span><h1 class="gt">공식 채널 · 원작 보기</h1></div>
@@ -848,12 +873,13 @@ const PAGES={
  roadmap:{t:'6개월 로드맵',d:'레이드·공성전·신규 클래스',i:'i-map'},
  bm:{t:'상점 정리',d:'파는 것과 팔지 않는 것',i:'i-coin'},
  coupons:{t:'쿠폰·이벤트',d:'출석부 · 8주 미션 · 쿠폰',i:'i-gift'},
+ videos:{t:'추천 영상',d:'조회수 1만 이상 템빨 유튜브',i:'i-play'},
  official:{t:'공식 채널·원작',d:'공식 유튜브·홈페이지·웹툰·웹소설',i:'i-home'},
  contact:{t:'문의하기',d:'광고·제휴·제보',i:'i-chat'},
  privacy:{t:'개인정보처리방침',d:'쿠키와 광고 안내',i:'i-sig'},
  terms:{t:'이용약관',d:'사이트 이용 안내',i:'i-guide'},
  about:{t:'사이트 소개',d:'비공식 팬 사이트 안내',i:'logo'}};
-const GROUPS=[{n:'도구',e:'TOOLS',k:['quiz','enhance','calc','godhand','homework']},{n:'가이드',e:'GUIDES',k:['weapons','starter','systems']},{n:'정보',e:'INFO',k:['official','roadmap','bm','coupons','about']}];
+const GROUPS=[{n:'도구',e:'TOOLS',k:['quiz','enhance','calc','godhand','homework']},{n:'가이드',e:'GUIDES',k:['weapons','starter','systems']},{n:'정보',e:'INFO',k:['videos','official','roadmap','bm','coupons','about']}];
 const link=k=>`<a href="/${k}/" data-k="${k}">${med(PAGES[k].i,'sm')}<span>${PAGES[k].t}<small>${PAGES[k].d}</small></span></a>`;
 $('#menu').innerHTML=GROUPS.map((g,gi)=>`<div class="dd" data-g="${gi}"><button type="button" aria-haspopup="true">${g.n}</button><div class="ddm">${g.k.map(link).join('')}</div></div>`).join('');
 $('#drawer').innerHTML=GROUPS.map(g=>`<h4>${g.e}</h4>${g.k.map(link).join('')}`).join('');
@@ -865,7 +891,7 @@ $('#burger').onclick=()=>{const o=$('#drawer').classList.toggle('open');$('#burg
 const tile=k=>{const p=PAGES[k];return `<a class="tile" href="/${k}/">${p.b?`<span class="bd ${p.b}">${p.b==='new'?'NEW':'HOT'}</span>`:''}${med(p.i)}<span><h3>${p.t}</h3><p>${p.d}</p></span></a>`};
 $('#homeTools').innerHTML=['starter',...GROUPS[0].k].map(tile).join('');
 $('#homeGuides').innerHTML=['systems','weapons','bm','coupons'].map(tile).join('');
-const UPD=[['11.26','클래스 도감 전면 개편: 클래스 55종 외형 이미지 · 능력치 · 스킬 87개 설명 + 게임 스킬 창 원본'],['11.26','유니크 활 6종 전체 스킬 · 대검 유니크 근위 기사 · 에픽 → 유니크 계승 짝 7쌍'],['11.26','레전드리 3종(서사시의 마검사 · 궁성 · 교황) 스킬 27개 · 공통 패시브 불사 · 초월자 정리'],['11.26','클래스 30종 정리: 에픽 14종 특화 옵션 · 레어 16종 규칙 (무명=공격 · 중급=명중 · 능숙한=생존)'],['11.26','상점 완전 분석: 다이아 단가 22원 · 골드 소환권 · 베니스의 가호 10단계 · 템빨 코인 · 시즌 패스'],['11.26','상점 가격표(₩9,900~₩55,000) · 제작 실측 추가'],['11.26','8주 미션 전 주차 완성 · 장비 강화 지원 미션 · 퀘스트 구조(메인 8막 · 서브 · 히든)'],['11.26','이벤트: 14일 출석부 보상표 · 8주 미션 주차별 목표 · 학살자 보상 제한 주의'],['11.26','장비 강화 실측(100% · 1,000골드 · 안전 구간 · 파괴 보호권) · 펫 도감 34종 정리'],['11.26','갓 핸드 메모리 27종 수치 · 레전드리/유니크 짝 분석 · 무기 개조 도감 · 게임 메뉴 추가'],['11.26','정식 출시 — PC·모바일 사양, 서버, 무기 개조, 템빨 코인, 무료 편의 기능 추가'],['11.25','사이트 전면 개편 — 새 디자인, 3D 첫 화면, 메뉴와 검색'],['11.25','강화 기대값 계산기 · 갓 핸드 프리셋 · 첫날 가이드 추가'],['11.25','오픈 — 강화 기록기, 숙제, 무기 추천, 공개 정보 정리'],['예정','출시 후 클래스별 스킬, 강화 비용표, 쿠폰을 순서대로 채움']];
+const UPD=[['11.26','추천 영상 추가: 조회수 1만 이상 템빨 유튜브 15편'],['11.26','클래스 도감 전면 개편: 클래스 55종 외형 이미지 · 능력치 · 스킬 87개 설명 + 게임 스킬 창 원본'],['11.26','유니크 활 6종 전체 스킬 · 대검 유니크 근위 기사 · 에픽 → 유니크 계승 짝 7쌍'],['11.26','레전드리 3종(서사시의 마검사 · 궁성 · 교황) 스킬 27개 · 공통 패시브 불사 · 초월자 정리'],['11.26','클래스 30종 정리: 에픽 14종 특화 옵션 · 레어 16종 규칙 (무명=공격 · 중급=명중 · 능숙한=생존)'],['11.26','상점 완전 분석: 다이아 단가 22원 · 골드 소환권 · 베니스의 가호 10단계 · 템빨 코인 · 시즌 패스'],['11.26','상점 가격표(₩9,900~₩55,000) · 제작 실측 추가'],['11.26','8주 미션 전 주차 완성 · 장비 강화 지원 미션 · 퀘스트 구조(메인 8막 · 서브 · 히든)'],['11.26','이벤트: 14일 출석부 보상표 · 8주 미션 주차별 목표 · 학살자 보상 제한 주의'],['11.26','장비 강화 실측(100% · 1,000골드 · 안전 구간 · 파괴 보호권) · 펫 도감 34종 정리'],['11.26','갓 핸드 메모리 27종 수치 · 레전드리/유니크 짝 분석 · 무기 개조 도감 · 게임 메뉴 추가'],['11.26','정식 출시 — PC·모바일 사양, 서버, 무기 개조, 템빨 코인, 무료 편의 기능 추가'],['11.25','사이트 전면 개편 — 새 디자인, 3D 첫 화면, 메뉴와 검색'],['11.25','강화 기대값 계산기 · 갓 핸드 프리셋 · 첫날 가이드 추가'],['11.25','오픈 — 강화 기록기, 숙제, 무기 추천, 공개 정보 정리'],['예정','출시 후 클래스별 스킬, 강화 비용표, 쿠폰을 순서대로 채움']];
 $('#upd').innerHTML=UPD.map(u=>`<li><b style="color:var(--champ)">${u[0]}</b> ${u[1]}</li>`).join('');
 
 /* 공식 채널 · 원작 */
@@ -996,6 +1022,15 @@ function hcRender(){const cs=['전체','레전드리','유니크','에픽'];
 $('#hcChips').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;e.stopPropagation();hcf=b.dataset.c;hcRender()});
 hcRender();
 {const q=new URLSearchParams(location.search).get('c');if(q&&cdById[q])setTimeout(()=>cdOpen(q),50)}
+
+const VIDS=[["e7LByfWQTa0", "[템빨: 오버기어드] 무소과금 필독! 정식 오픈 전 필수 정보 모음", "윤쿵쿵TV", "3.2만", "15:04", "입문"], ["ziFo5XqT8RE", "템빨 오버기어드 출시 전에 정해 둘 것, 직업 고르는 기준·장비 성장 순서", "겜집사", "2.8만", "9:16", "입문"], ["VCAwgcgS1EI", "템빨 : 오버기어드 오픈전 딱 봐두면 도움되는 영상 (클래스 52종)", "소식돼지tv", "2.2만", "6:11", "클래스"], ["_fn-hk2mcVE", "템빨 오버기어드 이거 기대해도 될까? 솔직 내용정리", "윤쿵쿵TV", "2.2만", "10:02", "리뷰"], ["YdLAcxAgTq4", "[템빨: 오버기어드] 돈빨? 팩트리뷰", "제이게임채널", "3.9만", "8:09", "리뷰"], ["sFLa870qz3M", "템빨: 오버기어드 리뷰", "제이게임채널", "2.5만", "6:18", "리뷰"], ["pfqWYVC64zA", "바선생급 번식력을 가진 신작 MMORPG 「템빨: 오버기어드」", "휘바TV", "20만", "8:22", "리뷰"], ["54HR-QwWIhw", "템빨: 오버기어드 l 온라인 쇼케이스 OVER WORLD", "공식", "5.5만", "1:20:36", "공식"], ["yt3rww2HR-w", "또 다른 템빨의 시작 l 템빨: 오버토크 EP2", "공식", "13만", "16:02", "공식"], ["F7HqznMqwgY", "인게임 프리뷰 영상 #3", "공식", "32만", "0:45", "공식"], ["w2PF0Tw2Oy4", "인게임 프리뷰 영상 최초 공개 #1", "공식", "6.4만", "0:40", "공식"], ["JWo9PJiyw5E", "무기 계열 소개 「활」", "공식", "55만", "0:44", "공식"], ["nbte9IiaX5A", "무기 계열 소개 「지팡이」", "공식", "50만", "0:44", "공식"], ["aYb_SpXmRP0", "무기 계열 소개 「대검」", "공식", "25만", "0:44", "공식"], ["Wk7q8vk6BTo", "무기 계열 소개 「바이블」", "공식", "7.5만", "0:44", "공식"]];
+let vdf='전체';
+const vCard=v=>`<a class="vc" href="https://www.youtube.com/watch?v=${v[0]}" target="_blank" rel="noopener"><div class="th" style="background-image:url(https://i.ytimg.com/vi/${v[0]}/hqdefault.jpg)"><span class="vb">조회수 ${v[3]}</span><span class="du">${v[4]}</span></div><h3>${v[1]}</h3><p>${v[2]==='공식'?'템빨: 오버기어드 공식':v[2]} · ${v[5]}</p></a>`;
+function vdRender(){const cs=['전체','입문','클래스','리뷰','공식'];$('#vdChips').innerHTML=cs.map(c=>`<button type="button" class="${c===vdf?'on':''}" data-c="${c}">${c}</button>`).join('');
+  $('#vdList').innerHTML=VIDS.filter(v=>vdf==='전체'||v[5]===vdf).map(vCard).join('')}
+$('#vdChips').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;vdf=b.dataset.c;vdRender()});
+vdRender();
+if($('#homeVids'))$('#homeVids').innerHTML=VIDS.filter(v=>v[5]!=='공식').slice(0,6).map(vCard).join('');
 
 /* 시스템 */
 const SYS=[
