@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://tempalnote.com/sitemap.xml
