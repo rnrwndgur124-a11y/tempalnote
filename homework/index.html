@@ -210,6 +210,30 @@ label{font-weight:700;font-size:13.5px;display:block;margin-bottom:6px;color:#c9
 .vc .vb{position:absolute;left:6px;top:6px;z-index:1;background:#e2614a;color:#fff;font-size:12px;font-weight:900;padding:2px 8px;border-radius:99px}
 .vc h3{margin:10px 12px 4px;font-size:15.5px;line-height:1.4}
 .vc p{margin:0 12px 12px;font-size:13px;color:var(--mute)}
+.shot{margin:14px 0;border-radius:10px;overflow:hidden;border:1px solid var(--line2);background:#000}
+.shot img{display:block;width:100%;height:auto;cursor:zoom-in}
+.shot figcaption{padding:7px 12px;font-size:12.5px;color:var(--mute);background:#0a1426}
+.shots{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:12px}
+.shots .shot{margin:0}
+.lb{position:fixed;inset:0;z-index:300;background:#000e;display:grid;place-items:center;padding:12px;cursor:zoom-out}
+.lb[hidden]{display:none}.lb img{max-width:100%;max-height:100%;border-radius:8px}
+.wimg{width:100%;aspect-ratio:3/5;object-fit:cover;object-position:50% 20%;border-radius:10px;border:1px solid var(--line2);background:#0a1426}
+.wsh .wimg{aspect-ratio:3/4;margin-bottom:12px}
+.eqgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr));gap:12px}
+.eq{border:1px solid var(--line2);border-radius:10px;overflow:hidden;background:#0a1426;cursor:zoom-in}
+.eq img{display:block;width:100%;height:auto;aspect-ratio:780/705;object-fit:cover;background:#151c33}
+.eq div{padding:8px 10px 10px}.eq b{display:block;font-size:15px}.eq span{font-size:12px}
+.ghi{width:64px;height:64px;border-radius:8px;flex:none;background:#1a1420 center/cover;border:1px solid #ffffff22}
+.ghrow{display:flex;gap:12px;align-items:center}
+.petgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.pc{border:1px solid var(--line2);border-radius:10px;overflow:hidden;background:#141821;text-align:center}
+.pc img{display:block;width:100%;height:auto;aspect-ratio:150/234;object-fit:cover}
+.pc b{display:block;padding:6px 6px 2px;font-size:14px}.pc span{display:block;padding:0 6px 8px;font-size:12px;color:var(--mute)}
+.cmp th,.cmp td{text-align:center;vertical-align:middle}.cmp td:first-child,.cmp th:first-child{text-align:left;white-space:nowrap}
+.cmp img{width:64px;height:84px;object-fit:cover;object-position:50% 15%;border-radius:6px;display:block;margin:0 auto 4px}
+.tmr{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:12px 0;border-top:1px solid #ffffff12}
+.tmr .cd{font:800 22px/1 ui-monospace,Menlo,monospace;color:var(--champ);min-width:96px;text-align:right}
+.tmr.soon .cd{color:#ff8f7a}.tmr.ready .cd{color:#7de0a8}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
 .chips button{background:#ffffff06;color:#c9d3e3;border:1px solid var(--line2);min-height:38px;padding:4px 16px;border-radius:99px;font-weight:700;font-size:14px}
 .chips button.on{background:linear-gradient(#f6e2a8,#c99a4e);color:#1b1206;border-color:#f6e6bd}
@@ -220,7 +244,7 @@ label{font-weight:700;font-size:13.5px;display:block;margin-bottom:6px;color:#c9
 .wsh .med{margin:0 auto 14px}
 .wsh h3{margin:0 0 4px;font-size:20px}
 .wsh p{margin:0;color:var(--mute);font-size:13.5px}
-.wcard{display:grid;grid-template-columns:96px minmax(0,1fr);gap:18px;align-items:start}
+.wcard{display:grid;grid-template-columns:120px minmax(0,1fr);gap:18px;align-items:start}
 /* 테스트 */
 .opts{display:grid;gap:9px;margin-top:12px}
 .opts button{justify-content:flex-start;text-align:left;background:#ffffff05;color:var(--ink);border:1px solid var(--line2);font-weight:500;padding:13px 16px;border-radius:8px}
@@ -284,7 +308,7 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
 #cStat{grid-template-columns:repeat(2,minmax(0,1fr))}
 #homeTools{grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr))}
 @media(max-width:600px){.hero{min-height:auto;padding-top:96px;padding-bottom:300px}table{font-size:13px}.stack thead{display:none}.stack tr{display:grid;padding-block:10px}.stack td{display:flow-root;border:0;padding:3px 0;padding-inline-start:8em;text-align:start}.stack td::before{content:attr(data-l);float:inline-start;width:7.5em;margin-inline-start:-8em;white-space:normal;color:var(--mute)}.stack td:empty{display:none}
-.wcard{grid-template-columns:64px minmax(0,1fr)}.wcard .med{width:64px;height:64px}.result{grid-template-columns:1fr;text-align:center}.result .med{margin:0 auto;width:110px;height:110px}.slots{grid-template-columns:1fr}.brand small{display:none}#sbtnTxt{display:none}.fgrid{grid-template-columns:1fr}.cd div{min-width:0;flex:1}.rmh{grid-template-columns:1fr}}
+.wcard{grid-template-columns:96px minmax(0,1fr)}.wcard .med{width:64px;height:64px}.result{grid-template-columns:1fr;text-align:center}.result .med{margin:0 auto;width:110px;height:110px}.slots{grid-template-columns:1fr}.brand small{display:none}#sbtnTxt{display:none}.fgrid{grid-template-columns:1fr}.cd div{min-width:0;flex:1}.rmh{grid-template-columns:1fr}}
 </style>
 <script>new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document,{childList:true,subtree:true})</script>
 </head>
@@ -389,6 +413,20 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
   <div class="orn"><i></i></div>
 
   <div class="band"><div class="wrap">
+    <div class="sh"><div><span class="k">PETS</span><h2 class="gt">펫 도감</h2></div><a href="/pets/">펫 28종 전체 →</a></div>
+    <div class="petgrid" id="homePets"></div>
+  </div></div>
+
+  <div class="orn"><i></i></div>
+
+  <div class="band"><div class="wrap">
+    <div class="sh"><div><span class="k">SCREENSHOTS</span><h2 class="gt">정식 서비스 화면</h2></div><a href="/starter/">첫날 가이드 →</a></div>
+    <div class="shots"><figure class="shot"><img loading="lazy" src="https://tempalnote.com/img/ui/art.webp" alt="템빨: 오버기어드 클래스 아트" width="1280" height="591" data-zoom="1"><figcaption>템빨: 오버기어드 클래스 아트</figcaption></figure><figure class="shot"><img loading="lazy" src="https://tempalnote.com/img/ui/fight2.webp" alt="실제 전투 화면" width="1280" height="591" data-zoom="1"><figcaption>실제 전투 화면</figcaption></figure><figure class="shot"><img loading="lazy" src="https://tempalnote.com/img/ui/select.webp" alt="무기 계열 선택" width="1280" height="591" data-zoom="1"><figcaption>무기 계열 선택</figcaption></figure></div>
+  </div></div>
+
+  <div class="orn"><i></i></div>
+
+  <div class="band"><div class="wrap">
     <div class="sh"><div><span class="k">TOOLS</span><h2 class="gt">장인의 도구</h2></div><a href="#" id="hsBtn">무엇이든 검색 →</a></div>
     <div class="tiles" id="homeTools"></div>
   </div></div>
@@ -433,6 +471,7 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
 </div></div></section>
 
 <!-- 무기 도감 -->
+<div class="lb" id="lb" hidden onclick="this.hidden=true"><img alt="확대 이미지"></div>
 <div class="cdm" id="cdModal" hidden><div class="cdm-bg" data-x="1"></div><div class="cdm-box" role="dialog" aria-modal="true" aria-labelledby="cdmName"><button type="button" class="cdm-x" data-x="1" aria-label="닫기">✕</button><div id="cdmBody"></div></div></div>
 <section class="view" data-v="weapons"><div class="band pagetop"><div class="wrap">
   <div class="pk">CLASS DATABASE</div>
@@ -456,13 +495,18 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
   <div class="chips" id="wpChips"></div>
   <p class="small" id="wpNote" style="margin:0 0 14px;color:var(--champ)"></p>
   <div class="grid2" id="wpList" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,470px),1fr))"></div>
+  <h2 style="margin:34px 0 8px">무기 비교표</h2>
+  <p class="lead" style="margin-top:0">무기 4종을 한 표로 비교했어요. 클래스 수는 클래스 도감에 모은 화면 기준이에요.</p>
+  <div class="scroll card" style="margin-bottom:10px"><table class="stack cmp" id="cmpTbl"></table></div>
   <h2 style="margin:34px 0 8px">무기 개조 도감</h2>
   <p class="lead" style="margin-top:0">게임 메뉴 <b>무기 개조 → 개조 도감</b>에서 확인한 무기 목록이에요. 부위를 갈아 끼워 외형과 성능 방향을 바꿉니다.</p>
   <div class="card" style="margin-bottom:16px"><ul class="facts" style="margin:0">
     <li>개조 부위: <b>엣지 · 가드 · 코어</b> (유니크 무기는 <b>포인트 링</b>까지 4부위, 에픽은 3부위)</li>
     <li>등급이 높을수록 개조할 수 있는 부위가 하나 더 늘어나는 구조라, 유니크 무기를 얻으면 개조 폭이 넓어져요</li>
   </ul></div>
-  <div class="grid2" id="wmList" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))"></div>
+  <div class="chips" id="wmChips"></div>
+  <div class="eqgrid" id="wmList"></div>
+  <p class="small mute">이미지를 누르면 크게 볼 수 있어요. 게임 메뉴 무기 개조 → 개조 도감 화면 기준.</p>
   <div class="grid2">
     <div class="card"><div class="ch"><span class="med sm"><svg><use href="#i-anvil"/></svg></span><h3>무기 개조</h3></div><p style="margin:0">무기의 외형과 성능을 함께 바꾸는 시스템. 최대 피해와 치명타로 한 방을 노리거나, 명중과 상태 이상을 강화하는 식으로 같은 무기를 다르게 만들 수 있어요. 개조에도 파브라늄이 쓰입니다.</p></div>
     <div class="card"><div class="ch"><span class="med sm"><svg><use href="#i-map"/></svg></span><h3>앞으로 추가될 것</h3></div><p style="margin:0">3개월 차 대규모 업데이트에서 <b>신규 클래스</b>, 4~6개월 차에 <b>새 무기 계열</b>이 예고됐어요.</p></div>
@@ -483,6 +527,7 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
   <div class="pk">DAY ONE</div>
   <div class="ph"><span class="med lg"><svg><use href="#i-guide"/></svg></span><h1 class="gt">첫날 가이드</h1></div>
   <p class="lead">공개된 시스템을 바탕으로 정리한 출시 첫날의 순서예요. 실제 플레이 후 더 정확하게 다듬어 갑니다.</p>
+  <figure class="shot"><img loading="lazy" src="https://tempalnote.com/img/ui/select.webp" alt="처음 접속하면 고르는 무기 계열 선택 화면 (지팡이 · 대검 · 활 · 바이블)" width="1280" height="591" data-zoom="1"><figcaption>처음 접속하면 고르는 무기 계열 선택 화면 (지팡이 · 대검 · 활 · 바이블)</figcaption></figure>
   <div class="card" style="margin-bottom:18px"><div class="ch"><span class="med sm"><svg><use href="#i-guide"/></svg></span><h3>설치 · 사양 · 서버</h3></div>
     <ul class="facts">
       <li><b>모바일</b> 구글 플레이 · 앱스토어 / <b>PC</b> 구글 플레이 게임즈 전용 런처. 앱플레이어는 공식 지원 안 함</li>
@@ -502,10 +547,12 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
     <li><span><b>오버기어드 강화 시작</b>장비가 아니라 부위 슬롯을 강화하는 구조라, 장비를 바꿔도 슬롯 강화는 남아요. 시도할 때마다 <a href="/enhance/">강화 기록기</a>에 남겨 보세요.</span></li>
     <li><span><b>제작 대성공 노리기</b>대성공하면 내 이름이 새겨진 시그니처 장비. 안전 강화 단계가 일반 장비보다 2단계 높아요.</span></li>
     <li><span><b>코어 점수로 오버클럭 열기</b>장비 성장이 코어 점수에 쌓이고, 일정 점수에서 전투 중 강력한 버프인 오버클럭이 열려요.</span></li>
+    <li><span><b>퀘스트 따라가기</b>메인 퀘스트가 대장장이 · 무기 제작 · 오버기어드 기능을 차례로 열어 줘요. 자동 이동 버튼을 쓰면 편해요.</span></li>
     <li><span><b>스케줄 모드 켜 두기</b>일일 미션, 시간제 던전, 사냥터를 정해 둔 일정대로 돌려 주는 무료 기능이에요. 파티는 <b style="display:inline">스마트 파티</b>로 바로 찾을 수 있어요.</span></li>
     <li><span><b>쓰던 무기는 버리지 말고 납품</b>왕실 무기고에 넘기면 템빨 코인. 강화가 높을수록 많이 줘요.</span></li>
     <li><span><b>서버 콘텐츠 참여</b>필드 엘리트 「오염된 존재」, 서버 전체가 함께하는 인마대전. 공헌도는 차원 리그 세금 분배와 작위로 이어져요.</span></li>
   </ol>
+  <div class="shots" style="margin-top:16px"><figure class="shot"><img loading="lazy" src="https://tempalnote.com/img/ui/quest.webp" alt="메인 퀘스트 화면" width="1280" height="591" data-zoom="1"><figcaption>메인 퀘스트 화면</figcaption></figure><figure class="shot"><img loading="lazy" src="https://tempalnote.com/img/ui/growth.webp" alt="장비 성장 → 강화 화면" width="1280" height="591" data-zoom="1"><figcaption>장비 성장 → 강화 화면</figcaption></figure><figure class="shot"><img loading="lazy" src="https://tempalnote.com/img/ui/fight1.webp" alt="실제 전투 화면" width="1280" height="591" data-zoom="1"><figcaption>실제 전투 화면</figcaption></figure><figure class="shot"><img loading="lazy" src="https://tempalnote.com/img/ui/ghsum.webp" alt="갓 핸드 소환 화면" width="1280" height="591" data-zoom="1"><figcaption>갓 핸드 소환 화면</figcaption></figure></div>
 </div></div></section>
 
 <!-- 강화 기록기 -->
@@ -630,7 +677,8 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
 <section class="view" data-v="bm"><div class="band pagetop"><div class="wrap">
   <div class="pk">SHOP</div>
   <div class="ph"><span class="med lg"><svg><use href="#i-coin"/></svg></span><h1 class="gt">상점 정리</h1></div>
-  <p class="lead">정식 서비스 상점 화면 기준 가격(11월 26일)과 쇼케이스에서 밝힌 방침이에요.</p>
+  <p class="lead">정식 서비스 상점 화면 기준 가격(11월 26일)과 쇼케이스에서 밝힌 방침이에요. 화면을 누르면 크게 보여요.</p>
+  <div class="shots" style="margin-bottom:18px"><figure class="shot"><img loading="lazy" src="https://tempalnote.com/img/ui/launchpk.webp" alt="런칭 기념 소환 패키지" width="1280" height="591" data-zoom="1"><figcaption>런칭 기념 소환 패키지</figcaption></figure><figure class="shot"><img loading="lazy" src="https://tempalnote.com/img/ui/dia.webp" alt="다이아 상품 (묶음 할인 없음)" width="1280" height="591" data-zoom="1"><figcaption>다이아 상품 (묶음 할인 없음)</figcaption></figure><figure class="shot"><img loading="lazy" src="https://tempalnote.com/img/ui/monthly.webp" alt="월간 · 주간 패키지" width="1280" height="591" data-zoom="1"><figcaption>월간 · 주간 패키지</figcaption></figure><figure class="shot"><img loading="lazy" src="https://tempalnote.com/img/ui/exchange.webp" alt="교환소 (골드로 소환권)" width="1280" height="591" data-zoom="1"><figcaption>교환소 (골드로 소환권)</figcaption></figure><figure class="shot"><img loading="lazy" src="https://tempalnote.com/img/ui/carriage.webp" alt="베니스의 가호 황금 마차" width="1280" height="591" data-zoom="1"><figcaption>베니스의 가호 황금 마차</figcaption></figure><figure class="shot"><img loading="lazy" src="https://tempalnote.com/img/ui/coinshop.webp" alt="템빨 코인 상점" width="1280" height="591" data-zoom="1"><figcaption>템빨 코인 상점</figcaption></figure><figure class="shot"><img loading="lazy" src="https://tempalnote.com/img/ui/pass.webp" alt="프리미엄 시즌 패스" width="1280" height="591" data-zoom="1"><figcaption>프리미엄 시즌 패스</figcaption></figure></div>
   <div class="card" style="margin-bottom:18px"><div class="ch"><span class="med sm"><svg><use href="#i-coin"/></svg></span><h3>출시 상점 가격표</h3></div>
     <p class="small" style="margin-top:0">상점 탭: 상품 · 소환 · 교환 · 템빨 코인 · 황금 마차 · 보관함 / 상품 분류: 추천 · 스페셜 · 월간/주간 · 시즌 패스 · 재화</p>
     <div class="scroll"><table class="stack"><thead><tr><th>상품</th><th class="n">가격</th><th>구매 제한</th><th>메모</th></tr></thead><tbody>
@@ -708,6 +756,7 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
   <div class="card"><div class="ch"><span class="med sm"><svg><use href="#i-gift"/></svg></span><h3>사전등록 보상</h3></div>
     <ul class="facts"><li>사전등록 보상: 동행 펫 「꽃잎 토끼」</li><li>웹 이벤트 「미지로 향하는 길」: 갓 핸드 장비</li><li>웹 이벤트 「도전! 전설의 대장장이」: 칭호 등</li><li>공식 유튜브 구독·카카오 채널 친구 추가: 골드, 사냥 지원 상자, 제작 재료 확정 상자</li></ul></div>
   <h2 style="margin:26px 0 12px">진행 중 게임 이벤트</h2>
+  <figure class="shot"><img loading="lazy" src="https://tempalnote.com/img/ui/attend.webp" alt="런칭 기념 14일 출석부 게임 화면" width="1280" height="591" data-zoom="1"><figcaption>런칭 기념 14일 출석부 게임 화면</figcaption></figure>
   <div class="card"><div class="ch"><span class="med sm"><svg><use href="#i-gift"/></svg></span><h3>런칭 기념 14일 출석부</h3></div>
     <p class="small" style="margin-top:0">계정 단위 · 12월 16일 새벽까지 (11월 26일 기준 남은 기간 20일)</p>
     <div class="scroll"><table class="stack"><thead><tr><th>일차</th><th>보상</th><th>일차</th><th>보상</th></tr></thead><tbody>
@@ -720,6 +769,7 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
       <tr><td><b>7</b></td><td><b>편지 ×3 (특별)</b></td><td><b>14</b></td><td><b>붉은 상자 ×5 (특별)</b></td></tr>
     </tbody></table></div>
     <p class="small mute" style="margin-bottom:0">아이템 이름은 아이콘 기준이라 정확한 이름은 확인되는 대로 고칠게요.</p></div>
+  <figure class="shot"><img loading="lazy" src="https://tempalnote.com/img/ui/mission8.webp" alt="새로운 전설의 시작! 8주 미션 게임 화면" width="1280" height="591" data-zoom="1"><figcaption>새로운 전설의 시작! 8주 미션 게임 화면</figcaption></figure>
   <div class="card" style="margin-top:16px"><div class="ch"><span class="med sm"><svg><use href="#i-check"/></svg></span><h3>새로운 전설의 시작! 8주 미션</h3></div>
     <ul class="facts">
       <li>계정 단위 · 별도 안내 시까지. 주차마다 미션 6개가 열리고, 미리 볼 수는 있지만 보상은 그 주가 와야 받을 수 있어요</li>
@@ -737,6 +787,7 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
       <tr><td>8주</td><td>차원 몬스터 35,000 · <b>캐릭터 Lv.75</b> · 파브라늄 사용 1,500 · 뱀파이어 도시의 주인(티라멧, 엘핀스톤) 처치 · 잠재력 「성찰의 일곱 번째 결속」 · 차원 미션 30</td></tr>
     </tbody></table></div>
     <p class="small" style="margin-bottom:0;color:var(--champ)">대장간노트 팁 · 목표가 누적이라 1주차부터 <b>강화 시도 · 제작 · 일일 미션 · 히든 퀘스트</b> 숫자를 꾸준히 쌓아 두면 5주차 큰 목표(강화 500, 미궁 20,000)가 편해요. 2주차 <b>골드 500만</b>, 6주차 <b>3,000만</b> 사용은 미리 골드를 모아 두세요. 4주차에 <b>메인 퀘스트 8막(끝)</b>과 Lv.65가 있어서, 운영진이 생각하는 속도는 <b>4주 안에 스토리 완주</b>, 8주에 Lv.75예요.</p></div>
+<figure class="shot"><img loading="lazy" src="https://tempalnote.com/img/ui/enhsup.webp" alt="장비 강화 지원 미션 게임 화면" width="1280" height="591" data-zoom="1"><figcaption>장비 강화 지원 미션 게임 화면</figcaption></figure>
   <div class="card" style="margin:16px 0 18px"><div class="ch"><span class="med sm"><svg><use href="#i-anvil"/></svg></span><h3>장비 강화 지원 미션</h3></div><p class="small" style="margin-top:0">계정 단위 · 12월 9일 새벽까지 (11월 26일 기준 13일). 8개 전부 달성하면 <b>추가 보상 상자 ×50</b></p>
     <div class="scroll"><table class="stack"><thead><tr><th>미션</th><th>목표 → 보상</th></tr></thead><tbody>
       <tr><td>아이템 강화 시도</td><td>50 → 재료 상자 ×5 · 100 → ×5 · 200 → ×10</td></tr>
@@ -751,6 +802,34 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
 </div></div></section>
 
 <!-- 공식 채널 · 원작 -->
+<section class="view" data-v="pets"><div class="band pagetop"><div class="wrap">
+  <div class="pk">PET CODEX</div>
+  <div class="ph"><span class="med lg"><svg><use href="#i-gift"/></svg></span><h1 class="gt">펫 도감</h1></div>
+  <p class="lead">게임 메뉴 <b>펫 → 도감</b> 화면에서 모은 펫이에요. 펫마다 <b>Lv.3</b>에 성장 재료 1개, <b>Lv.5</b>에 2개를 도감 보상으로 줘요. 노멀 펫도 Lv.5까지만 올리면 보상을 받습니다.</p>
+  <div class="chips" id="ptChips"></div>
+  <div class="petgrid" id="ptList"></div>
+  <p class="small mute" style="margin-top:12px">아이콘 왼쪽 아래 별 색이 등급 표시예요 (금색 · 파란색 · 동색). 꽃잎 토끼는 사전등록 보상 펫. 이미지를 누르면 크게 보여요.</p>
+</div></div></section>
+<section class="view" data-v="timer"><div class="band pagetop"><div class="wrap" style="max-width:860px">
+  <div class="pk">BOSS TIMER</div>
+  <div class="ph"><span class="med lg"><svg><use href="#i-raid"/></svg></span><h1 class="gt">보스 타이머 · 일정표</h1></div>
+  <p class="lead">보스를 잡은 순간 <b>처치</b>를 누르면 다음 출현까지 카운트다운이 시작돼요. 매일 같은 시간에 열리는 콘텐츠는 아래 일정표에 넣어 두세요. 모든 기록은 이 브라우저에만 저장돼요.</p>
+  <form class="card" id="tmForm"><div class="row"><div><label for="tmName">보스 이름</label><input id="tmName" placeholder="예: 오염된 존재 (서버 북쪽)" required></div><div><label for="tmMin">출현 주기 (분)</label><input id="tmMin" type="number" min="1" max="10080" value="60" required></div></div><div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap"><button>보스 추가</button><button type="button" class="ghost" id="tmNotif">출현 1분 전 알림 켜기</button></div></form>
+  <div class="card" id="tmList"></div>
+  <h2 style="margin:28px 0 10px">매일 일정표</h2>
+  <form class="card" id="scForm"><div class="row"><div><label for="scTime">시간</label><input id="scTime" type="time" required value="20:00"></div><div><label for="scName">할 일</label><input id="scName" placeholder="예: 인마대전, 길드 집결" required></div></div><div style="margin-top:14px"><button>일정 추가</button></div></form>
+  <div class="card" id="scList"></div>
+</div></div></section>
+<section class="view" data-v="backup"><div class="band pagetop"><div class="wrap" style="max-width:780px">
+  <div class="pk">MY DATA</div>
+  <div class="ph"><span class="med lg"><svg><use href="#i-panel"/></svg></span><h1 class="gt">저장함 · 백업</h1></div>
+  <p class="lead">강화 기록, 숙제, 갓 핸드 프리셋, 보스 타이머 같은 내 기록은 이 브라우저에 저장돼요. 폰과 PC를 오갈 때나 브라우저를 지우기 전에 백업해 두세요.</p>
+  <div class="card"><h3 style="margin-top:0">저장된 기록</h3><div id="bkList"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px"><button type="button" id="bkDl">백업 파일 받기</button><button type="button" class="ghost" id="bkCopy">백업 코드 복사</button></div></div>
+  <div class="card"><h3 style="margin-top:0">복원하기</h3><p class="small mute" style="margin-top:0">백업 파일을 고르거나, 복사해 둔 백업 코드를 붙여 넣으세요. 지금 기록은 덮어써져요.</p>
+    <input type="file" id="bkFile" accept="application/json,.json"><textarea id="bkTxt" rows="4" placeholder="백업 코드 붙여넣기" style="width:100%;margin-top:10px"></textarea>
+    <div style="margin-top:10px"><button type="button" id="bkRestore">복원</button></div></div>
+</div></div></section>
 <section class="view" data-v="videos"><div class="band pagetop"><div class="wrap">
   <div class="pk">VIDEOS</div>
   <div class="ph"><span class="med lg"><svg><use href="#i-play"/></svg></span><h1 class="gt">추천 영상</h1></div>
@@ -778,6 +857,10 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
   <div class="card"><div class="ch"><span class="med sm"><svg><use href="#i-chat"/></svg></span><h3>이메일</h3></div>
     <p style="margin:0 0 8px;font-size:20px"><a href="mailto:rnrwndgur124@naver.com"><b>rnrwndgur124@naver.com</b></a></p>
     <p class="small mute" style="margin:0">메일 앱이 열리지 않으면 위 주소를 복사해서 보내 주세요.</p></div>
+  <form class="card" id="fbForm"><div class="ch"><span class="med sm"><svg><use href="#i-chat"/></svg></span><h3>피드백 보내기</h3></div>
+    <div class="row"><div><label for="fbCat">종류</label><select id="fbCat"><option>정보 제보</option><option>오류 신고</option><option>기능 제안</option><option>광고·제휴</option></select></div><div><label for="fbTitle">제목</label><input id="fbTitle" maxlength="60" required placeholder="한 줄 요약"></div></div>
+    <label for="fbBody" style="margin-top:12px;display:block">내용</label><textarea id="fbBody" rows="5" maxlength="2000" required style="width:100%" placeholder="틀린 수치, 새 쿠폰, 원하는 기능 등을 자유롭게 적어 주세요."></textarea>
+    <div style="margin-top:12px"><button>메일로 보내기</button></div></form>
   <div class="grid2">
     <div class="card"><h3>광고·제휴</h3><p style="margin:0">배너 광고, 콘텐츠 제휴, 협업 제안. 회사명과 원하시는 광고 형태를 적어 주시면 방문 통계와 함께 답장드립니다.</p></div>
     <div class="card"><h3>정보 제보·오류 신고</h3><p style="margin:0">틀린 수치, 새 쿠폰, 바뀐 시스템을 알려 주세요. 확인 후 바로 반영하고 업데이트 기록에 남깁니다.</p></div>
@@ -857,6 +940,8 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 const load=(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}};
 const save=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
 let tT;const toast=t=>{const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(tT);tT=setTimeout(()=>e.classList.remove('on'),1800)};
+const IB=(/(^|\.)tempalnote\.com$|^localhost$|^127\./.test(location.hostname)?'':'https://tempalnote.com')+'/img/';
+document.addEventListener('click',e=>{const im=e.target.closest('img[data-zoom],.eq,.pc[data-z]');if(!im)return;const src=im.dataset.full||im.getAttribute('src')||(im.querySelector('img')||{}).src;if(!src)return;const lb=$('#lb');lb.querySelector('img').src=src;lb.hidden=false});
 const med=(id,c='')=>`<span class="med ${c}"><svg><use href="#${id}"/></svg></span>`;
 const copy=(t,msg)=>{try{navigator.clipboard.writeText(t).then(()=>toast(msg),()=>toast('복사가 막혀 있어요'))}catch(e){toast('복사가 막혀 있어요')}};
 
@@ -873,13 +958,16 @@ const PAGES={
  roadmap:{t:'6개월 로드맵',d:'레이드·공성전·신규 클래스',i:'i-map'},
  bm:{t:'상점 정리',d:'파는 것과 팔지 않는 것',i:'i-coin'},
  coupons:{t:'쿠폰·이벤트',d:'출석부 · 8주 미션 · 쿠폰',i:'i-gift'},
+ pets:{t:'펫 도감',d:'펫 28종 이미지 · 도감 보상',i:'i-gift',b:'new'},
+ timer:{t:'보스 타이머',d:'처치 시각 기록 · 매일 일정표',i:'i-raid',b:'new'},
+ backup:{t:'저장함 · 백업',d:'내 기록 백업 · 복원',i:'i-panel'},
  videos:{t:'추천 영상',d:'조회수 1만 이상 템빨 유튜브',i:'i-play'},
  official:{t:'공식 채널·원작',d:'공식 유튜브·홈페이지·웹툰·웹소설',i:'i-home'},
  contact:{t:'문의하기',d:'광고·제휴·제보',i:'i-chat'},
  privacy:{t:'개인정보처리방침',d:'쿠키와 광고 안내',i:'i-sig'},
  terms:{t:'이용약관',d:'사이트 이용 안내',i:'i-guide'},
  about:{t:'사이트 소개',d:'비공식 팬 사이트 안내',i:'logo'}};
-const GROUPS=[{n:'도구',e:'TOOLS',k:['quiz','enhance','calc','godhand','homework']},{n:'가이드',e:'GUIDES',k:['weapons','starter','systems']},{n:'정보',e:'INFO',k:['videos','official','roadmap','bm','coupons','about']}];
+const GROUPS=[{n:'도구',e:'TOOLS',k:['quiz','enhance','calc','godhand','homework','timer','backup']},{n:'가이드',e:'GUIDES',k:['weapons','pets','starter','systems']},{n:'정보',e:'INFO',k:['videos','official','roadmap','bm','coupons','about']}];
 const link=k=>`<a href="/${k}/" data-k="${k}">${med(PAGES[k].i,'sm')}<span>${PAGES[k].t}<small>${PAGES[k].d}</small></span></a>`;
 $('#menu').innerHTML=GROUPS.map((g,gi)=>`<div class="dd" data-g="${gi}"><button type="button" aria-haspopup="true">${g.n}</button><div class="ddm">${g.k.map(link).join('')}</div></div>`).join('');
 $('#drawer').innerHTML=GROUPS.map(g=>`<h4>${g.e}</h4>${g.k.map(link).join('')}`).join('');
@@ -891,7 +979,7 @@ $('#burger').onclick=()=>{const o=$('#drawer').classList.toggle('open');$('#burg
 const tile=k=>{const p=PAGES[k];return `<a class="tile" href="/${k}/">${p.b?`<span class="bd ${p.b}">${p.b==='new'?'NEW':'HOT'}</span>`:''}${med(p.i)}<span><h3>${p.t}</h3><p>${p.d}</p></span></a>`};
 $('#homeTools').innerHTML=['starter',...GROUPS[0].k].map(tile).join('');
 $('#homeGuides').innerHTML=['systems','weapons','bm','coupons'].map(tile).join('');
-const UPD=[['11.26','추천 영상 추가: 조회수 1만 이상 템빨 유튜브 15편'],['11.26','클래스 도감 전면 개편: 클래스 55종 외형 이미지 · 능력치 · 스킬 87개 설명 + 게임 스킬 창 원본'],['11.26','유니크 활 6종 전체 스킬 · 대검 유니크 근위 기사 · 에픽 → 유니크 계승 짝 7쌍'],['11.26','레전드리 3종(서사시의 마검사 · 궁성 · 교황) 스킬 27개 · 공통 패시브 불사 · 초월자 정리'],['11.26','클래스 30종 정리: 에픽 14종 특화 옵션 · 레어 16종 규칙 (무명=공격 · 중급=명중 · 능숙한=생존)'],['11.26','상점 완전 분석: 다이아 단가 22원 · 골드 소환권 · 베니스의 가호 10단계 · 템빨 코인 · 시즌 패스'],['11.26','상점 가격표(₩9,900~₩55,000) · 제작 실측 추가'],['11.26','8주 미션 전 주차 완성 · 장비 강화 지원 미션 · 퀘스트 구조(메인 8막 · 서브 · 히든)'],['11.26','이벤트: 14일 출석부 보상표 · 8주 미션 주차별 목표 · 학살자 보상 제한 주의'],['11.26','장비 강화 실측(100% · 1,000골드 · 안전 구간 · 파괴 보호권) · 펫 도감 34종 정리'],['11.26','갓 핸드 메모리 27종 수치 · 레전드리/유니크 짝 분석 · 무기 개조 도감 · 게임 메뉴 추가'],['11.26','정식 출시 — PC·모바일 사양, 서버, 무기 개조, 템빨 코인, 무료 편의 기능 추가'],['11.25','사이트 전면 개편 — 새 디자인, 3D 첫 화면, 메뉴와 검색'],['11.25','강화 기대값 계산기 · 갓 핸드 프리셋 · 첫날 가이드 추가'],['11.25','오픈 — 강화 기록기, 숙제, 무기 추천, 공개 정보 정리'],['예정','출시 후 클래스별 스킬, 강화 비용표, 쿠폰을 순서대로 채움']];
+const UPD=[['11.26','이미지 대규모 추가: 무기 개조 30종 · 갓 핸드 27종 아이콘 · 펫 28종 · 상점/이벤트 화면 / 새 도구: 무기 비교표 · 보스 타이머 · 일정표 · 백업 · 피드백'],['11.26','추천 영상 추가: 조회수 1만 이상 템빨 유튜브 15편'],['11.26','클래스 도감 전면 개편: 클래스 55종 외형 이미지 · 능력치 · 스킬 87개 설명 + 게임 스킬 창 원본'],['11.26','유니크 활 6종 전체 스킬 · 대검 유니크 근위 기사 · 에픽 → 유니크 계승 짝 7쌍'],['11.26','레전드리 3종(서사시의 마검사 · 궁성 · 교황) 스킬 27개 · 공통 패시브 불사 · 초월자 정리'],['11.26','클래스 30종 정리: 에픽 14종 특화 옵션 · 레어 16종 규칙 (무명=공격 · 중급=명중 · 능숙한=생존)'],['11.26','상점 완전 분석: 다이아 단가 22원 · 골드 소환권 · 베니스의 가호 10단계 · 템빨 코인 · 시즌 패스'],['11.26','상점 가격표(₩9,900~₩55,000) · 제작 실측 추가'],['11.26','8주 미션 전 주차 완성 · 장비 강화 지원 미션 · 퀘스트 구조(메인 8막 · 서브 · 히든)'],['11.26','이벤트: 14일 출석부 보상표 · 8주 미션 주차별 목표 · 학살자 보상 제한 주의'],['11.26','장비 강화 실측(100% · 1,000골드 · 안전 구간 · 파괴 보호권) · 펫 도감 34종 정리'],['11.26','갓 핸드 메모리 27종 수치 · 레전드리/유니크 짝 분석 · 무기 개조 도감 · 게임 메뉴 추가'],['11.26','정식 출시 — PC·모바일 사양, 서버, 무기 개조, 템빨 코인, 무료 편의 기능 추가'],['11.25','사이트 전면 개편 — 새 디자인, 3D 첫 화면, 메뉴와 검색'],['11.25','강화 기대값 계산기 · 갓 핸드 프리셋 · 첫날 가이드 추가'],['11.25','오픈 — 강화 기록기, 숙제, 무기 추천, 공개 정보 정리'],['예정','출시 후 클래스별 스킬, 강화 비용표, 쿠폰을 순서대로 채움']];
 $('#upd').innerHTML=UPD.map(u=>`<li><b style="color:var(--champ)">${u[0]}</b> ${u[1]}</li>`).join('');
 
 /* 공식 채널 · 원작 */
@@ -934,10 +1022,10 @@ const WEAPONS=[
  {k:'sword',n:'대검',art:'w-sword',f:'근거리',role:'최전선 · 방어 · 기절',d:'높은 방어력과 기절 효과로 맨 앞에서 버티는 무기.',cls:[{n:'서사시의 마검사 (레전드리)',d:'근력 84 · 체력 60 · 공격 속도 60% · 시전 속도 40% · HP 2,025 · 근거리 공격력 8 · 근거리 치명타 피해 8%. 스킬 9개: <b>연살</b>(465% 연속 공격, 기절 대상 +400 추가 피해 · MP 80 · 30초) · <b>산살검</b>(7.5m 검기 330% + 60% 확률 2~3초 기절 · MP 70 · 30초) · <b>태양의 가호</b>(5초 받는 피해 감소율 +30% · MP 90 · 60초) · <b>초월경</b>(10초 공속·시전 속도 +15% · MP 40 · 35초) / 패시브 <b>방어 강화</b>(방어 기술 사용 시 10초 방어력 +120) · <b>통달</b>(상태이상 저항 +10%) · <b>완벽한 검술</b>(최대화 확률 +12%) · <b>위세의 검</b>(적중 시 17.5%로 1~3초 기절 빛기둥, 45초마다) · <b>불사</b>(공통) → <b>산살검·위세의 검으로 기절 → 연살 추가 피해</b> 연계가 핵심'},{n:'근위 기사 (유니크)',d:'근력 52 · 체력 37 · 공속 43% · 시전 27% · HP 1,450 · MP 300 · 피해 감소 7 · 근거리 피해 감소 무시 4. 에픽 <b>정예 전사</b>에게서 물려받은 <b>신체 강화</b>(최대 HP +350) · <b>제국 검술</b>([방어 기술] 사용 시 10초 최대화 확률 +10%) 외 → 방어 기술을 쓰며 버티다 한 방을 노리는 <b>탱커형</b>. 유니크 스킬 2개는 확인 중'},{n:'블러드 워리어',d:'출혈과 HP 흡수로 오래 버티는 역할'},{n:'레어 5종 (무명 · 중급 · 능숙한 × 기사 · 전사)',d:'HP 250 · MP 100. 무명 = 근거리 공격력 1 · 치명타 0.5% / 중급 = 근거리 명중 1 · 회피 1 / 능숙한 = 피해 감소 1 · HP 회복량 1'},{n:'크러셔',d:'끌어오기와 기절 등 군중 제어 특화'}]},
  {k:'bow',n:'활',art:'w-bow',f:'원거리',role:'원거리 · 거리 유지',d:'적과 거리를 벌리며 꾸준히 공격하는 무기.',cls:[{n:'궁성 (레전드리)',d:'민첩 84 · 지력 60 · HP 1,950 · MP 425 · 원거리 명중 7 · 원거리 치명타 2.5%. 액티브 <b>간파</b>(550% + 50% 확률 3~5초 속박, 가까우면 뒤로 대시 · MP 65 · 28초) · <b>집중 포화</b>(한 명에게 화살비 660% · MP 75 · 30초) · <b>매의 발톱</b>(7초 치명타 확률 +5% · 치명타 피해 +15% · MP 70 · 45초) · <b>무아지경</b>(10초간 [연사] 쿨타임 제거 + 연사 공격력 +70 · MP 90 · 60초) / 패시브 <b>궁극의 사격</b>(원거리 명중 +5) · <b>기회 포착</b>(치명타 시 10% 확률 10초 공속 +20%, 45초마다) · <b>가벼운 몸놀림</b>(방어력 400당 회피 +1) · <b>산속</b>(HP 20% 미만 이동 속도 +10%) · <b>불사</b>(공통) → <b>매의 발톱 → 무아지경 켜고 연사 난사</b>가 폭딜 구간'},{n:'홍염의 화살 (유니크)',d:'민첩 57 · 지력 45 · 공속 43% · 시전 27% · HP 1,400 · 스킬 공격력 3 · 화상 적중 2%. <b>피닉스 애로우</b>(유니크 · 광역 350% + 50% 확률 3~5초 화상 · MP 72 · 28초) · <b>타오르는 화염</b>(유니크 패시브 · 화상 대상 10% 확률 +10% 피해) + 에픽 <b>화염사수</b>에게서 물려받은 <b>불꽃놀이</b>(15초간 적중 시 20% 화상 · MP 105 · 85초) · <b>불타는 화살</b>(화상 대상 타격 시 50%로 불꽃놀이 쿨 -5초) · <b>노련한 사격술</b>(스킬 명중 +3) → 불꽃놀이로 화상 깔고 쿨 돌리는 <b>화상 순환</b> 빌드'},{n:'드비리온의 사자 (유니크)',d:'민첩 57 · 공속 43% · 시전 27% · HP 1,400 · <b>PVE 공격력 4 · PVE 피해 감소 7</b>. <b>화살비</b>(유니크 · 378% + 몬스터 5% 추가 · MP 64 · 25초) + 에픽 <b>마물사냥꾼</b>의 <b>드비리온의 힘</b>(15초 몬스터 피해 +15% · 몬스터 명중 +15 · MP 75 · 60초) · <b>둔화 화살</b>(몬스터 적중 시 10%로 2~3초 둔화, 15초마다) 외 · <b>드비리온의 가호</b>(몬스터 대상 방어력 +30) · <b>사냥 본능</b>(유니크 · 적 처치 시 드비리온의 힘 쿨 -10초, 60초마다) → <b>사냥 전용</b> 활'},{n:'폭풍사수 (유니크)',d:'민첩 61 · HP 1,400 · 회피 4 · 스킬 쿨타임 감소 1.5%. <b>춤추는 화살</b>(유니크 · 290% · MP 22 · <b>12초</b>로 짧음) · <b>위기 탈출</b>(유니크 · HP 30% 이하 3초 이동 속도 +15%) + 에픽 <b>윈드 워커</b>의 <b>폭풍의 춤</b>(10초 공속 +22% · MP 80 · 60초) · <b>신속한 탈출</b>(회피 사격 시 적 3m 안이면 스킬 피해 +10%) · <b>가민한 발걸음</b>(이동 속도 +5%) → 빠르게 쏘고 빠지는 <b>카이팅형</b>'},{n:'신궁 (유니크)',d:'민첩 57 · HP 1,400 · 원거리 방어력 무시 10 · 원거리 치명타 1.5%. <b>종말</b>(유니크 · 520% + 3초 치명타 저항 -5% · MP 95 · 37초) · <b>가시 화살</b>(유니크 · 10회 적중 시 2초간 치명타 확률 +100%, 50초마다) + 에픽 <b>명사수</b>의 <b>갑옷 파괴</b>(7초 방어력 무시 +100 · MP 75 · 60초) · <b>전투 본능</b>(HP 30% 이하 대상 +50% 피해, 20초마다) · <b>신궁의 화살</b>(스킬 공격력 +3) → <b>갑옷 파괴 → 가시 화살 확정 치명 → 종말</b>, 마무리 특화'},{n:'저격수 (유니크)',d:'민첩 61 · HP 1,400 · 원거리 치명타 피해 5% · 원거리 고정 피해 5. <b>표적 화살</b>(유니크 · <b>100% 적중</b> 504% · MP 64 · 25초) · <b>복기 사격</b>(유니크 · 5연속 빗나가면 1.5초 명중 2배, 30초마다) + 에픽 <b>레인저</b>의 <b>정밀 조준</b>(15초간 8m 이상 적에게 공격력 +5 · 피해 +5% · 명중 +5 · MP 63 · 50초) · <b>독수리의 눈</b>(8m 이상 공격력 +3) · <b>스코프 장착</b>(사거리 +1m) → <b>8m 밖에서 쏘는 장거리</b>, 명중 걱정 없음'},{n:'특등 사수 (유니크)',d:'민첩 52 · HP 1,400 · 원거리 명중 4 · 회피 3. <b>버스트 샷</b>(유니크 · 550% · MP 64 · 25초) · <b>제국의 궁술</b>(유니크 · 속박 적중 시 제국의 가호 쿨 -1초, 30초마다) + 에픽 <b>정예 궁사</b>의 <b>제국의 가호</b>(10초간 원거리 공격 10당 방어력 +10 · MP 75 · 60초) · <b>신체 단련</b>(상태이상 적중 +3%) · <b>넘치는 기운</b>(원거리 방어력 무시 +20) → 화살 쏘면서 단단해지는 <b>안정형</b>'},{n:'명사수 (에픽)',d:'상위 유니크 = 신궁. 민첩 30 · HP 775 · 원거리 방어력 무시 5 · 원거리 치명타 1% → 한 방 화력형'},{n:'정예 궁사 (에픽)',d:'상위 유니크 = 특등 사수. 민첩 28 · HP 775 · 원거리 명중 2 · 회피 2 → 맞히고 피하는 안정형'},{n:'레어 6종 (무명 · 중급 · 능숙한 × 사수 · 궁사)',d:'공격 속도 16% · 시전 속도 7% · HP 225. 무명 = 원거리 공격력 1 · 치명타 0.5% / 중급 = 원거리 명중 1 · 회피 1 / 능숙한 = 피해 감소 1 · HP 회복량 1'}]},
  {k:'bible',n:'바이블',art:'w-bible',f:'지원',role:'회복 · 방해',d:'아군을 회복하고 적을 방해하는 지원형 무기.',cls:[{n:'교황 (레전드리)',d:'지력 84 · 민첩 60 · HP 1,875 · MP 500 · 받는 피해 감소율 3.5% · 치유량 증가율 4%. 액티브 <b>빛의 비</b>(5초 반경 3m, 0.5초마다 아군 HP 0.3% 회복 + 적 30% 피해 · MP 75 · 30초) · <b>여신의 빛</b>(광역 495% + 70% 확률 3~5초 교화 · MP 70 · 30초) · <b>여신의 가호</b>(30초 파티 1차 스탯 +3 · MP 90 · 60초) · <b>교황의 위엄</b>(파티 상태이상·디버프 즉시 해제 + 3초 면역 · MP 120 · 90초) / 패시브 <b>그레이트 힐</b>(치유량 +5%) · <b>여신의 수호</b>([수호의 기도] 사용 시 28초 파티 방어력 +35) · <b>여신의 손길</b>(공격 스킬 적중 시 10% 확률 HP 2% · MP 1% 회복, 5초마다) · <b>성스러운 힘</b>([회복] 대상 3초 공격력 +20) · <b>불사</b>(공통) → 파티 필수 서포터, <b>교황의 위엄은 PvP·레이드 상태이상 카운터</b>'},{n:'세인트 (에픽)',d:'지력 33 · MP 회복량 2 · 디버프 저항 1% → 힐러'},{n:'구도자 (에픽)',d:'지력 33 · 스킬 공격력 2 · 저주 적중 1% → 저주 딜러'},{n:'몽크 (에픽)',d:'근력 20 · 지력 30 · 일반 공격력 2 · 마법 치명타 피해 3% → 때리는 바이블'},{n:'도미니언교 사제 (에픽)',d:'지력 27 · 체력 20 · 마법 방어력 무시 5 · 피해 감소 3 → 버티는 딜러'},{n:'쥬다르교 사제 (에픽)',d:'지력 30 · 체력 20 · 방어력 5 · 상태이상 저항 1% → 탱커형'},{n:'정예 사제 (에픽)',d:'지력 28 · 치유량 증가율 1% · 스킬 쿨타임 감소 1% → 힐러'},{n:'레어 5종 (무명 · 중급 · 능숙한 × 사제 · 성직자)',d:'HP 200 · MP 150. 무명 = 마법 공격력 1 · 마법 치명타 0.5% / 중급 = 마법 명중 1 · 회피 1 / 능숙한 = 피해 감소 1 · HP 회복량 1'}]}];
-$('#homeWeapons').innerHTML=WEAPONS.map(w=>`<a class="wsh" href="/weapons/">${med(w.art,'lg')}<h3 class="gt">${w.n}</h3><p>${w.role}</p></a>`).join('');
+$('#homeWeapons').innerHTML=WEAPONS.map(w=>`<a class="wsh" href="/weapons/"><img class="wimg" loading="lazy" src="${IB}ui/sel-${w.k==='sword'?'sword':w.k}.webp" alt="${w.n} 캐릭터"><h3 class="gt">${w.n}</h3><p>${w.role}</p></a>`).join('');
 let wf='전체';
 function wRender(){$('#wpChips').innerHTML=['전체','근거리','원거리','지원'].map(c=>`<button type="button" class="${c===wf?'on':''}" data-c="${c}">${c}</button>`).join('');
-  $('#wpNote').innerHTML='클래스 메뉴: 관리 · 합성 · 도감 · 확정 · 초월자, 등급은 레전드리 · 유니크 · 에픽 · 레어 · 노멀. <b>등급 차이가 커요</b>: 에픽은 공격 속도 28% · 시전 속도 15% · HP 725~775 · 클래스 스킬 3개, 레어는 16% · 7% · HP 200~250에 <b>클래스 스킬이 없어요</b>. 레어는 이름 앞말만 보면 돼요: <b>무명</b>=공격, <b>중급</b>=명중·회피, <b>능숙한</b>=생존. 에픽끼리는 특화 옵션 2개로 갈려요. 클래스는 <b>소환 상품</b>으로도, <b>게임 플레이</b>로도 얻을 수 있어요. 3개월 차에 신규 클래스, 6개월 차에 새 무기 계열이 추가될 예정입니다.';$('#wpList').innerHTML=WEAPONS.filter(w=>wf==='전체'||w.f===wf).map(w=>`<div class="card wcard">${med(w.art,'lg')}<div><h3 class="gt" style="font-size:24px;font-weight:900">${w.n}</h3><span class="pill">${w.role}</span><span class="pill">${w.f}</span><p style="margin:6px 0 10px">${w.d}</p>${(()=>{const L=CLS.filter(c=>c.w===w.n&&c.tier!=='레어');return L.length?'<div>'+L.map(c=>`<button type="button" class="cup" data-c="${c.id}" onclick="cdOpen('${c.id}')">${c.n}</button>`).join('')+'</div>':''})()}</div></div>`).join('')}
+  $('#wpNote').innerHTML='클래스 메뉴: 관리 · 합성 · 도감 · 확정 · 초월자, 등급은 레전드리 · 유니크 · 에픽 · 레어 · 노멀. <b>등급 차이가 커요</b>: 에픽은 공격 속도 28% · 시전 속도 15% · HP 725~775 · 클래스 스킬 3개, 레어는 16% · 7% · HP 200~250에 <b>클래스 스킬이 없어요</b>. 레어는 이름 앞말만 보면 돼요: <b>무명</b>=공격, <b>중급</b>=명중·회피, <b>능숙한</b>=생존. 에픽끼리는 특화 옵션 2개로 갈려요. 클래스는 <b>소환 상품</b>으로도, <b>게임 플레이</b>로도 얻을 수 있어요. 3개월 차에 신규 클래스, 6개월 차에 새 무기 계열이 추가될 예정입니다.';$('#wpList').innerHTML=WEAPONS.filter(w=>wf==='전체'||w.f===wf).map(w=>`<div class="card wcard"><img class="wimg" loading="lazy" src="${IB}ui/sel-${w.k}.webp" alt="${w.n} 캐릭터" data-zoom="1"><div><h3 class="gt" style="font-size:24px;font-weight:900">${w.n}</h3><span class="pill">${w.role}</span><span class="pill">${w.f}</span><p style="margin:6px 0 10px">${w.d}</p>${(()=>{const L=CLS.filter(c=>c.w===w.n&&c.tier!=='레어');return L.length?'<div>'+L.map(c=>`<button type="button" class="cup" data-c="${c.id}" onclick="cdOpen('${c.id}')">${c.n}</button>`).join('')+'</div>':''})()}</div></div>`).join('')}
 $('#wpChips').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;wf=b.dataset.c;wRender()});
 wRender();
 
@@ -963,11 +1051,24 @@ function qRender(){const box=$('#qz');
 $('#qz').addEventListener('click',e=>{const b=e.target.closest('button[data-i]');if(!b)return;const k=QS[qi].a[+b.dataset.i][1];score[k]=(score[k]||0)+1;hist.push(k);qi++;qRender()});
 qRender();
 
-const WM=[['지팡이',['제국 마도학자의 지팡이','스틱세이의 지팡이','말락서스의 지팡이','마탑의 유산'],['용맹의 지팡이','낙원의 지팡이','마력술사의 지팡이','갈망의 지팡이','달빛 참나무 지팡이']],
- ['대검',[],['낙원의 대검','기사의 대검','용맹의 대검','불꽃강철 대검','마몬의 대검']],
- ['활',['제국 사수의 활','섬광의 활'],['용맹의 활','절명의 활','달빛 참나무 활','낙원의 활','사수의 활']],
- ['바이블',['제국 사제의 바이블','릴리스의 마도서','신탁의 바이블','금단의 바이블'],['사제의 바이블','낙원의 바이블','용맹의 바이블','계시의 바이블','불꽃 루비 장식 바이블']]];
-$('#wmList').innerHTML=WM.map(w=>`<div class="card"><h3 class="gt" style="margin:0 0 10px">${w[0]}</h3><b class="small" style="color:#e58aa8">유니크 · 4부위</b><div style="margin:6px 0 10px">${w[1].length?w[1].map(n=>`<span class="pill">${n}</span>`).join(''):'<span class="small mute">확인 중</span>'}</div><b class="small" style="color:#b48cf0">에픽 · 3부위</b><div style="margin-top:6px">${w[2].map(n=>`<span class="pill">${n}</span>`).join('')}</div></div>`).join('');
+const WMOD=[{"id": "w01", "n": "용맹의 대검", "tier": "에픽", "w": "대검"}, {"id": "w02", "n": "불꽃강철 대검", "tier": "에픽", "w": "대검"}, {"id": "w03", "n": "릴리스의 마도서", "tier": "유니크", "w": "바이블"}, {"id": "w04", "n": "제국 마도학자의 지팡이", "tier": "유니크", "w": "지팡이"}, {"id": "w05", "n": "제국 사제의 바이블", "tier": "유니크", "w": "바이블"}, {"id": "w06", "n": "신탁의 바이블", "tier": "유니크", "w": "바이블"}, {"id": "w07", "n": "낙원의 활", "tier": "에픽", "w": "활"}, {"id": "w08", "n": "마몬의 대검", "tier": "에픽", "w": "대검"}, {"id": "w09", "n": "달빛 참나무 지팡이", "tier": "에픽", "w": "지팡이"}, {"id": "w10", "n": "사제의 바이블", "tier": "에픽", "w": "바이블"}, {"id": "w11", "n": "스틱세이의 지팡이", "tier": "유니크", "w": "지팡이"}, {"id": "w12", "n": "말락서스의 지팡이", "tier": "유니크", "w": "지팡이"}, {"id": "w13", "n": "낙원의 대검", "tier": "에픽", "w": "대검"}, {"id": "w14", "n": "금단의 바이블", "tier": "유니크", "w": "바이블"}, {"id": "w15", "n": "마탑의 유산", "tier": "유니크", "w": "지팡이"}, {"id": "w16", "n": "낙원의 바이블", "tier": "에픽", "w": "바이블"}, {"id": "w17", "n": "계시의 바이블", "tier": "에픽", "w": "바이블"}, {"id": "w18", "n": "불꽃 루비 장식 바이블", "tier": "에픽", "w": "바이블"}, {"id": "w19", "n": "섬광의 활", "tier": "유니크", "w": "활"}, {"id": "w20", "n": "기사의 대검", "tier": "에픽", "w": "대검"}, {"id": "w21", "n": "용맹의 활", "tier": "에픽", "w": "활"}, {"id": "w22", "n": "마력술사의 지팡이", "tier": "에픽", "w": "지팡이"}, {"id": "w23", "n": "용맹의 지팡이", "tier": "에픽", "w": "지팡이"}, {"id": "w24", "n": "용맹의 바이블", "tier": "에픽", "w": "바이블"}, {"id": "w25", "n": "달빛 참나무 활", "tier": "에픽", "w": "활"}, {"id": "w26", "n": "절명의 활", "tier": "에픽", "w": "활"}, {"id": "w27", "n": "낙원의 지팡이", "tier": "에픽", "w": "지팡이"}, {"id": "w28", "n": "제국 사수의 활", "tier": "유니크", "w": "활"}, {"id": "w29", "n": "갈망의 지팡이", "tier": "에픽", "w": "지팡이"}, {"id": "w30", "n": "사수의 활", "tier": "에픽", "w": "활"}];
+let wmf='전체';
+function wmRender(){const cs=['전체','대검','활','지팡이','바이블','유니크','에픽'];
+  $('#wmChips').innerHTML=cs.map(c=>`<button type="button" class="${c===wmf?'on':''}" data-c="${c}">${c}</button>`).join('');
+  $('#wmList').innerHTML=WMOD.filter(w=>wmf==='전체'||w.w===wmf||w.tier===wmf).sort((a,b)=>(a.tier===b.tier?0:a.tier==='유니크'?-1:1)).map(w=>`<div class="eq"><img loading="lazy" src="${IB}wpn/${w.id}.webp" alt="${w.n}" width="520" height="470"><div><b class="T-${w.tier}">${w.n}</b><span class="mute">${w.tier} · ${w.w} · ${w.tier==='유니크'?'4부위':'3부위'}</span></div></div>`).join('')}
+$('#wmChips').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;wmf=b.dataset.c;wmRender()});
+wmRender();
+function cmpRender(){const W=[['sword','대검','근거리','근력','최전선 · 탱킹 · 기절','서사시의 마검사','기절 연계, 높은 HP'],['bow','활','원거리','민첩','거리 유지 · 단일 화력','궁성','치명타 폭딜, 장거리'],['staff','지팡이','원거리','지력','광역 마법 · 상태이상','확인 중','화상·동상·감전 광역'],['bible','바이블','지원','지력','힐 · 버프 · 해제','교황','파티 필수, 디버프 해제']];
+  const cnt=(w,t)=>CLS.filter(c=>c.w===w&&c.tier===t).length||'-';
+  $('#cmpTbl').innerHTML=`<thead><tr><th></th>${W.map(w=>`<th><img src="${IB}ui/sel-${w[0]}.webp" alt="${w[1]}" loading="lazy">${w[1]}</th>`).join('')}</tr></thead><tbody>
+  <tr><td>거리</td>${W.map(w=>`<td>${w[2]}</td>`).join('')}</tr>
+  <tr><td>주 능력치</td>${W.map(w=>`<td>${w[3]}</td>`).join('')}</tr>
+  <tr><td>역할</td>${W.map(w=>`<td>${w[4]}</td>`).join('')}</tr>
+  <tr><td>강점</td>${W.map(w=>`<td>${w[6]}</td>`).join('')}</tr>
+  <tr><td>레전드리</td>${W.map(w=>`<td><b class="T-레전드리">${w[5]}</b></td>`).join('')}</tr>
+  ${['유니크','에픽','레어'].map(t=>`<tr><td>${t} 클래스</td>${W.map(w=>`<td>${cnt(w[1],t)}</td>`).join('')}</tr>`).join('')}
+  <tr><td>개조 무기</td>${W.map(w=>`<td>${WMOD.filter(x=>x.w===w[1]).length}종</td>`).join('')}</tr></tbody>`}
+cmpRender();
 
 
 
@@ -1023,6 +1124,42 @@ $('#hcChips').addEventListener('click',e=>{const b=e.target.closest('button');if
 hcRender();
 {const q=new URLSearchParams(location.search).get('c');if(q&&cdById[q])setTimeout(()=>cdOpen(q),50)}
 
+const PETS=[{"id": "p01", "n": "뱁새", "typ": "비행"}, {"id": "p02", "n": "협곡 여우", "typ": "동행"}, {"id": "p03", "n": "스톤 골렘", "typ": "동행"}, {"id": "p04", "n": "꽃잎 토끼", "typ": "동행"}, {"id": "p05", "n": "협곡 리자드맨", "typ": "동행"}, {"id": "p06", "n": "웨어베어", "typ": "동행"}, {"id": "p07", "n": "사막 두꺼비", "typ": "동행"}, {"id": "p08", "n": "계곡 하피", "typ": "동행"}, {"id": "p09", "n": "켄타우로스", "typ": "동행"}, {"id": "p10", "n": "서릿빛 오크 족장", "typ": "동행"}, {"id": "p11", "n": "서릿빛 오크", "typ": "동행"}, {"id": "p12", "n": "가시 인간", "typ": "동행"}, {"id": "p13", "n": "마안 토끼", "typ": "동행"}, {"id": "p14", "n": "테디베어", "typ": "동행"}, {"id": "p15", "n": "노에", "typ": "동행"}, {"id": "p16", "n": "헤라클레스", "typ": "비행"}, {"id": "p17", "n": "양탄자", "typ": "비행"}, {"id": "p18", "n": "블랙호크", "typ": "동행"}, {"id": "p19", "n": "숲 오우거", "typ": "동행"}, {"id": "p20", "n": "벨루가", "typ": "비행"}, {"id": "p21", "n": "말락서스", "typ": "동행"}, {"id": "p22", "n": "선구자", "typ": "동행"}, {"id": "p23", "n": "템빨골", "typ": "동행"}, {"id": "p24", "n": "하늘 거북", "typ": "비행"}, {"id": "p25", "n": "랜디", "typ": "동행"}, {"id": "p26", "n": "정원사", "typ": "동행"}, {"id": "p27", "n": "머맨", "typ": "동행"}, {"id": "p28", "n": "님부스", "typ": "비행"}];
+let ptf='전체';
+function ptRender(){$('#ptChips').innerHTML=['전체','동행','비행'].map(c=>`<button type="button" class="${c===ptf?'on':''}" data-c="${c}">${c} 펫${c==='전체'?'':' '+PETS.filter(p=>p.typ===c).length}</button>`).join('');
+  $('#ptList').innerHTML=PETS.filter(p=>ptf==='전체'||p.typ===ptf).map(p=>`<div class="pc" data-z="1"><img loading="lazy" src="${IB}pet/${p.id}.webp" alt="${p.n}" width="300" height="468"><b>${p.n}</b><span>${p.typ} 펫</span></div>`).join('')}
+$('#ptChips').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;ptf=b.dataset.c;ptRender()});
+ptRender();
+if($('#homePets'))$('#homePets').innerHTML=PETS.slice(0,12).map(p=>`<div class="pc" data-z="1"><img loading="lazy" src="${IB}pet/${p.id}.webp" alt="${p.n}"><b>${p.n}</b><span>${p.typ} 펫</span></div>`).join('');
+/* 보스 타이머 */
+let TM=load('dn-boss',[]),SC=load('dn-sched',[]),tmN=load('dn-boss-n',false);
+const two=n=>String(n).padStart(2,'0');
+const fmtT=ms=>{if(ms<=0)return '출현!';const t=Math.floor(ms/1000),h=Math.floor(t/3600),m=Math.floor(t%3600/60),s=t%60;return (h?h+':':'')+two(m)+':'+two(s)};
+function tmRender(){const now=Date.now();
+  $('#tmList').innerHTML=TM.length?TM.slice().sort((a,b)=>(a.at||9e15)-(b.at||9e15)).map(b=>{const left=b.at?b.at-now:null;const cls=left==null?'':left<=0?'ready':left<300000?'soon':'';
+    return `<div class="tmr ${cls}"><div><b>${esc(b.n)}</b><div class="small mute">주기 ${b.m}분${b.at?' · 다음 '+new Date(b.at).toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}):' · 아직 처치 기록 없음'}</div></div><span class="cd">${left==null?'--:--':fmtT(left)}</span><span style="display:flex;gap:6px"><button type="button" data-kill="${b.id}">처치</button><button type="button" class="ghost" data-tdel="${b.id}" aria-label="삭제">✕</button></span></div>`}).join(''):'<div class="empty">보스를 추가해 보세요. 예: 오염된 존재 · 필드 엘리트</div>';
+  const nm=new Date();const mins=nm.getHours()*60+nm.getMinutes();
+  $('#scList').innerHTML=SC.length?SC.slice().sort((a,b)=>a.t.localeCompare(b.t)).map(x=>{const [h,m]=x.t.split(':').map(Number);let d=h*60+m-mins;if(d<0)d+=1440;return `<div class="tmr ${d<10?'soon':''}"><div><b>${esc(x.n)}</b><div class="small mute">매일 ${x.t}</div></div><span class="cd">${d<60?d+'분 뒤':Math.floor(d/60)+'시간 '+d%60+'분 뒤'}</span><button type="button" class="ghost" data-sdel="${x.id}" aria-label="삭제">✕</button></div>`}).join(''):'<div class="empty">매일 반복되는 일정을 넣어 보세요.</div>';
+  $('#tmNotif').textContent=tmN?'알림 켜짐 (끄기)':'출현 1분 전 알림 켜기'}
+$('#tmForm').addEventListener('submit',e=>{e.preventDefault();TM.push({id:Date.now(),n:$('#tmName').value.trim(),m:Math.max(1,+$('#tmMin').value||60),at:0});save('dn-boss',TM);$('#tmName').value='';tmRender();toast('보스를 추가했어요')});
+$('#scForm').addEventListener('submit',e=>{e.preventDefault();SC.push({id:Date.now(),t:$('#scTime').value,n:$('#scName').value.trim()});save('dn-sched',SC);$('#scName').value='';tmRender();toast('일정을 추가했어요')});
+$('#tmList').addEventListener('click',e=>{const k=e.target.dataset.kill,d=e.target.dataset.tdel;if(k){const b=TM.find(x=>x.id==k);b.at=Date.now()+b.m*60000;b.w=0;save('dn-boss',TM);tmRender();toast(b.n+' 처치 기록')}if(d){TM=TM.filter(x=>x.id!=d);save('dn-boss',TM);tmRender()}});
+$('#scList').addEventListener('click',e=>{const d=e.target.dataset.sdel;if(d){SC=SC.filter(x=>x.id!=d);save('dn-sched',SC);tmRender()}});
+$('#tmNotif').onclick=async()=>{if(!tmN&&'Notification' in window&&Notification.permission!=='granted'){try{await Notification.requestPermission()}catch(e){}}tmN=!tmN;save('dn-boss-n',tmN);tmRender()};
+setInterval(()=>{if(!$('[data-v="timer"]').classList.contains('on')&&!tmN)return;tmRender();if(tmN){const now=Date.now();TM.forEach(b=>{if(b.at&&!b.w&&b.at-now<60000){b.w=1;save('dn-boss',TM);try{new Notification('템빨 보스 타이머',{body:b.n+' 곧 출현 (1분 전)'})}catch(e){toast(b.n+' 1분 전!')}}})}},1000);
+tmRender();
+/* 백업 */
+const bkKeys=()=>{const o={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('dn-'))o[k]=localStorage.getItem(k)}}catch(e){}return o};
+const BKN={'dn-enh':'강화 기록','dn-calc':'계산기 입력','dn-gh':'갓 핸드 프리셋','dn-hw':'오늘의 숙제','dn-boss':'보스 타이머','dn-sched':'매일 일정표'};
+function bkRender(){const o=bkKeys();const ks=Object.keys(o);$('#bkList').innerHTML=ks.length?'<ul class="facts" style="margin:0">'+ks.map(k=>{let n='';try{const v=JSON.parse(o[k]);n=Array.isArray(v)?v.length+'개':(v&&v.items?v.items.length+'개':'')}catch(e){}return `<li>${BKN[k]||k} <span class="mute small">${n}</span></li>`}).join('')+'</ul>':'<p class="mute" style="margin:0">아직 저장된 기록이 없어요.</p>'}
+const bkData=()=>JSON.stringify({site:'tempalnote',at:new Date().toISOString(),data:bkKeys()});
+$('#bkDl').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([bkData()],{type:'application/json'}));a.download='tempalnote-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();toast('백업 파일을 받았어요')};
+$('#bkCopy').onclick=()=>copy(btoa(unescape(encodeURIComponent(bkData()))),'백업 코드를 복사했어요');
+$('#bkFile').onchange=e=>{const f=e.target.files[0];if(!f)return;f.text().then(t=>{$('#bkTxt').value=t})};
+$('#bkRestore').onclick=()=>{let t=$('#bkTxt').value.trim();if(!t)return toast('백업 내용을 넣어 주세요');try{if(!t.startsWith('{'))t=decodeURIComponent(escape(atob(t)));const o=JSON.parse(t);if(o.site!=='tempalnote'||!o.data)throw 0;Object.entries(o.data).forEach(([k,v])=>{if(k.startsWith('dn-'))localStorage.setItem(k,v)});toast('복원했어요. 새로고침합니다');setTimeout(()=>location.reload(),800)}catch(e){toast('백업 형식이 맞지 않아요')}};
+bkRender();
+/* 피드백 */
+if($('#fbForm'))$('#fbForm').addEventListener('submit',e=>{e.preventDefault();const c=$('#fbCat').value,t=$('#fbTitle').value.trim(),b=$('#fbBody').value.trim();location.href='mailto:rnrwndgur124@naver.com?subject='+encodeURIComponent('[대장간노트 '+c+'] '+t)+'&body='+encodeURIComponent(b+'\n\n페이지: '+location.href)});
 const VIDS=[["e7LByfWQTa0", "[템빨: 오버기어드] 무소과금 필독! 정식 오픈 전 필수 정보 모음", "윤쿵쿵TV", "3.2만", "15:04", "입문"], ["ziFo5XqT8RE", "템빨 오버기어드 출시 전에 정해 둘 것, 직업 고르는 기준·장비 성장 순서", "겜집사", "2.8만", "9:16", "입문"], ["VCAwgcgS1EI", "템빨 : 오버기어드 오픈전 딱 봐두면 도움되는 영상 (클래스 52종)", "소식돼지tv", "2.2만", "6:11", "클래스"], ["_fn-hk2mcVE", "템빨 오버기어드 이거 기대해도 될까? 솔직 내용정리", "윤쿵쿵TV", "2.2만", "10:02", "리뷰"], ["YdLAcxAgTq4", "[템빨: 오버기어드] 돈빨? 팩트리뷰", "제이게임채널", "3.9만", "8:09", "리뷰"], ["sFLa870qz3M", "템빨: 오버기어드 리뷰", "제이게임채널", "2.5만", "6:18", "리뷰"], ["pfqWYVC64zA", "바선생급 번식력을 가진 신작 MMORPG 「템빨: 오버기어드」", "휘바TV", "20만", "8:22", "리뷰"], ["54HR-QwWIhw", "템빨: 오버기어드 l 온라인 쇼케이스 OVER WORLD", "공식", "5.5만", "1:20:36", "공식"], ["yt3rww2HR-w", "또 다른 템빨의 시작 l 템빨: 오버토크 EP2", "공식", "13만", "16:02", "공식"], ["F7HqznMqwgY", "인게임 프리뷰 영상 #3", "공식", "32만", "0:45", "공식"], ["w2PF0Tw2Oy4", "인게임 프리뷰 영상 최초 공개 #1", "공식", "6.4만", "0:40", "공식"], ["JWo9PJiyw5E", "무기 계열 소개 「활」", "공식", "55만", "0:44", "공식"], ["nbte9IiaX5A", "무기 계열 소개 「지팡이」", "공식", "50만", "0:44", "공식"], ["aYb_SpXmRP0", "무기 계열 소개 「대검」", "공식", "25만", "0:44", "공식"], ["Wk7q8vk6BTo", "무기 계열 소개 「바이블」", "공식", "7.5만", "0:44", "공식"]];
 let vdf='전체';
 const vCard=v=>`<a class="vc" href="https://www.youtube.com/watch?v=${v[0]}" target="_blank" rel="noopener"><div class="th" style="background-image:url(https://i.ytimg.com/vi/${v[0]}/hqdefault.jpg)"><span class="vb">조회수 ${v[3]}</span><span class="du">${v[4]}</span></div><h3>${v[1]}</h3><p>${v[2]==='공식'?'템빨: 오버기어드 공식':v[2]} · ${v[5]}</p></a>`;
@@ -1132,12 +1269,13 @@ const GM=[
  ['수호자의 결의','U','방','피격 시 40% 확률로 받는 피해 55% 감소, 발동 시 3% 확률로 5초간 받는 피해 15% 추가 감소','방어력 30 · PVP 방어력 40 · 회피 21 · PVP 고정 피해 감소 6','1.6초','PvP'],
  ['축복받은 신성의 방패','U','방','피격 시 43% 확률로 받는 피해 60% 감소, 발동 시 3% 확률로 모든 디버프 해제','방어력 32 · 회피 23 · 상태이상 저항 3% · 상태이상 시간 감소 3%','-'],
  ['수호자의 방패','U','방','피격 시 43% 확률로 받는 피해 60% 감소, 발동 시 3% 확률로 3초간 치명타 저항 크게 증가','방어력 32 · 회피 23 · 치명타 저항 1.5% · 치명타 피해 감소 7.5%','1.6초']];
+const GHI={"브라함의 마도서": "g01", "무무드의 지혜": "g02", "대마법사의 마도서": "g03", "이중 구조 권갑": "g04", "주작궁(모작)": "g05", "실패작": "g06", "라티나의 펜던트": "g07", "교황의 팔찌": "g08", "수호자의 방패": "g09", "현자의 지팡이": "g10", "염룡의 포효": "g11", "브라함식 매직 미사일": "g12", "초전광살포": "g13", "알쏭달쏭 도리깨": "g14", "드래곤의 비늘": "g15", "지공의 결계": "g16", "천검의 장벽": "g17", "교황의 권위": "g18", "불멸의 성벽": "g19", "여신의 기적": "g20", "천수방어": "g21", "투신 강림": "g22", "사령관의 대검": "g23", "축복받은 신성의 방패": "g24", "다크버스의 반지": "g25", "수호자의 결의": "g26", "뇌신의 권갑": "g27"};
 const GM_MORE='유니크 중 다이아몬드 실드 · 제국의 무기 막기 · 뇌신의 가호(방어형), 베테랑 농부의 도리깨 · 현자의 지혜(보조형)는 이름만 확인됐어요.';
 let gmf='전체';
 function gmRender(){const cs=['전체','공격형','방어형','보조형','레전드리','유니크','PvP','PvE'];
   $('#gmChips').innerHTML=cs.map(c=>`<button type="button" class="${c===gmf?'on':''}" data-c="${c}">${c}</button>`).join('');
   const ok=g=>gmf==='전체'||({공격형:'공',방어형:'방',보조형:'보'})[gmf]===g[2]||({레전드리:'L',유니크:'U'})[gmf]===g[1]||g[6]===gmf;
-  $('#gmList').innerHTML=GM.filter(ok).map(g=>`<div class="card"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap"><h3 style="margin:0;color:${g[1]==='L'?'var(--champ)':'#e58aa8'}">${g[0]}</h3><span><span class="pill">${g[1]==='L'?'레전드리 · 550':'유니크 · 200'}</span><span class="pill">${({공:'공격형',방:'방어형',보:'보조형'})[g[2]]}</span>${g[6]&&g[6].length<4?`<span class="pill">${g[6]}</span>`:''}</span></div><p style="margin:10px 0 8px">${g[3]}</p><p class="small" style="margin:0 0 4px;color:#c9d3e3">장착 효과 · ${g[4]}</p><p class="small mute" style="margin:0">재발동 ${g[5]==='-'?'확인 중':g[5]}${g[6]&&g[6].length>=4?' · '+g[6]:''}</p></div>`).join('')+`<p class="small mute" style="grid-column:1/-1;margin:0">${GM_MORE} 수치는 2026년 11월 26일 정식 서비스 화면 기준이에요.</p>`}
+  $('#gmList').innerHTML=GM.filter(ok).map(g=>`<div class="card"><div class="ghrow">${GHI[g[0]]?`<img class="ghi" src="${IB}gh/${GHI[g[0]]}.webp" alt="${g[0]} 아이콘" loading="lazy" data-zoom="1" data-full="${IB}gh/${GHI[g[0]]}-p.webp">`:''}<div style="flex:1;display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap"><h3 style="margin:0;color:${g[1]==='L'?'var(--champ)':'#e58aa8'}">${g[0]}</h3><span><span class="pill">${g[1]==='L'?'레전드리 · 550':'유니크 · 200'}</span><span class="pill">${({공:'공격형',방:'방어형',보:'보조형'})[g[2]]}</span>${g[6]&&g[6].length<4?`<span class="pill">${g[6]}</span>`:''}</span></div></div><p style="margin:10px 0 8px">${g[3]}</p><p class="small" style="margin:0 0 4px;color:#c9d3e3">장착 효과 · ${g[4]}</p><p class="small mute" style="margin:0">재발동 ${g[5]==='-'?'확인 중':g[5]}${g[6]&&g[6].length>=4?' · '+g[6]:''}</p></div>`).join('')+`<p class="small mute" style="grid-column:1/-1;margin:0">${GM_MORE} 수치는 2026년 11월 26일 정식 서비스 화면 기준이에요.</p>`}
 $('#gmChips').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;gmf=b.dataset.c;gmRender()});
 gmRender();
 
