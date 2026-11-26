@@ -24,6 +24,7 @@ PAGES = {
  'streamers':('템빨 스트리머 서버 정리 — 똘끼·뜨뜨뜨뜨·우레·쌍조·사땅 어느 서버?', '템빨 오버기어드 유튜브·SOOP 방송인 서버 총정리. 라우엘·레가스·루나·하스터·루비·파그마 서버별 방송인, 유료 광고 방송 표시, 길드원 모집 여부를 한눈에.'),
  'news':    ('템빨 공식 소식 · 확인 중인 현상 — 버그 피하는 법 정리', '템빨 오버기어드 공식 공지 요약과 확인 중인 현상(거래소 수수료, 스케줄 모드 자동 정비, 펫 주얼 합성 표기 등) 9건을 피하는 법과 함께 매일 정리해요.'),
  'trade':   ('템빨 거래소 수수료 계산기 — 판매 수령액·묶음 단가·다이아 환산', '템빨 오버기어드 거래소에 올리기 전 수수료 빼고 받는 금액, 목표 금액을 받으려면 올릴 가격, 묶음 개당 단가 비교, 다이아 원화 환산을 바로 계산해요.'),
+ 'prob':    ('템빨 강화 확률 총정리 — +6 60% · 파괴 · 축복 · 소환 공식 확률', '템빨 오버기어드 강화 확률(넥슨 공식): 장비 일반 강화 +5까지 100%, +6 60% ~ +12 1%, 실패 시 파괴. 축복 강화 · 시그니처 · 오버기어드 · 스킬 강화 · 감정 · 클래스/갓 핸드 소환 · 합성 · 잠재력 확률 총정리.'),
  'craft':   ('템빨 제작 도감 — 레시피 231종 재료·성공률·골드 총정리', '템빨 오버기어드 제작 도감. 무기·방어구·장신구·유물·성물 레시피 231종의 재료, 성공률, 대성공(+6), 골드, 제작 경험치와 등급별 제작 규칙.'),
  'titles':  ('템빨 칭호 도감 — 칭호 53종 장착·보유 효과와 획득 조건', '템빨 오버기어드 칭호 53종의 장착 효과, 보유 효과, 획득 조건 정리. 사냥용 추천 칭호와 바로 챙길 칭호.'),
  'achieve': ('템빨 업적 목록 — 업적 182개 목표 수치 정리', '템빨 오버기어드 업적 목록. 클래스·갓 핸드·펫·강화·제작·사냥·퀘스트·생활 업적의 단계별 목표 수치.'),
@@ -129,7 +130,7 @@ open(os.path.join(OUT, '404.html'), 'w', encoding='utf-8').write(
     '<p>페이지를 찾을 수 없어요. <a style="color:#e3c27a" href="/">홈으로 이동</a></p></body></html>')
 
 today = datetime.date.today().isoformat()
-pri = {'home': '1.0', 'calc': '0.9', 'enhance': '0.9', 'quiz': '0.9', 'coupons': '0.9', 'news': '0.9', 'streamers': '0.9', 'community': '0.9', 'trade': '0.8', 'homework': '0.8', 'starter': '0.8'}
+pri = {'home': '1.0', 'calc': '0.9', 'enhance': '0.9', 'quiz': '0.9', 'coupons': '0.9', 'prob': '0.9', 'news': '0.9', 'streamers': '0.9', 'community': '0.9', 'trade': '0.8', 'homework': '0.8', 'starter': '0.8'}
 urls = ''.join(f'  <url><loc>{url(k)}</loc><lastmod>{today}</lastmod><changefreq>daily</changefreq><priority>{pri.get(k, "0.6")}</priority></url>\n' for k in PAGES)
 open(os.path.join(OUT, 'sitemap.xml'), 'w', encoding='utf-8').write(
     f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
