@@ -159,13 +159,13 @@ open(os.path.join(OUT, '404.html'), 'w', encoding='utf-8').write(
 
 today = datetime.date.today().isoformat()
 pri = {'home': '1.0', 'calc': '0.9', 'enhance': '0.9', 'quiz': '0.9', 'coupons': '0.9', 'prob': '0.9', 'sim': '0.9', 'archive': '0.9', 'hunt': '0.9', 'map': '0.9', 'codex': '0.9', 'news': '0.9', 'streamers': '0.9', 'community': '0.9', 'trade': '0.8', 'homework': '0.8', 'starter': '0.8'}
-urls = ''.join(f'  <url><loc>{url(k)}</loc><lastmod>{today}</lastmod><changefreq>daily</changefreq><priority>{pri.get(k, "0.6")}</priority></url>\n' for k in PAGES)
+urls = ''.join(f'  <url><loc>{url(k)}</loc><lastmod>{today}</lastmod><changefreq>daily</changefreq><priority>{pri.get(k, "0.6")}</priority></url>\n' for k in PAGES if k != 'community')
 # RSS (네이버 서치어드바이저 제출용): 최근 수정된 페이지 순
 import email.utils
 def _rfc(d):
     dt = datetime.datetime.strptime(d, '%Y-%m-%d').replace(hour=12, tzinfo=datetime.timezone(datetime.timedelta(hours=9)))
     return email.utils.format_datetime(dt)
-_items = sorted([k for k in PAGES if k not in ('privacy', 'terms', 'contact', 'backup')], key=lambda k: PDATE.get(k, {}).get('d', _today), reverse=True)
+_items = sorted([k for k in PAGES if k not in ('privacy', 'terms', 'contact', 'backup', 'community')], key=lambda k: PDATE.get(k, {}).get('d', _today), reverse=True)
 _rss = ''.join(f"  <item><title>{html.escape(PAGES[k][0])}</title><link>{url(k)}</link><guid>{url(k)}</guid><description>{html.escape(PAGES[k][1])}</description><pubDate>{_rfc(PDATE.get(k, {}).get('d', _today))}</pubDate></item>\n" for k in _items)
 open(os.path.join(OUT, 'rss.xml'), 'w', encoding='utf-8').write(
     '<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"><channel>\n'
