@@ -104,7 +104,7 @@ def build(k):
             f'<meta property="og:image" content="{BASE}/img/og/{k}.jpg">\n<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n'
             f'<meta property="og:locale" content="ko_KR">\n<meta name="twitter:card" content="summary_large_image">\n<meta name="twitter:image" content="{BASE}/img/og/{k}.jpg">\n'
             + ldjson(k, title, desc) +
-            f'<script>window.START={k!r};</script>\n')
+            f'<script>window.START={k!r};window.PDATE={json.dumps({x: v.get("d") for x, v in PDATE.items()})};</script>\n')
     s = s.replace('<link rel="preconnect" href="https://fonts.googleapis.com">', head + '<link rel="preconnect" href="https://fonts.googleapis.com">', 1)
     # 3D 라이브러리는 홈에서만
     if k != 'home':

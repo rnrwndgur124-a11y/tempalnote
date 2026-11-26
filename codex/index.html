@@ -26,7 +26,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://tempalnote.com/img/og/codex.jpg">
 <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "템빨 : 대장간노트", "item": "https://tempalnote.com/"}, {"@type": "ListItem", "position": 2, "name": "템빨 아이템 도감", "item": "https://tempalnote.com/codex/"}]}, {"@context": "https://schema.org", "@type": "WebPage", "name": "템빨 아이템 도감 — 재료 획득처 · 사용처 · 펫 주얼 360종 · 제작템 · 갓 핸드 · 클래스 검색", "description": "템빨 오버기어드 아이템 도감. 파브라늄 · 강화석 · 결속석 · 제작법 조각 등 재료를 어디서 얻는지(공식 확률표: 상자 · 분해 · 행운 상자)와 어디에 쓰는지(제작식), 펫 주얼 360종 소환 확률, 제작 장비 · 클래스 · 갓 핸드 · 펫 · 칭호 · 개조 무기 통합 검색.", "url": "https://tempalnote.com/codex/", "inLanguage": "ko", "dateModified": "2026-11-26", "isPartOf": {"@type": "WebSite", "name": "템빨 : 대장간노트", "url": "https://tempalnote.com/"}, "primaryImageOfPage": "https://tempalnote.com/img/og/codex.jpg"}]</script>
-<script>window.START='codex';</script>
+<script>window.START='codex';window.PDATE={"home": "2026-11-26", "quiz": "2026-11-26", "enhance": "2026-11-26", "calc": "2026-11-26", "godhand": "2026-11-26", "homework": "2026-11-26", "starter": "2026-11-26", "weapons": "2026-11-26", "systems": "2026-11-26", "roadmap": "2026-11-26", "bm": "2026-11-26", "coupons": "2026-11-26", "community": "2026-11-26", "streamers": "2026-11-26", "news": "2026-11-26", "trade": "2026-11-26", "sim": "2026-11-26", "hunt": "2026-11-26", "map": "2026-11-26", "codex": "2026-11-26", "archive": "2026-11-26", "prob": "2026-11-26", "craft": "2026-11-26", "titles": "2026-11-26", "achieve": "2026-11-26", "pets": "2026-11-26", "timer": "2026-11-26", "backup": "2026-11-26", "videos": "2026-11-26", "official": "2026-11-26", "contact": "2026-11-26", "privacy": "2026-11-26", "terms": "2026-11-26", "about": "2026-11-26"};</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Noto+Serif+KR:wght@500;700;900&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -582,7 +582,9 @@ const PAGES={
  contact:{t:'문의하기',d:'광고·제휴·제보',i:'i-chat'},
  privacy:{t:'개인정보처리방침',d:'쿠키와 광고 안내',i:'i-sig'},
  terms:{t:'이용약관',d:'사이트 이용 안내',i:'i-guide'},
- about:{t:'사이트 소개',d:'비공식 팬 사이트 안내',i:'logo'}};window.PAGES=PAGES;
+ about:{t:'사이트 소개',d:'비공식 팬 사이트 안내',i:'logo'}};
+(()=>{const P=window.PDATE;if(!P)return;const td=new Date(Date.now()+9*3600e3).toISOString().slice(0,10);for(const k in PAGES){if(PAGES[k].b==='new')delete PAGES[k].b;if(P[k]===td&&!PAGES[k].b)PAGES[k].b='new'}})();
+window.PAGES=PAGES;
 const GROUPS=[{n:'도구',e:'TOOLS',k:['sim','quiz','godhand','enhance','calc','trade','timer','homework','backup']},{n:'가이드',e:'GUIDES',k:['prob','hunt','weapons','starter','map','codex','archive','craft','titles','achieve','pets','systems']},{n:'정보',e:'INFO',k:['coupons','streamers','news','community','videos','official','roadmap','bm','about']}];
 const link=k=>`<a href="/${k}/" data-k="${k}">${med(PAGES[k].i,'sm')}<span>${PAGES[k].t}<small>${PAGES[k].d}</small></span></a>`;
 $('#menu').innerHTML=GROUPS.map((g,gi)=>`<div class="dd" data-g="${gi}"><button type="button" aria-haspopup="true">${g.n}</button><div class="ddm">${g.k.map(link).join('')}</div></div>`).join('');
@@ -1114,6 +1116,7 @@ const ST_HOT=[
  $('#stChips').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;cur=b.dataset.v;[...$('#stChips').children].forEach(x=>x.classList.toggle('on',x===b));draw()});
  $('#stQ').addEventListener('input',draw);draw()})();
 const ISSUES=[
+ ['시스템','스케줄 모드를 시작하면 가진 수량과 상관없이 「자동 구매 설정 수량 전체」 값으로 골드 부족 팝업이 떠서 진행 안 됨','확인 중','수정 전까지 <b>자동 구매 수량을 가진 골드에 맞게 줄여서</b> 쓰세요 (공식 안내)'],
  ['시스템','거래소 판매 시 수수료가 정상 적용되지 않는 현상','확인 중','오류 전 거래로 <b>덜 정산된 금액은 수정 후 지급</b> 예정이래요. 큰 거래는 수정 공지 뒤에 하는 게 안전해요'],
  ['시스템','PC(구글 플레이 게임즈)에서 결제 시 「결제 및 정기 결제」 웹페이지로 넘어가며 상점 오류 팝업','확인 중','결제가 꼬이면 상점을 닫고 다시 시도. <b>중복 결제 여부</b>는 구글 플레이 주문 내역에서 확인'],
  ['편의성','스케줄 모드 자동 정비에서 「회복 물약 구매」와 「아이템 보관」을 같이 켜면 구매·보관이 반복','확인 중','<b>둘 중 하나만</b> 켜서 쓰세요 (공식 안내)'],
@@ -1124,7 +1127,7 @@ const ISSUES=[
  ['편의성','iOS 27.2 이상에서 게임 속 글자 일부가 영어로 표시','확인 중','수정 예정'],
  ['기타','일부 구글 계정 로그인 시 「액세스 차단」 팝업','해결','출시 직후 몰림 때문이었고 지금은 해소'],
 ];
-const ISSUE_AT='11월 26일 오전 9시 기준';
+const ISSUE_AT='11월 26일 밤 8시 50분 기준';
 const NEWS=[
  ['11.26 07:55','레가스 · 라우엘 캐릭터 생성 제한 모두 해제','새벽에 막혔던 두 서버에서 다시 새 캐릭터를 만들 수 있어요'],
  ['11.26 08:30','14일 출석부 안내 추가','수배 단계가 <b>학살자</b>인 플레이어는 출석 보상을 받을 수 없어요(진행도는 쌓이고 해제 후 수령). 못 받은 날 보상은 다음 접속 때 한꺼번에'],
