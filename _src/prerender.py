@@ -6,7 +6,7 @@ from playwright.async_api import async_playwright
 
 OUT = sys.argv[1] if len(sys.argv) > 1 else '/home/claude/site'
 PORT = 8813
-SKIP = {'toast', 'sres', 'hwDate', 'ownerStat', 'cdmBody', 'slotList'}
+SKIP = {'toast', 'sres', 'hwDate', 'ownerStat', 'cdmBody', 'slotList', 'sinceBox'}
 EMPTY = re.compile(r'<(\w+)((?:\s[^<>]*?)?\sid="([A-Za-z0-9_-]+)"[^<>]*)></\1>')
 
 
