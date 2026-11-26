@@ -64,6 +64,13 @@ for _, _, step, g, item, p in v['베니스의 행운 상자']['rows']:
 for k, steps in lk.items():
     add(k, '베니스의 행운 상자', ' · '.join(f'{s} {pf(p)}' for s, p in steps.items()), grades.get(k))
 
+# 3-2) 방송 화면에서 확인한 획득처 (공식 확률표에 없는 것)
+for name, label, text, g in [
+    ('엑카루 아인형 데이터', '상자 몬스터 (엑카루 사냥)', '획득처 표시 · 방송 화면 11/26', '노멀'),
+    ('노튼 아인형 데이터', '상자 몬스터 (노튼 사냥)', '지역 데이터는 상자 몬스터에서', None),
+]:
+    add(name, label, text, g, True)
+
 # 4) 펫 주얼 (소환권 5종 확률)
 TK = ['펫 주얼 1회 소환권(귀속)', '펫 주얼 11회 소환권(귀속)', '미지의 펫 주얼 1회 소환권(귀속)', '미지의 펫 주얼 11회 소환권(귀속)', '고급 펫 주얼 1회 소환권(귀속)']
 pj = collections.OrderedDict()
