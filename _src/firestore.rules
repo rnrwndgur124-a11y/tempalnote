@@ -137,6 +137,26 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
+    // 페이지 조회수: pv/{한국 날짜번호} 문서에 페이지마다 +1 (로그인 없이). 오늘 문서만, 한 번에 한 칸씩
+    match /pv/{day} {
+      allow read: if true;
+      allow create: if day == string(int(math.floor((request.time.toMillis() + 32400000) / 86400000)))
+        && request.resource.data.size() == 1
+        && request.resource.data.keys()[0].matches('^[a-z]{2,12}$')
+        && request.resource.data[request.resource.data.keys()[0]] == 1;
+      allow update: if day == string(int(math.floor((request.time.toMillis() + 32400000) / 86400000)))
+        && request.resource.data.diff(resource.data).affectedKeys().size() == 1
+        && request.resource.data.size() <= 120;
+    }
+
+    // 지금 보는 사람: on/{세션} 에 서버 시각만 기록 (개인 정보 없음)
+    match /on/{sid} {
+      allow read: if true;
+      allow create, update: if sid.matches('^[a-z0-9]{8,24}$')
+        && request.resource.data.keys().hasOnly(['t'])
+        && request.resource.data.t == request.time;
+    }
+
     match /bans/{uid} {
       allow get: if isAdmin() || (request.auth != null && request.auth.uid == uid);
       allow list, write: if isAdmin();
