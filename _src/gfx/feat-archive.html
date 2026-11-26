@@ -1,0 +1,53 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:800px;height:500px;overflow:hidden;background:radial-gradient(520px 380px at 66% 46%,#1b3a4a 0%,#0a1624 60%,#050a14 100%);font-family:'Noto Sans CJK KR',sans-serif;position:relative}
+svg.map{position:absolute;inset:0}
+.lbl{position:absolute;font-weight:900;font-size:15px;color:#cfe3ff;text-shadow:0 2px 6px #000,0 0 2px #000;letter-spacing:1px}
+.lbl i{display:inline-block;width:10px;height:10px;border-radius:50%;background:#ffd76a;box-shadow:0 0 10px #ffcf4a;margin-right:6px;vertical-align:1px}
+.lbl.g i{background:#6ff0c8;box-shadow:0 0 10px #48e0b0}
+.cube{position:absolute;left:470px;top:150px;width:150px;height:150px;transform-style:preserve-3d;transform:rotateX(-24deg) rotateY(38deg)}
+.f{position:absolute;width:150px;height:150px;border:3px solid #9ff6ff;background:linear-gradient(135deg,#2be0ffcc,#0a5f9acc);box-shadow:inset 0 0 40px #b8fbff,0 0 30px #29d9ff}
+.f::after{content:'';position:absolute;inset:22px;border:2px solid #d8ffffaa;border-radius:6px}
+.f1{transform:translateZ(75px)}.f2{transform:rotateY(90deg) translateZ(75px);filter:brightness(.8)}.f3{transform:rotateX(90deg) translateZ(75px);filter:brightness(1.25)}
+.glow{position:absolute;left:400px;top:90px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,#5ff3ff66 0%,#5ff3ff22 40%,transparent 70%)}
+.ray{position:absolute;left:548px;top:20px;width:4px;height:120px;background:linear-gradient(transparent,#bffcff);filter:blur(1px)}
+.t{position:absolute;left:40px;bottom:40px}
+.t b{display:block;font:900 52px/1.05 'Noto Sans CJK KR',sans-serif;color:#fff;text-shadow:0 4px 14px #000}
+.t span{display:inline-block;margin-top:12px;font-weight:900;font-size:19px;color:#0b1a24;background:linear-gradient(#bff7ff,#53d8f0);padding:6px 14px;border-radius:99px}
+.chip{position:absolute;right:34px;top:28px;font-weight:900;font-size:17px;color:#fff;border:2px solid #ffd76a;background:#2a210acc;padding:6px 14px;border-radius:99px}
+.chip b{color:#ffd76a}
+</style></head><body>
+<svg class="map" viewBox="0 0 800 500">
+ <defs><pattern id="g" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#3a6a8a" stroke-width=".6" opacity=".35"/></pattern></defs>
+ <rect width="800" height="500" fill="url(#g)"/>
+ <g fill="none" stroke="#5f9bb8" stroke-width="1.4" opacity=".45">
+  <path d="M60 120 C150 60 260 90 330 70 S500 40 590 80 760 60 780 130"/>
+  <path d="M40 210 C140 170 220 220 320 190 S470 140 560 170 720 160 790 220"/>
+  <path d="M30 300 C120 270 240 320 330 290 S480 250 580 280 720 270 790 320"/>
+  <path d="M120 400 C210 360 300 410 400 380 S560 340 650 380"/>
+ </g>
+ <g fill="none" stroke="#ffd76a" stroke-width="2" stroke-dasharray="6 7" opacity=".7"><path d="M110 150 L230 200 L300 140 L380 230 L470 260"/></g>
+</svg>
+<div class="lbl" style="left:84px;top:132px"><i></i>윈스톤</div>
+<div class="lbl" style="left:196px;top:206px"><i></i>킨바이</div>
+<div class="lbl" style="left:270px;top:112px"><i></i>노튼</div>
+<div class="lbl g" style="left:330px;top:238px"><i></i>라인하르트</div>
+<div class="lbl" style="left:120px;top:250px"><i></i>알테스</div>
+<div class="lbl g" style="left:650px;top:330px"><i></i>레이단</div>
+<div class="lbl" style="left:690px;top:180px"><i></i>지브라</div>
+<div class="glow"></div><div class="ray"></div>
+<svg style="position:absolute;left:440px;top:110px;filter:drop-shadow(0 0 22px #29d9ff)" width="220" height="240" viewBox="0 0 220 240">
+ <defs><linearGradient id="L" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#36c8f0"/><stop offset="1" stop-color="#0b4f80"/></linearGradient>
+ <linearGradient id="R" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b8fc4"/><stop offset="1" stop-color="#06345a"/></linearGradient>
+ <linearGradient id="T" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d6fdff"/><stop offset="1" stop-color="#5fdcf5"/></linearGradient></defs>
+ <polygon points="110,10 210,62 110,114 10,62" fill="url(#T)" stroke="#e8ffff" stroke-width="3"/>
+ <polygon points="10,62 110,114 110,230 10,178" fill="url(#L)" stroke="#bff7ff" stroke-width="3"/>
+ <polygon points="210,62 110,114 110,230 210,178" fill="url(#R)" stroke="#9ff0ff" stroke-width="3"/>
+ <polygon points="110,30 176,63 110,96 44,63" fill="none" stroke="#ffffffaa" stroke-width="2"/>
+ <polygon points="26,86 94,121 94,204 26,169" fill="none" stroke="#e6ffffaa" stroke-width="2"/>
+ <polygon points="194,86 126,121 126,204 194,169" fill="none" stroke="#c8f8ffaa" stroke-width="2"/>
+ <path d="M60 150 L95 168 M42 120 L80 140" stroke="#eaffff" stroke-width="3" stroke-linecap="round" opacity=".8"/>
+</svg>
+<div class="chip">지역 <b>12곳</b> 체크리스트</div>
+<div class="t"><b>데이터 큐브 ·<br>히든 퀘스트</b><span>탐사 · 아카이브 달성도</span></div>
+</body></html>

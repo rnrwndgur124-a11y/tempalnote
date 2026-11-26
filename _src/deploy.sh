@@ -1,8 +1,12 @@
 #!/bin/bash
 # 사용: ./deploy.sh "커밋 메시지"
 set -e
+# 금지어(다른 사이트 이름): 원본·커밋 메시지·완성 파일에 있으면 올리지 않는다. 글자는 바이트 코드로만 적는다.
+BAN="$(printf '\xea\xb9\xa8\xeb\xb9\x84')\|$(printf '\x6b\x6b\x61\x65\x62\x69')"
+if printf '%s' "$1" | grep -qi "$BAN" || grep -qi "$BAN" /home/claude/tempal/index.html; then echo "배포 중단: 다른 사이트 이름이 들어 있어요"; exit 1; fi
 cd /home/claude/site && git stash -q -u 2>/dev/null || true; git pull -q --rebase; git stash pop -q 2>/dev/null || true
 python3 /home/claude/tempal/build_site.py /home/claude/site && python3 /home/claude/tempal/gen_og.py && python3 /home/claude/tempal/prerender.py /home/claude/site | tail -1
+if grep -rqi --exclude-dir=.git --include='*.html' --include='*.js' --include='*.txt' --include='*.json' --include='*.xml' --include='*.py' --include='*.sh' "$BAN" /home/claude/site; then echo "배포 중단: 다른 사이트 이름이 들어 있어요"; exit 1; fi
 # 자동 점검: 실패하면 올리지 않는다
 if ! python3 /home/claude/tempal/check_site.py /home/claude/site; then echo "배포 중단: 위 문제를 먼저 고치세요"; exit 1; fi
 # 원본 소스도 저장소에 보관 (다음 작업 때 복구용, 페이지로 읽히지 않게 .txt)
