@@ -201,6 +201,16 @@ label{font-weight:700;font-size:13.5px;display:block;margin-bottom:6px;color:#c9
 .fpgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:12px}
 .fpc{display:block;text-align:left;background:#0b1525;border:1px solid var(--line2);border-radius:10px;padding:0 0 8px;color:var(--ink);font:inherit;cursor:pointer;overflow:hidden}.fpc:hover{border-color:var(--gold)}.fpc img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}.fpc b{display:block;padding:6px 8px 0;font-size:14px}.fpc span{display:block;padding:0 8px;font-size:11px;color:var(--mute)}
 #fpModal{background:#020610cc;backdrop-filter:blur(3px)}.fp-box{max-width:760px}.fp-in{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px}@media(max-width:720px){.fp-in{grid-template-columns:1fr}}
+.al2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.alslots{display:grid;gap:8px;margin-top:10px}
+.als{display:grid;grid-template-columns:64px minmax(0,1.6fr) minmax(0,1fr) 72px;gap:8px;align-items:center;background:#ffffff05;border:1px solid var(--line2);border-radius:10px;padding:8px}
+.als .small.mute{display:none}
+.als .alp{color:var(--champ);font-weight:800;text-align:right}
+.gcrow{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr) minmax(0,1fr) 36px;gap:6px;margin-bottom:6px;align-items:center}
+.gcx{min-height:36px;padding:0;border-radius:8px;background:#ffffff08;border:1px solid var(--line2);color:#c9d3e3;font-size:18px}
+.gcup{color:#7de0a8;font-weight:800}.gcdn{color:#ffb070;font-weight:800}
+.svb button b{color:var(--gold2);margin-left:4px}.svb button.on b{color:#1b1206}
+@media(max-width:640px){.al2{grid-template-columns:1fr}.als{grid-template-columns:1fr 1fr}.als b{grid-column:1/-1}.als .alp{grid-column:1/-1;text-align:left}.gcrow{grid-template-columns:minmax(0,1fr) 58px 58px 34px}}
 .mdx{border-top:1px solid #ffffff10;padding:8px 0}.mdx summary{cursor:pointer;list-style-position:inside}.mdx summary b{color:var(--gold)}
 .sk details summary{cursor:pointer;color:var(--gold);font-size:13px;font-weight:700;margin-top:4px}
 .sk details img{display:block;margin-top:8px;max-width:min(100%,420px);border-radius:8px;border:1px solid var(--line2)}
@@ -1211,6 +1221,39 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
     </ul></div>
   <div class="card faq" style="margin-top:18px"><h2>자주 묻는 질문</h2><h3>펫 도감 보상은 뭐예요?</h3><p>펫마다 <b>Lv.3에 성장 재료 1개, Lv.5에 2개</b>를 줘요. 노멀 펫도 Lv.5까지만 올리면 받아요.</p><h3>등급은 어떻게 구분해요?</h3><p>아이콘 왼쪽 아래 별 색으로 구분해요. 금색 · 파란색 · 동색 순이에요.</p><h3>꽃잎 토끼는 어떻게 얻나요?</h3><p>사전등록 보상 펫이에요. 게임 안 우편함에서 받으세요.</p></div>
 </div></div></section>
+<section class="view" data-v="gear"><div class="band pagetop"><div class="wrap" style="max-width:1000px">
+  <div class="pk">ALCHEMY · GEAR COMPARE</div>
+  <div class="ph"><span class="med lg"><svg><use href="#i-sig"/></svg></span><h1 class="gt">연금 옵션 · 장비 비교</h1></div>
+  <p class="lead">넥슨이 공개한 <b>장비 연금 확률표 1,701줄</b>을 부위 · 슬롯별로 정리했어요. 원하는 옵션이 <b>한 번에 뜰 확률</b>과 <b>평균 몇 번</b> 돌려야 하는지 계산하고, 두 장비를 <b>사냥 · 보스 · PvP 기준</b>으로 비교해요.</p>
+  <div class="card" id="alCalc" style="margin-bottom:16px;border-color:var(--gold)"><div class="ch"><span class="med sm"><svg><use href="#i-calc"/></svg></span><h3>연금 목표 확률 계산기</h3></div>
+    <div class="al2"><div><label for="alPart">부위</label><select id="alPart"><option>무기</option></select></div><div><label for="alVar">연금 종류</label><select id="alVar"><option>유니크 일반 연금</option></select></div></div>
+    <div id="alSlots" class="alslots"><p class="mute small">확률표를 불러오는 중…</p></div>
+    <div class="chips" id="alMode" style="margin-top:10px"><button type="button" class="on" data-m="and">목표 슬롯이 전부 맞으면 멈춤</button><button type="button" data-m="or">하나라도 맞으면 멈춤</button></div>
+    <label for="alCost" style="margin-top:8px;display:block">연금 1번 비용 (골드, 선택)</label><input id="alCost" class="in" type="number" min="0" inputmode="numeric" placeholder="연금 화면에 나온 골드 (촉매제는 따로 1개씩)">
+    <div class="out" id="alOut">—<small>슬롯마다 원하는 옵션을 고르면 계산해요</small></div>
+    <p class="small mute" style="margin:8px 0 0">연금은 <b>모든 슬롯을 한꺼번에</b> 다시 굴리고, 슬롯마다 따로 뽑힌다고 보고 계산했어요. 게임 안 <b>자동 연금</b>도 같은 방식(슬롯마다 원하는 능력치를 정해 두면 맞을 때 멈춤)이에요.</p></div>
+  <div class="card" style="margin-bottom:16px"><div class="ch"><span class="med sm"><svg><use href="#i-book"/></svg></span><h3>옵션 전체표 <small class="mute" id="alAt" style="font-weight:500"></small></h3></div>
+    <p class="small" style="margin:0 0 8px">위에서 고른 부위 · 연금 종류의 슬롯별 옵션이에요. <b>나올 확률</b>은 그 옵션 종류가 뜰 확률(값 전부 합), <b>최대치</b>는 그중 가장 높은 값이 뜰 확률이에요.</p>
+    <div id="alTbl"></div>
+    <p class="small" id="alMax" style="margin:10px 0 0"></p></div>
+  <div class="card" style="margin-bottom:16px"><h3 style="margin-top:0">확률표에서 찾은 것</h3>
+    <ul class="facts">
+      <li><b>축복 연금은 값이 항상 최대치</b>예요. 대신 옵션 종류는 무작위 — 예: 유니크 무기 축복 연금 슬롯1은 「공격력 5」 「PVE 공격력 5」 「명중 5」 「치명타 2%」 등 10종 중 하나</li>
+      <li>에픽 연금은 <b>슬롯 2개</b>, 유니크 연금은 <b>슬롯 3개</b>. 성검 · 방패는 「특별 일반 연금」 슬롯 3개, 성배 · 나침반은 에픽 2개 / 유니크 3개</li>
+      <li>일반 연금은 한 슬롯 안의 옵션이 <b>거의 같은 확률</b>로 나와요(유니크 무기 슬롯1: 36가지가 각각 약 2.78%). 한 줄 노리기는 생각보다 오래 걸려요</li>
+      <li>이름 앞말 뜻: <b>PVE</b> = 몬스터 상대, <b>PVP</b> = 플레이어 상대, <b>일반</b> = 평타, <b>스킬</b> = 스킬, <b>일반 몬스터 / 보스 몬스터</b> = 그 상대에게만. 아무것도 없으면 어디서나 적용</li>
+      <li>상위 등급 장비는 <b>모든 슬롯이 최대치</b>면 보너스 능력치가 붙어요 → 위 표 아래 「모든 슬롯 최대치」 확률 참고. 연금 방법은 <a href="#systems">시스템 한눈에</a>의 「연금 · 감정」</li>
+    </ul></div>
+  <div class="card" id="cmp" style="margin-bottom:16px;border-color:#FFE81288"><div class="ch"><span class="med sm"><svg><use href="#i-anvil"/></svg></span><h3>장비 비교기</h3></div>
+    <p class="small" style="margin:0 0 8px">두 장비의 능력치를 한 줄씩 넣으면 <b>목적별로 실제로 붙는 값</b>을 합쳐서 비교해요. 예: 보스 잡을 땐 「공격력 + PVE 공격력 + 보스 몬스터 공격력」을 더하고, PVP · 일반 몬스터 옵션은 빼요.</p>
+    <div class="chips" id="cmGoal"><button type="button" class="on" data-g="hunt">사냥</button><button type="button" data-g="boss">보스</button><button type="button" data-g="pvp">PvP</button></div>
+    <div class="gcrow small mute"><span>능력치</span><span>장비 A</span><span>장비 B</span><span></span></div>
+    <div id="cmRows"></div><datalist id="cmStats"></datalist>
+    <div class="row" style="gap:8px;flex-wrap:wrap;margin-top:8px"><button type="button" class="btn ghost" id="cmAdd">+ 줄 추가</button><button type="button" class="btn ghost" id="cmSwap">A ↔ B</button><button type="button" class="btn ghost" id="cmClr">비우기</button></div>
+    <div id="cmOut" style="margin-top:12px"></div>
+    <p class="small mute" style="margin:8px 0 0">평타(일반)와 스킬 옵션은 따로 합쳐서 보여줘요. 단위가 다른 능력치끼리는 더하지 않아요. 입력값은 이 브라우저에만 저장돼요.</p></div>
+  <div class="card faq" style="margin-top:18px"><h2>자주 묻는 질문</h2><h3>원하는 옵션 한 줄은 평균 몇 번이면 떠요?</h3><p>유니크 무기 일반 연금 슬롯1에서 「공격력」 종류만 노리면 4가지 값 합쳐 약 11%라 평균 9번, 「공격력 5」 하나만 노리면 약 2.8%라 평균 36번이에요. 슬롯 두 개를 동시에 맞추려면 두 확률을 곱해서 훨씬 오래 걸려요.</p><h3>축복받은 연금 촉매제는 언제 써요?</h3><p>값은 무조건 최대치라서, 옵션 종류가 몇 개 안 되는 슬롯(축복 표는 슬롯당 7~12종)에서 원하는 종류를 노릴 때 좋아요.</p><h3>확률은 어디서 가져왔어요?</h3><p>넥슨 확률형 아이템 공개 페이지의 「장비 연금」 표 9개(무기 · 보조무기 · 방어구 · 목걸이 및 반지 · 귀걸이 및 허리띠 · 성검 · 방패 · 성배 · 나침반)를 그대로 옮겼어요.</p></div>
+</div></div></section>
 <section class="view" data-v="outfit"><div class="band pagetop"><div class="wrap">
   <div class="pk">FITTING ROOM</div>
   <div class="ph"><span class="med lg"><svg><use href="#i-gift"/></svg></span><h1 class="gt">코디 · 펫 미리보기</h1></div>
@@ -1269,9 +1312,21 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
 </div></div></section>
 <section class="view" data-v="streamers"><div class="band pagetop"><div class="wrap" style="max-width:1000px">
   <div class="pk">STREAMERS · SERVERS</div>
-  <div class="ph"><span class="med lg"><svg><use href="#i-play"/></svg></span><h1 class="gt">방송인 서버 찾기</h1></div>
-  <p class="lead">유튜브 · SOOP 방송인이 <b>어느 서버에서 하는지</b> 모았어요. 같은 서버로 가면 그 방송 길드 · 파티에 함께할 수 있어요. 방송 제목 · 설명 · 채널 공지에 적힌 서버만 넣었어요.</p>
+  <div class="ph"><span class="med lg"><svg><use href="#i-play"/></svg></span><h1 class="gt">서버 목록 · 방송인 서버 찾기</h1></div>
+  <p class="lead"><b>서버 20개</b>(일반 14 · 크리에이터 6)와 유튜브 · SOOP 방송인이 <b>어느 서버에서 하는지</b> 모았어요. 같은 서버로 가면 그 방송 길드 · 파티에 함께할 수 있어요. 방송 제목 · 설명 · 채널 공지에 적힌 서버만 넣었어요.</p>
   <div class="shots" style="margin-bottom:16px"><figure class="shot"><img loading="lazy" src="https://tempalnote.com/img/ui/streamers.webp" alt="방송인 서버 찾기 — 라우엘 · 레가스 · 하스터 · 루나 서버별 방송인" width="1280" height="591" data-zoom="1"><figcaption>같은 서버여야 같은 길드 · 파티 · 거래소를 써요. 캐릭터는 서버마다 따로예요</figcaption></figure></div>
+  <div class="card" id="servers" style="margin-bottom:16px;border-color:var(--gold)"><div class="ch"><span class="med sm"><svg><use href="#i-server"/></svg></span><h3>서버 20개 한눈에 <small class="mute" style="font-weight:500">공식 공지 기준 · 누르면 그 서버 방송인만</small></h3></div>
+    <p class="small" style="margin:0 0 6px"><b>크리에이터 서버 6개</b> — 프로모션 방송인이 활동하는 서버</p>
+    <div class="chips svb" style="margin-bottom:6px"><button type="button" data-sv="판미르">판미르</button><button type="button" data-sv="하스터">하스터</button><button type="button" data-sv="루나">루나</button><button type="button" data-sv="이사벨">이사벨</button><button type="button" data-sv="레가스">레가스</button><button type="button" data-sv="라우엘">라우엘</button></div>
+    <p class="small" style="margin:10px 0 6px"><b>일반 서버 14개</b></p>
+    <div class="chips svb" style="margin-bottom:6px"><button type="button" data-sv="그리드">그리드</button><button type="button" data-sv="아이린">아이린</button><button type="button" data-sv="루비">루비</button><button type="button" data-sv="유라">유라</button><button type="button" data-sv="후로이">후로이</button><button type="button" data-sv="피아로">피아로</button><button type="button" data-sv="토반">토반</button><button type="button" data-sv="파그마">파그마</button><button type="button" data-sv="뮐러">뮐러</button><button type="button" data-sv="마드라">마드라</button><button type="button" data-sv="칸">칸</button><button type="button" data-sv="아그너스">아그너스</button><button type="button" data-sv="휴렌트">휴렌트</button><button type="button" data-sv="바사라">바사라</button></div>
+    <ul class="facts" style="margin-top:10px">
+      <li>캐릭터 · 길드 · 파티는 <b>서버마다 따로</b>예요. 방송인과 같이 하려면 같은 서버에서 시작하세요</li>
+      <li>일반 서버 ↔ 크리에이터 서버 사이를 <b>차원 이동</b>하면 전투 페널티가 붙을 수 있어요 (공식 안내)</li>
+      <li>오픈 첫날(11/26 0시 30분) <b>레가스 · 라우엘</b>은 사람이 몰려 캐릭터 생성이 막혔다가, 지금은 <b>모든 서버 생성 가능</b>이에요</li>
+      <li>사전 선점한 이름은 <b>12월 10일(목) 밤 11시 59분</b>까지 만들어야 지켜져요. 지나면 다른 사람이 쓸 수 있어요 (선점 서버가 막혀 있어도 선점 캐릭터는 생성 가능)</li>
+      <li>바사라는 10월 22일에 추가된 14번째 일반 서버예요</li>
+    </ul></div>
   <div class="card" style="margin-bottom:16px;border-color:var(--gold)"><div class="ch"><span class="med sm"><svg><use href="#i-crown"/></svg></span><h3>오늘 방송 화제 <small class="mute" style="font-weight:500">방송 제목 기준</small></h3></div>
     <ul class="hotl" id="stHot"></ul></div>
   <div class="chips" id="stChips"></div>
@@ -1523,7 +1578,7 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
 <section class="view" data-v="craft"><div class="band pagetop"><div class="wrap">
   <div class="pk">CRAFTING CODEX</div>
   <div class="ph"><span class="med lg"><svg><use href="#i-anvil"/></svg></span><h1 class="gt">제작 도감 · 레시피 231종</h1></div>
-  <p class="lead">게임 <b>제작</b> 메뉴를 처음부터 끝까지 넘기며 하나씩 기록했어요. 무기 · 방어구 · 장신구 · 유물 · 성물 · 재료까지 <b>231개 레시피</b>의 재료, 성공률, 골드, 제작 경험치를 모두 담았어요. (견습 대장장이 화면 기준 · 11월 26일)</p>
+  <p class="lead">게임 <b>제작</b> 메뉴를 처음부터 끝까지 넘기며 하나씩 기록했어요. 무기 · 방어구 · 장신구 · 유물 · 성물 · 재료까지 <b>231개 레시피</b>의 재료, 성공률, 골드, 제작 경험치를 모두 담았어요. 레시피마다 <b>💰 손익 계산</b> 버튼으로 만들어 팔면 남는지 바로 계산돼요. (견습 대장장이 화면 기준 · 11월 26일)</p>
   <div class="shots" style="margin-bottom:16px"><figure class="shot"><img loading="lazy" src="https://tempalnote.com/img/ui/craft.webp" alt="템빨 제작 화면" width="1280" height="720" data-zoom="1"><figcaption>제작 화면 — 왼쪽이 성공, 오른쪽이 대성공(+6) 결과</figcaption></figure><figure class="shot"><img loading="lazy" src="https://tempalnote.com/img/ui/blueprint.webp" alt="템빨 도안 화면" width="1280" height="720" data-zoom="1"><figcaption>도안 탭 — 레전드리 1 · 유니크 6 · 에픽 10 · 레어 6 · 노멀 5</figcaption></figure></div>
   <div class="card" style="margin-bottom:16px;border-color:var(--gold)"><div class="ch"><span class="med sm"><svg><use href="#i-anvil"/></svg></span><h3>등급별 제작 규칙 (231개를 정리해 찾은 공식)</h3></div>
     <div class="scroll"><table class="stack"><thead><tr><th>장비 등급</th><th>성공 / 대성공</th><th>제작 경험치</th><th class="n">골드</th><th>재료 구성</th></tr></thead><tbody>
@@ -1736,6 +1791,7 @@ const copy=(t,msg)=>{try{navigator.clipboard.writeText(t).then(()=>toast(msg),()
 
 /* 페이지 정의 */
 const PAGES={
+ gear:{t:'연금 옵션 · 장비 비교',d:'공식 연금 확률 1,701줄 · 목표 옵션 확률 · 장비 비교',i:'i-sig',b:'new'},
  quiz:{t:'무기 추천 테스트',d:'질문 다섯 개로 내 무기 찾기',i:'i-quiz',b:'hot'},
  enhance:{t:'강화 기록기',d:'단계별 성공률과 파브라늄 기록',i:'i-log',b:'new'},
  calc:{t:'강화 기대값 계산기',d:'평균 시도 횟수와 필요한 재료',i:'i-calc',b:'new'},
@@ -1750,7 +1806,7 @@ const PAGES={
  pets:{t:'펫 도감',d:'펫 28종 이미지 · 도감 보상',i:'i-gift',b:'new'},
  outfit:{t:'코디 · 펫 미리보기',d:'스킨 갈아입히기 · 펫 · 탈것 48종 돌려보기',i:'i-gift',b:'new'},
  community:{t:'커뮤니티',d:'게시판 · 실시간 채팅 (구글 로그인)',i:'i-chat',b:'new'},
- streamers:{t:'방송인 서버 찾기',d:'똘끼 · 뜨뜨뜨뜨 · 우레 등 서버별 방송인 · 유료 광고 표시',i:'i-play',b:'hot'},
+ streamers:{t:'서버 목록 · 방송인',d:'서버 20개 · 똘끼 · 뜨뜨뜨뜨 · 우레 등 서버별 방송인',i:'i-play',b:'hot'},
  news:{t:'공식 소식 · 버그',d:'점검 정리 · 공지 요약 · 확인 중인 현상 · 피하는 법',i:'i-chat',b:'hot'},
  trade:{t:'거래 · 단가 계산기',d:'판매 수령액 · 묶음 단가 · 다이아 환산',i:'i-coin',b:'new'},
  sim:{t:'강화 · 소환 시뮬레이터',d:'11연 · 110연 뽑기 · 레전드리 합성 · 강화 계산기',i:'i-anvil',b:'hot'},
@@ -1773,7 +1829,7 @@ const PAGES={
 (()=>{try{let pv=sessionStorage.getItem('tn_prev');if(pv===null){pv=localStorage.getItem('tn_vd')||'';sessionStorage.setItem('tn_prev',pv)}window.__PREV=pv}catch(e){window.__PREV=''}})();
 (()=>{const P=window.PDATE;if(!P)return;const td=new Date(Date.now()+9*3600e3).toISOString().slice(0,10);for(const k in PAGES){if(PAGES[k].b==='new')delete PAGES[k].b;if(P[k]===td&&!PAGES[k].b)PAGES[k].b='new'}})();
 window.PAGES=PAGES;
-const GROUPS=[{n:'도구',e:'TOOLS',k:['sim','quiz','godhand','enhance','calc','trade','timer','homework','backup']},{n:'가이드',e:'GUIDES',k:['prob','hunt','weapons','starter','map','codex','archive','craft','titles','achieve','pets','outfit','systems']},{n:'정보',e:'INFO',k:['coupons','streamers','news','videos','official','roadmap','bm','about']}];
+const GROUPS=[{n:'도구',e:'TOOLS',k:['sim','quiz','godhand','enhance','calc','gear','trade','timer','homework','backup']},{n:'가이드',e:'GUIDES',k:['prob','hunt','weapons','starter','map','codex','archive','craft','titles','achieve','pets','outfit','systems']},{n:'정보',e:'INFO',k:['coupons','streamers','news','videos','official','roadmap','bm','about']}];
 const link=k=>`<a href="#${k}" data-k="${k}">${med(PAGES[k].i,'sm')}<span>${PAGES[k].t}<small>${PAGES[k].d}</small></span></a>`;
 $('#menu').innerHTML=GROUPS.map((g,gi)=>`<div class="dd" data-g="${gi}"><button type="button" aria-haspopup="true">${g.n}</button><div class="ddm">${g.k.map(link).join('')}</div></div>`).join('');
 $('#drawer').innerHTML=GROUPS.map(g=>`<h4>${g.e}</h4>${g.k.map(link).join('')}`).join('');
@@ -1783,7 +1839,7 @@ document.addEventListener('click',e=>{if(!e.target.closest('.dd'))document.query
 $('#burger').onclick=()=>{const o=$('#drawer').classList.toggle('open');$('#burger').setAttribute('aria-expanded',o)};
 
 const tile=k=>{const p=PAGES[k];return `<a class="tile" href="#${k}">${p.b?`<span class="bd ${p.b}">${p.b==='new'?'NEW':'HOT'}</span>`:''}${med(p.i)}<span><h3>${p.t}</h3><p>${p.d}</p></span></a>`};
-const FEAT=[['outfit','코디 · 펫 미리보기','스킨 갈아입히기 · 펫 · 탈것 48종 돌려보기','ui/feat-outfit.webp','new','NEW'],['sim','강화 · 뽑기 시뮬레이터','+12 강화 도전 · 11연 · 110연 뽑기 · 레전드리 합성','ui/feat-sim.webp','hot','HOT'],['prob','강화 확률 총정리','+6 60% → +12 1% · 축복 · 파괴 · 소환 확률','ui/feat-prob.webp','hot','HOT'],['hunt','레벨별 사냥터','Lv.1 → 80 사냥터 · 보스 26종 · 몬스터 도감','map/north.webp','hot','HOT'],['coupons','쿠폰 · 이벤트','결제 할인 7종 · 외부 이벤트 · 출석부','ui/attend.webp','hot','HOT'],['streamers','방송인 서버 찾기','똘끼 · 뜨뜨뜨뜨 · 우레 · 쌍조 · 사땅 32명','ui/feat-streamers.webp','hot','HOT'],['news','공식 소식 · 버그','27일 점검 정리 · 확인 중인 현상 10건','ui/attend.webp','hot','HOT'],['weapons','클래스 도감','55종 외형 · 스킬 87개 · 스킬 창 원본','ui/feat-cls.webp','hot','인기'],['godhand','갓 핸드','메모리 27종 수치 · 짝 분석','ui/ghsum.webp','hot','인기'],['map','탐사 지도','지역 14곳 · 데이터 큐브 · 명소 · 내 진행도','ui/feat-map.webp','new','NEW'],['codex','아이템 도감','재료 획득처 · 사용처 · 펫 주얼 360종','ui/feat-codex.webp','new','NEW'],['archive','탐사 · 아카이브','데이터 큐브 · 히든 퀘스트 · 지역 12곳 체크','ui/feat-archive.webp','new','NEW'],['trade','거래 · 단가 계산기','수령액 · 묶음 단가 · 다이아 환산','ui/exchange.webp','new','NEW'],['craft','제작 도감','레시피 231종 · 재료 · 성공률 · 골드','ui/craft.webp','new','NEW'],['titles','칭호 도감','53종 장착 · 보유 효과','ui/titles.webp','new','NEW'],['systems','시스템 가이드','길드 승격 · 파티 · 창고 · 스킬북 등 48종','ui/growth.webp','new','NEW'],['pets','펫 도감','동행 · 비행 펫 28종','ui/feat-pet.webp','new','NEW'],['weapons','무기 개조 도감','개조 무기 30종 이미지','ui/feat-wpn.webp','new','NEW'],['timer','보스 타이머','처치 기록 · 1분 전 알림 · 일정표','ui/quest.webp','new','NEW'],['bm','상점 정리','다이아 단가 · 골드 소환권 · 가호 10단계','ui/dia.webp','',''],['videos','추천 영상','조회수 1만+ 템빨 영상 15편','ui/art.webp','','']];
+const FEAT=[['gear','연금 옵션 · 장비 비교','원하는 옵션 평균 몇 번? 공식 확률 1,701줄','ui/feat-prob.webp','new','NEW'],['outfit','코디 · 펫 미리보기','스킨 갈아입히기 · 펫 · 탈것 48종 돌려보기','ui/feat-outfit.webp','new','NEW'],['sim','강화 · 뽑기 시뮬레이터','+12 강화 도전 · 11연 · 110연 뽑기 · 레전드리 합성','ui/feat-sim.webp','hot','HOT'],['prob','강화 확률 총정리','+6 60% → +12 1% · 축복 · 파괴 · 소환 확률','ui/feat-prob.webp','hot','HOT'],['hunt','레벨별 사냥터','Lv.1 → 80 사냥터 · 보스 26종 · 몬스터 도감','map/north.webp','hot','HOT'],['coupons','쿠폰 · 이벤트','결제 할인 7종 · 외부 이벤트 · 출석부','ui/attend.webp','hot','HOT'],['streamers','서버 목록 · 방송인','서버 20개 · 똘끼 · 뜨뜨뜨뜨 · 우레 등 32명','ui/feat-streamers.webp','hot','HOT'],['news','공식 소식 · 버그','27일 점검 정리 · 확인 중인 현상 10건','ui/attend.webp','hot','HOT'],['weapons','클래스 도감','55종 외형 · 스킬 87개 · 스킬 창 원본','ui/feat-cls.webp','hot','인기'],['godhand','갓 핸드','메모리 27종 수치 · 짝 분석','ui/ghsum.webp','hot','인기'],['map','탐사 지도','지역 14곳 · 데이터 큐브 · 명소 · 내 진행도','ui/feat-map.webp','new','NEW'],['codex','아이템 도감','재료 획득처 · 사용처 · 펫 주얼 360종','ui/feat-codex.webp','new','NEW'],['archive','탐사 · 아카이브','데이터 큐브 · 히든 퀘스트 · 지역 12곳 체크','ui/feat-archive.webp','new','NEW'],['trade','거래 · 단가 계산기','수령액 · 묶음 단가 · 다이아 환산','ui/exchange.webp','new','NEW'],['craft','제작 도감','레시피 231종 · 재료 · 성공률 · 골드','ui/craft.webp','new','NEW'],['titles','칭호 도감','53종 장착 · 보유 효과','ui/titles.webp','new','NEW'],['systems','시스템 가이드','길드 승격 · 파티 · 창고 · 스킬북 등 48종','ui/growth.webp','new','NEW'],['pets','펫 도감','동행 · 비행 펫 28종','ui/feat-pet.webp','new','NEW'],['weapons','무기 개조 도감','개조 무기 30종 이미지','ui/feat-wpn.webp','new','NEW'],['timer','보스 타이머','처치 기록 · 1분 전 알림 · 일정표','ui/quest.webp','new','NEW'],['bm','상점 정리','다이아 단가 · 골드 소환권 · 가호 10단계','ui/dia.webp','',''],['videos','추천 영상','조회수 1만+ 템빨 영상 15편','ui/art.webp','','']];
 const featDraw=V=>{const L=FEAT.map((f,i)=>[f,i]);if(V)L.sort((a,b)=>((a[0][4]==='hot'?0:1)-(b[0][4]==='hot'?0:1))||((V[b[0][0]]||0)-(V[a[0][0]]||0))||(a[1]-b[1]));$('#homeFeat').innerHTML=L.map(([f])=>`<a class="fc" href="#${f[0]}"><div class="ft" style="background-image:url(${IB}${f[3]})">${f[5]?`<span class="fb ${f[4]}">${f[5]}</span>`:''}</div><h3>${f[1]}</h3><p>${f[2]}</p></a>`).join('')};featDraw();
 setTimeout(()=>{if(!window.__pvGet||!document.getElementById('homeFeat'))return;Promise.all([__pvGet(0),__pvGet(1)]).then(([a,b])=>{const V={};for(const k in a)if(k[0]!=='x')V[k]=(V[k]||0)+a[k];for(const k in b)if(k[0]!=='x')V[k]=(V[k]||0)+b[k];let T=0;for(const k in V)T+=V[k];if(T>=300)featDraw(V)})},1200);
 const EVS=[['최초의 초월자 기념 접속 선물 (계정당 1회)','2026-12-01','#coupons','12월 1일(화) 밤 11시 59분까지 접속','2026-12-01T23:59:00+09:00'],['구글 플레이 게임즈 PC 결제 30% 할인','2026-11-30','#coupons','11월 30일(월) 밤 11시 59분까지','2026-11-30T23:59:00+09:00'],['템빨고사 댓글 이벤트 · 플레이 포인트 9배','2026-12-02','#coupons','12월 2일(수) 밤 11시 59분까지','2026-12-02T23:59:00+09:00'],['템빨 정주행 챌린지 (웹툰 연계)','2026-12-11','#coupons','12월 11일(금) 밤 11시 59분까지','2026-12-11T23:59:00+09:00'],['SOOP 드롭스 (주마다 쿠폰 3개)','2026-12-31','#coupons','12월 31일(목) 밤 11시 59분까지','2026-12-31T23:59:00+09:00'],['오버토크 라이브 방송 (유튜브 · SOOP)','2026-12-01','#official','12월 1일(화) 밤 9시 방송','2026-12-01T21:00:00+09:00'],['선점 캐릭터 생성 마감','2026-12-10','#starter','12월 10일(목)까지 생성','2026-12-10T23:59:00+09:00'],['구글 플레이 포인트 초보자 패키지','2026-12-31','#bm','12월 31일(목) 밤 11시 59분까지','2026-12-31T23:59:00+09:00'],['런칭 기념 14일 출석부','2026-12-16','#coupons'],['장비 강화 지원 미션','2026-12-09','#coupons'],['런칭 소환 · 성물 패키지','2026-12-09','#bm'],['첫걸음 응원 패키지 ₩9,900','2026-12-09','#bm'],['프리미엄 시즌 패스','2027-01-01','#bm'],['새로운 전설의 시작! 8주 미션','2027-01-21','#coupons']];
@@ -2482,7 +2538,7 @@ const SYS=[
  {t:'무기 스킬 · 스킬북',c:'성장',i:'i-book',f:['[스킬] 창은 <b>무기 · 클래스 · 공용</b> 3탭. 무기 스킬은 마을 <b>스킬 상인</b>의 스킬북으로 배워요(클래스 스킬은 클래스에 붙어 있음)','스킬북 값 예시 — 대검(레이단 스킬 상인, 11/27 방송): 올려치기 1,500 · 대검 수련 5,000 · 찌르기 30,000 · 돌진 공격 <b>250만</b>(Lv.56) · 전투의 함성(Lv.63)','무기 스킬 예시: 지팡이 <b>마력탄</b>(노멀, 공격력 190%, MP 8, 8.4초) · <b>회복탄</b>(에픽, 312% + 준 피해의 5% MP 회복, MP 29, 13.4초) · <b>지팡이 수련</b>(노멀 버프, 300초 무기 최대 공격력 +2 · 최소 +1) / 활 <b>+2 강화 화살</b>(노멀, 142%) / 대검 <b>강철 의지</b>(에픽 버프, 300초 방어력 +30, MP 98)','<b>자동 사용 주기</b>를 정하면 스킬 창 아래에 「10초당 평균 MP 회복량 · 소모량」이 떠요. 소모량이 회복량보다 크면 자동사냥 중 MP가 바닥나니 주기를 늘리거나 MP 회복을 올리세요']},
  {t:'클래스 스킬 구조',c:'성장',i:'i-guide',f:['스킬 창에 <b>어느 클래스 스킬인지</b> 빨간 글씨로 표시돼요','<b>유니크 클래스는 에픽 클래스 하나의 스킬 3개를 물려받아요</b> (유니크 2 + 에픽 3 = 5개). 활 확인분: 화염사수 → <b>홍염의 화살</b> · 마물사냥꾼 → <b>드비리온의 사자</b> · 윈드 워커 → <b>폭풍사수</b> · 명사수 → <b>신궁</b> · 레인저 → <b>저격수</b> · 정예 궁사 → <b>특등 사수</b> / 대검: 정예 전사 → <b>근위 기사</b>','그래서 에픽 활은 최소 6종(명사수 · 정예 궁사 · 화염사수 · 마물사냥꾼 · 윈드 워커 · 레인저)','레전드리는 스킬 9개, 유니크 5개, 에픽 3개, 레어 0개','그래서 상위 클래스를 노릴 땐 <b>같은 계열 에픽</b>(화염사수 → 홍염의 화살) 스킬이 어떻게 쓰이는지 먼저 익혀 두면 좋아요','공속 · 시전 속도: 레어 16 · 7% → 에픽 28 · 15% → 유니크 43 · 27% → 레전드리 60 · 40% → 초월자 70 · 50%']},
  {t:'클래스 도감 · 수집 효과',c:'성장',i:'i-book',f:['클래스 메뉴 → [도감]. 등급별 수집 칸: <b>노멀 24 · 레어 24 · 에픽 24 · 유니크 24 · 레전드리 4</b> = 전체 <b>100종</b> (방송 화면, 11/26)','클래스를 모을수록 오른쪽 「획득 효과」가 쌓여요. <b>100% 완성 시</b> 화면에 보인 값: 무기 최대 공격력 2 · PVP 공격력 25 · 일반 방어력 29 · 스킬 방어력 26 · PVE 방어력 8 · PVP 방어력 9 · 원거리 방어력 5 · 마법 방어력 2 · PVE 방어력 무시 3 · PVP 명중 4','회피: 근거리 4 · 원거리 2 · 마법 5 · PVE 2 · PVP 1 · 회피 1 / 주는 피해 증가율 1.5% · 일반 피해 증가율 1.5% · 받는 피해 감소율 1% · 일반 피해 감소율 1%','<b>안 쓰는 클래스도 갖고만 있으면 효과가 켜져요</b>. 그래서 중복 클래스는 합성 포인트로 돌리되, 아직 없는 클래스는 한 번씩 모아 두는 게 이득','도감 왼쪽에 「수집 효과」 · 「성장 효과」 두 탭이 있어요 (성장 효과 내용은 방송에 아직 안 나와 확인 중)']},
- {t:'초월자 (최종 클래스)',c:'성장',i:'i-crown',f:['클래스 메뉴 <b>초월자</b> 탭: <b>레전드리 클래스 4종</b>(대검 · 활 · 지팡이 · 바이블 하나씩)의 힘을 융합해 개방','능력치 근력·민첩·지력·체력 각 <b>90</b> · 공격 속도 <b>70%</b> · 시전 속도 <b>50%</b> · HP <b>5,000</b> · MP <b>1,000</b> · 상태이상 적중/저항 각 5%','비교: 레전드리 서사시의 마검사 HP 2,025 · 공속 60% / 에픽 HP 725~775 · 공속 28% / 레어 HP 200~250 · 공속 16%','무기를 바꾸면 그 무기의 레전드리 스킬을 그대로 쓰는 구조 (대검이면 서사시의 마검사 스킬)','무기마다 레전드리를 하나씩 모아야 해서 <b>사실상 최종 목표</b>. 레전드리 4종: <b>서사시의 마검사</b>(대검) · <b>궁성</b>(활) · <b>교황</b>(바이블) · 지팡이 1종(이름 확인 중 — 방송에서 본 클래스 스킬: 마력 순환 · 마력 충격 · 원소 ○○(레전드리 버프, MP 103 · 쿨 50.4초, 감전 · 화상 상태인 적에게 추가 효과) · 원소 반응 · 과충전)','레전드리 공통 패시브 <b>불사</b>: HP가 바닥나면 5초 타겟팅 불가 + HP 30% 회복 (300초마다) → 레전드리는 한 번 더 살아나는 셈','레전드리끼리 비교: HP 마검사 2,025 &gt; 궁성 1,950 &gt; 교황 1,875 / MP 교황 500 &gt; 궁성 425 &gt; 마검사 350, 공속 60% · 시전 40%는 같음','<b>여는 법 (공식)</b>: 클래스 → [초월자] 탭에서 필요한 레전드리 4종 보유 현황 확인 → 4종을 다 가지면 [개방] 버튼 → 같은 화면 [전직]','<b>최초의 초월자</b>: 11/26 밤 뜨뜨뜨뜨의 「그리뜨뜨」(레가스 서버) — 넥슨이 공식 이벤트로 축하했어요(접속 선물 12/1까지)','<b>실제 화면 (뜨뜨뜨뜨 방송, 11/26 밤)</b>: 레전드리 4종을 다 모은 뒤 [개방]을 누르면 컷신이 나오고, 4종 초상화 아래 자물쇠 4칸이 <b>무기 계열 4칸</b>(대검 · 활 · 지팡이 · 바이블)으로 바뀌며 버튼이 [전직]으로 바뀌어요. 레벨 48 캐릭터로 개방 확인','전직하면 <b>지금 낀 무기 계열</b>로 시작. 클래스 초상화 아래 톱니로 <b>무기 계열마다 프리셋</b>(장착 무기 · 스킬 퀵슬롯 · 소모품) 하나씩 저장','전투 중엔 퀵슬롯 오른쪽 <b>무기 계열 변경 버튼</b>으로 바꿈 → 그 계열 스킬 + 레전드리 클래스 스킬 사용. 바꿀 때마다 <b>재사용 대기 시간</b>, 사망 · 거래 중엔 못 바꿈','계열을 바꿔도 이전 계열 <b>액티브 버프는 남은 시간 동안 유지</b>(패시브는 아님). 일반 클래스 ↔ 초월자 전직은 버프가 지워져요']},
+ {t:'초월자 (최종 클래스)',c:'성장',i:'i-crown',f:['클래스 메뉴 <b>초월자</b> 탭: <b>레전드리 클래스 4종</b>(대검 · 활 · 지팡이 · 바이블 하나씩)의 힘을 융합해 개방','능력치 근력·민첩·지력·체력 각 <b>90</b> · 공격 속도 <b>70%</b> · 시전 속도 <b>50%</b> · HP <b>5,000</b> · MP <b>1,000</b> · 상태이상 적중/저항 각 5%','비교: 레전드리 서사시의 마검사 HP 2,025 · 공속 60% / 에픽 HP 725~775 · 공속 28% / 레어 HP 200~250 · 공속 16%','무기를 바꾸면 그 무기의 레전드리 스킬을 그대로 쓰는 구조 (대검이면 서사시의 마검사 스킬)','무기마다 레전드리를 하나씩 모아야 해서 <b>사실상 최종 목표</b>. 레전드리 4종: <b>서사시의 마검사</b>(대검) · <b>궁성</b>(활) · <b>교황</b>(바이블) · <b>지공</b>(지팡이 · 넥슨 확률 공개표 기준 — 방송에서 본 클래스 스킬: 마력 순환 · 마력 충격 · 원소 ○○(레전드리 버프, MP 103 · 쿨 50.4초, 감전 · 화상 상태인 적에게 추가 효과) · 원소 반응 · 과충전)','레전드리 공통 패시브 <b>불사</b>: HP가 바닥나면 5초 타겟팅 불가 + HP 30% 회복 (300초마다) → 레전드리는 한 번 더 살아나는 셈','레전드리끼리 비교: HP 마검사 2,025 &gt; 궁성 1,950 &gt; 교황 1,875 / MP 교황 500 &gt; 궁성 425 &gt; 마검사 350, 공속 60% · 시전 40%는 같음','<b>여는 법 (공식)</b>: 클래스 → [초월자] 탭에서 필요한 레전드리 4종 보유 현황 확인 → 4종을 다 가지면 [개방] 버튼 → 같은 화면 [전직]','<b>최초의 초월자</b>: 11/26 밤 뜨뜨뜨뜨의 「그리뜨뜨」(레가스 서버) — 넥슨이 공식 이벤트로 축하했어요(접속 선물 12/1까지)','<b>실제 화면 (뜨뜨뜨뜨 방송, 11/26 밤)</b>: 레전드리 4종을 다 모은 뒤 [개방]을 누르면 컷신이 나오고, 4종 초상화 아래 자물쇠 4칸이 <b>무기 계열 4칸</b>(대검 · 활 · 지팡이 · 바이블)으로 바뀌며 버튼이 [전직]으로 바뀌어요. 레벨 48 캐릭터로 개방 확인','전직하면 <b>지금 낀 무기 계열</b>로 시작. 클래스 초상화 아래 톱니로 <b>무기 계열마다 프리셋</b>(장착 무기 · 스킬 퀵슬롯 · 소모품) 하나씩 저장','전투 중엔 퀵슬롯 오른쪽 <b>무기 계열 변경 버튼</b>으로 바꿈 → 그 계열 스킬 + 레전드리 클래스 스킬 사용. 바꿀 때마다 <b>재사용 대기 시간</b>, 사망 · 거래 중엔 못 바꿈','계열을 바꿔도 이전 계열 <b>액티브 버프는 남은 시간 동안 유지</b>(패시브는 아님). 일반 클래스 ↔ 초월자 전직은 버프가 지워져요']},
  {t:'클래스 성장 (각인)',c:'성장',i:'i-crown',f:['캐릭터 <b>1 · 2 · 3차 각성</b>을 하면 각각 <b>에픽 · 유니크 · 레전드리</b> 클래스 성장이 열려요 (각성 Lv.50 · 75 · 90)','클래스 → 에픽 이상 클래스 선택 → [성장]: 클래스마다 <b>각인 슬롯 6개</b>, 슬롯마다 정해진 아이템을 넣으면 그 단계 효과(스탯 · 스킬 레벨) 획득','각인 효과는 <b>그 클래스로 전직했을 때만</b> 적용. 일괄 각인 가능','<b>각인한 아이템은 되돌릴 수 없어요</b> — 넣기 전에 아이템 확인','클래스를 처음 얻을 때마다 등급별 <b>수집 효과</b>, 에픽 이상은 <b>누적 각인 수</b>에 따라 추가 효과 (같은 서버 계정 공유)']},
  {t:'공격대 (최대 50명)',c:'전투',i:'i-raid',f:['<b>최대 10파티 · 50명</b>. 메뉴 → [파티/공격대]에서 생성. <b>일반 공격대</b>(누구나) / <b>길드 공격대</b>(같은 길드만) — 만든 뒤 유형 변경 불가','모집: 서버 · 지역 · 길드 채팅에 모집 글 → 공격대 목록에도 뜸. 목록의 [참여]는 확인 없이 <b>바로 참여</b>(레벨 조건 필요), 직접 초대는 레벨 조건 무시','각 파티 첫 칸이 파티장. 공격대장이 <b>분배 방식</b>(순차 · 무작위 · 기여도 · 자유)을 정하면 모든 파티에 적용. 길드 공격대는 일정 등급 이상 아이템이 <b>길드 보관함</b>으로','경험치 · 골드는 공격대가 아니라 <b>원래 파티 분배</b> 방식대로','<b>차원 이동 · 뱀파이어 던전 입장 시 공격대에서 자동 탈퇴</b>. 공격대장이 나가면 다음 순번에게 자동 위임']},
  {t:'모험단 · 길드 승격',c:'서버',i:'i-crown',f:['<b>모험단 → 길드</b> 2단계. 메인 메뉴 왼쪽 [길드]에서 가입 · 관리. 모험단은 전용 채팅 · 구성원 관리, 길드가 되면 <b>길드 보관함 · 길드 공격대 · 우호/적대 설정</b>이 열려요. 모험단 때 쌓은 활동 포인트 · 채팅 · 공지는 그대로','가입 방식: 즉시 · 승인 · 암호. <b>한 곳에만</b> 소속 가능하고, 옮기려면 먼저 탈퇴(탈퇴 · 추방 후 한동안 재가입 제한)','승격 순서: 모험단장이 <b>라인하르트 성 길드 관리자 NPC</b>에게 심사 신청 → 서명 + 템빨 코인 모금 → 최종 서약','<b>11/27 점검 후 조건</b>: 심사 신청 템빨 코인 <b>500</b>(전 2,000) · 모금액 <b>3,000</b>(전 10,000) · 서명 <b>3명</b>(전 10명) · 승격 후 기본 정원 <b>30명</b>(전 20명). 심사 신청에 쓴 코인은 돌려받을 수 없어요','서명은 응원이 아니라 <b>승격되면 그 길드에 자동 가입</b>되는 절차. 어디에도 소속 안 된 캐릭터만, 한 모험단에만 서명 가능(승격 전 철회 가능)','활동 포인트: 인사 버튼 · 하루 첫 채팅 · 몬스터 처치 · 퀘스트/업적 · 길드 채팅 알림에 이모지 반응(정해진 시간 안). 길드 레벨이 오르면 최대 인원 · 깃발 꾸미기 확장','길드 랭킹(주간 활동 포인트, 매주 월 오전 5시 초기화) 순위에 따라 <b>거래소 판매 세금 감면</b>','보관함: 길드 공격대 전리품이 모여요. 권한자가 직접 나누거나 거래소에 팔아 대금을 나눔(우편함으로 받음). 보관함에 물건 · 재화가 남아 있거나 정산 중이면 해산 불가']},
@@ -2766,6 +2822,73 @@ try{initScene()}catch(e){}
  document.getElementById('cxQ').oninput=()=>{lim=120;draw()};document.getElementById('cxMore').onclick=()=>{lim+=240;draw()};
  const load=()=>{if(IDX||loading)return;loading=true;fetch('/data/codex.json').then(r=>r.json()).catch(()=>({src:{},pj:[]})).then(CX=>{build(CX);draw()})};
  if(/\/codex/.test(location.pathname)||location.hash==='#codex'||!('IntersectionObserver' in window))load();else{const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io.disconnect();load()}},{rootMargin:'3000px'});io.observe(G.parentElement)}})();
+// ---------- 연금 옵션 · 장비 비교 ----------
+(function(){const P=document.getElementById('alPart');if(!P)return;
+ const V=document.getElementById('alVar'),SL=document.getElementById('alSlots'),OUT=document.getElementById('alOut'),TB=document.getElementById('alTbl'),MX=document.getElementById('alMax'),CO=document.getElementById('alCost');
+ let A=null,mode='and',loading=false;const st={};
+ const ls=(k,v)=>{try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||'null');localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}};
+ const pct=x=>x>=0.1?(x*100).toFixed(x>=0.995?0:1)+'%':(x*100).toFixed(x*100>=0.1?2:4).replace(/0+$/,'').replace(/\.$/,'')+'%';
+ const num=n=>Math.round(n).toLocaleString('ko-KR');
+ const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+ const fams=()=>A.d[P.value][V.value];
+ const sum=a=>a.reduce((x,v)=>x+v[1],0);
+ function opts(){const vs=Object.keys(A.d[P.value]);const keep=vs.includes(V.value)?V.value:(vs.find(v=>v.startsWith('유니크 일반'))||vs[0]);V.innerHTML=vs.map(v=>`<option${v===keep?' selected':''}>${v}</option>`).join('')}
+ function slots(){const F=fams();const sv=st[P.value+'|'+V.value]||{};
+  SL.innerHTML=Object.entries(F).map(([s,L])=>{const cur=sv[s]||{};const fam=L.find(x=>x[0]===cur.f);
+   return `<div class="als" data-s="${s}"><b>${s}</b> <span class="small mute">${L.length}종</span><select class="alf"><option value="">아무거나 (노리지 않음)</option>${L.map(x=>`<option value="${esc(x[0])}"${fam&&fam[0]===x[0]?' selected':''}>${esc(x[0])} · ${pct(sum(x[2])/100)}</option>`).join('')}</select><select class="alv"${fam?'':' disabled'}>${fam?fam[2].map(v=>`<option value="${v[0]}"${String(cur.v)===String(v[0])?' selected':''}>${v[0]}${fam[1]} 이상</option>`).join(''):'<option>값</option>'}</select><span class="alp small" data-p></span></div>`}).join('');calc()}
+ function calc(){const F=fams();const key=P.value+'|'+V.value;const sv={};const ps=[];
+  SL.querySelectorAll('.als').forEach(d=>{const s=d.dataset.s,f=d.querySelector('.alf').value,vsel=d.querySelector('.alv');const L=F[s].find(x=>x[0]===f);const out=d.querySelector('[data-p]');
+   if(!L){out.textContent='';return}const v=+vsel.value;const p=L[2].filter(x=>x[0]>=v).reduce((a,x)=>a+x[1],0)/100;sv[s]={f,v};ps.push(p);out.textContent='→ '+pct(p)});
+  st[key]=sv;ls('tn_alc',{p:P.value,v:V.value,st,mode,cost:CO.value});
+  if(!ps.length){OUT.innerHTML='—<small>슬롯마다 원하는 옵션을 고르면 계산해요</small>';return}
+  const p=mode==='and'?ps.reduce((a,x)=>a*x,1):1-ps.reduce((a,x)=>a*(1-x),1);
+  const n=q=>Math.ceil(Math.log(1-q)/Math.log(1-p));const c=+CO.value||0;
+  OUT.innerHTML=p<=0?'불가능<small>이 조합은 나오지 않아요</small>':p>=1?'100%<small>항상 맞아요</small>':`한 번에 ${pct(p)} · 평균 ${num(1/p)}번<small>운 좋은 절반은 ${num(n(.5))}번 안에, 열 명 중 아홉은 ${num(n(.9))}번 안에 끝나요${c?` · 평균 비용 약 ${num(c/p)} 골드 + 촉매제 ${num(1/p)}개`:' · 촉매제도 평균 '+num(1/p)+'개'}</small>`}
+ function table(){const F=fams();let all=1;
+  TB.innerHTML=Object.entries(F).map(([s,L])=>{let mx=0;const rows=L.map(x=>{const t=sum(x[2])/100,m=x[2][x[2].length-1];mx+=m[1]/100;return `<tr><td>${esc(x[0])}</td><td>${x[2].map(v=>v[0]+x[1]).join(' · ')}</td><td class="n">${pct(t)}</td><td class="n">${m[0]}${x[1]} · ${pct(m[1]/100)}</td></tr>`}).join('');all*=mx;
+   return `<details class="mdx"${s==='슬롯1'?' open':''}><summary><b>${s}</b> <span class="small mute">옵션 ${L.length}종 · 최대치가 뜰 확률 ${pct(mx)}</span></summary><div class="scroll"><table class="ptbl"><thead><tr><th>옵션</th><th>나오는 값</th><th class="n">나올 확률</th><th class="n">최대치</th></tr></thead><tbody>${rows}</tbody></table></div></details>`}).join('');
+  MX.innerHTML=`<b>모든 슬롯 최대치</b>(보너스 능력치 조건)가 한 번에 뜰 확률: <b>${pct(all)}</b> · 평균 약 ${num(1/all)}번`;
+  document.getElementById('alAt').textContent='넥슨 확률 공개표 · '+A.at.replace(/^(\d+)-0?(\d+)-0?(\d+)$/,'$2월 $3일')+' 기준'}
+ const all=()=>{slots();table()};
+ function boot(){const s=ls('tn_alc')||{};if(s.st)Object.assign(st,s.st);if(s.mode)mode=s.mode;if(s.cost)CO.value=s.cost;
+  P.innerHTML=A.parts.map(p=>`<option${p===(s.p||'무기')?' selected':''}>${p}</option>`).join('');opts();if(s.v&&A.d[P.value][s.v])V.value=s.v;
+  [...document.querySelectorAll('#alMode button')].forEach(b=>b.classList.toggle('on',b.dataset.m===mode));all()}
+ P.onchange=()=>{opts();all()};V.onchange=all;CO.oninput=calc;
+ SL.addEventListener('change',e=>{if(e.target.classList.contains('alf')){const d=e.target.closest('.als');const k=P.value+'|'+V.value;st[k]=st[k]||{};st[k][d.dataset.s]={f:e.target.value,v:0};slots()}else calc()});
+ document.getElementById('alMode').onclick=e=>{const b=e.target.closest('button');if(!b)return;mode=b.dataset.m;[...b.parentNode.children].forEach(x=>x.classList.toggle('on',x===b));calc()};
+ const load=()=>{if(A||loading)return;loading=true;fetch('/data/alchemy.json').then(r=>r.json()).then(d=>{A=d;boot();cmpStats(d)}).catch(()=>{SL.innerHTML='<p class="mute small">확률표를 못 불러왔어요. 새로고침해 주세요.</p>'})};
+ if(/\/gear/.test(location.pathname)||location.hash==='#gear'||!('IntersectionObserver' in window))load();else{const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io.disconnect();load()}},{rootMargin:'2000px'});io.observe(SL)}
+ // 장비 비교기
+ const R=document.getElementById('cmRows'),CM=document.getElementById('cmOut');let goal='hunt';
+ let rows=ls('tn_cmp')||[['공격력','',''],['PVE 공격력','',''],['보스 몬스터 공격력','',''],['명중','',''],['치명타 피해','','']];
+ const EXTRA=['공격 속도','이동 속도','시전 속도','최소 공격력','최대 공격력'];
+ function cmpStats(d){const s=new Set();Object.values(d.d).forEach(v=>Object.values(v).forEach(sl=>Object.values(sl).forEach(L=>L.forEach(x=>s.add(x[0]+(x[1]?'|%':''))))));
+  const L=[...new Set([...s].map(x=>x.split('|')[0]))].concat(EXTRA);document.getElementById('cmStats').innerHTML=L.map(x=>`<option value="${esc(x)}">`).join('')}
+ const PRE=[['PVE ',['hunt','boss']],['PVP ',['pvp']],['일반 몬스터 ',['hunt']],['보스 몬스터 ',['boss']]];
+ function parse(n){n=n.trim();let ctx=null,kind='';for(const [p,c] of PRE)if(n.startsWith(p)){ctx=c;n=n.slice(p.length);break}
+  if(n.startsWith('일반 ')&&n!=='일반'){kind='평타';n=n.slice(3)}else if(n.startsWith('스킬 ')){kind='스킬';n=n.slice(3)}return {base:n,ctx,kind}}
+ function draw(){R.innerHTML=rows.map((r,i)=>`<div class="gcrow" data-i="${i}"><input class="in" list="cmStats" value="${esc(r[0])}" placeholder="능력치 이름" data-k="0"><input class="in" type="number" step="any" inputmode="decimal" value="${esc(r[1])}" placeholder="A" data-k="1"><input class="in" type="number" step="any" inputmode="decimal" value="${esc(r[2])}" placeholder="B" data-k="2"><button type="button" class="gcx" aria-label="이 줄 지우기">×</button></div>`).join('');res()}
+ function res(){ls('tn_cmp',rows);const T={};
+  rows.forEach(r=>{if(!r[0].trim()||(r[1]===''&&r[2]===''))return;const p=parse(r[0]);if(p.ctx&&!p.ctx.includes(goal))return;const k=p.base;T[k]=T[k]||{all:[0,0],평타:[0,0],스킬:[0,0],has:{}};const t=T[k];
+   const tgt=p.kind?[p.kind]:['all'];tgt.forEach(g=>{t[g][0]+=+r[1]||0;t[g][1]+=+r[2]||0});if(p.kind)t.has[p.kind]=1});
+  const ks=Object.keys(T);if(!ks.length){CM.innerHTML='<p class="small mute" style="margin:0">능력치와 값을 넣으면 여기에 비교 결과가 나와요.</p>';return}
+  let wa=0,wb=0;const line=(n,a,b)=>{const d=+(b-a).toFixed(3);if(d>0)wb++;else if(d<0)wa++;return `<tr><td>${esc(n)}</td><td class="n">${+a.toFixed(3)}</td><td class="n">${+b.toFixed(3)}</td><td class="n ${d>0?'gcup':d<0?'gcdn':''}">${d>0?'B +'+d:d<0?'A +'+(-d):'같음'}</td></tr>`};
+  const body=ks.map(k=>{const t=T[k];if(!t.has.평타&&!t.has.스킬)return line(k,t.all[0],t.all[1]);
+   return ['평타','스킬'].map(g=>line(k+' ('+g+')',t.all[0]+t[g][0],t.all[1]+t[g][1])).join('')}).join('');
+  const gn={hunt:'사냥',boss:'보스',pvp:'PvP'}[goal];
+  CM.innerHTML=`<div class="scroll"><table class="ptbl"><thead><tr><th>${gn}에서 붙는 능력치</th><th class="n">A</th><th class="n">B</th><th class="n">차이</th></tr></thead><tbody>${body}</tbody></table></div><div class="out" style="font-size:18px">${wa===wb?'능력치 수로는 비슷해요':(wa>wb?'A':'B')+'가 '+Math.max(wa,wb)+'개 능력치에서 앞서요'}<small>${gn} 기준 · A가 앞선 능력치 ${wa}개, B가 앞선 능력치 ${wb}개. 어떤 능력치가 더 중요한지는 무기 · 클래스마다 달라요(명중이 모자라면 명중부터)</small></div>`}
+ R.addEventListener('input',e=>{const d=e.target.closest('.gcrow');if(!d)return;rows[+d.dataset.i][+e.target.dataset.k]=e.target.value;res()});
+ R.addEventListener('click',e=>{const b=e.target.closest('.gcx');if(!b)return;rows.splice(+b.parentNode.dataset.i,1);if(!rows.length)rows.push(['','','']);draw()});
+ document.getElementById('cmAdd').onclick=()=>{rows.push(['','','']);draw();const l=R.lastElementChild;l&&l.querySelector('input').focus()};
+ document.getElementById('cmSwap').onclick=()=>{rows=rows.map(r=>[r[0],r[2],r[1]]);draw()};
+ document.getElementById('cmClr').onclick=()=>{rows=[['','','']];draw()};
+ document.getElementById('cmGoal').onclick=e=>{const b=e.target.closest('button');if(!b)return;goal=b.dataset.g;[...b.parentNode.children].forEach(x=>x.classList.toggle('on',x===b));res()};
+ draw()})();
+// ---------- 서버 목록 ----------
+(function(){const bs=document.querySelectorAll('#servers .svb button');if(!bs.length||typeof STRM==='undefined')return;
+ bs.forEach(b=>{const n=STRM.filter(r=>r[0]===b.dataset.sv).length;if(n)b.innerHTML=b.dataset.sv+' <b>'+n+'</b>';else b.title='아직 확인된 방송인 없음'});
+ document.getElementById('servers').addEventListener('click',e=>{const b=e.target.closest('.svb button');if(!b)return;const c=document.querySelector('#stChips button[data-v="'+b.dataset.sv+'"]');
+  bs.forEach(x=>x.classList.toggle('on',x===b));if(c){c.click();document.getElementById('stList').scrollIntoView({behavior:'smooth',block:'start'})}else{const L=document.getElementById('stList');L.innerHTML='<div class="card"><h3>'+b.dataset.sv+' 서버</h3><p class="small mute" style="margin:0">아직 확인된 방송인이 없어요. 이 서버에서 하는 방송인을 알면 <a href="#contact">제보</a>해 주세요.</p></div>';[...document.querySelectorAll('#stChips button')].forEach(x=>x.classList.remove('on'));L.scrollIntoView({behavior:'smooth',block:'start'})}})})();
 // ---------- 탐사 지도 ----------
 (function(){const S=document.getElementById('mpSvg');if(!S)return;
  const R=[['바이란',132,151],['노튼',404,84],['킨바이',778,132],['윈스톤',516,221],['라인하르트',276,276],['엑카루',780,343],['알테스',264,432],['벨두인',519,415],['레이단',732,494],['수아즈 협곡',1138,456],['코크로 섬',634,626],['크라임 숲',970,619],['레베카',1260,607],['지브라',1354,770]];

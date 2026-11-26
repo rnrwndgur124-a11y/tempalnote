@@ -185,6 +185,16 @@ label{font-weight:700;font-size:13.5px;display:block;margin-bottom:6px;color:#c9
 .fpgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:12px}
 .fpc{display:block;text-align:left;background:#0b1525;border:1px solid var(--line2);border-radius:10px;padding:0 0 8px;color:var(--ink);font:inherit;cursor:pointer;overflow:hidden}.fpc:hover{border-color:var(--gold)}.fpc img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}.fpc b{display:block;padding:6px 8px 0;font-size:14px}.fpc span{display:block;padding:0 8px;font-size:11px;color:var(--mute)}
 #fpModal{background:#020610cc;backdrop-filter:blur(3px)}.fp-box{max-width:760px}.fp-in{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px}@media(max-width:720px){.fp-in{grid-template-columns:1fr}}
+.al2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.alslots{display:grid;gap:8px;margin-top:10px}
+.als{display:grid;grid-template-columns:64px minmax(0,1.6fr) minmax(0,1fr) 72px;gap:8px;align-items:center;background:#ffffff05;border:1px solid var(--line2);border-radius:10px;padding:8px}
+.als .small.mute{display:none}
+.als .alp{color:var(--champ);font-weight:800;text-align:right}
+.gcrow{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr) minmax(0,1fr) 36px;gap:6px;margin-bottom:6px;align-items:center}
+.gcx{min-height:36px;padding:0;border-radius:8px;background:#ffffff08;border:1px solid var(--line2);color:#c9d3e3;font-size:18px}
+.gcup{color:#7de0a8;font-weight:800}.gcdn{color:#ffb070;font-weight:800}
+.svb button b{color:var(--gold2);margin-left:4px}.svb button.on b{color:#1b1206}
+@media(max-width:640px){.al2{grid-template-columns:1fr}.als{grid-template-columns:1fr 1fr}.als b{grid-column:1/-1}.als .alp{grid-column:1/-1;text-align:left}.gcrow{grid-template-columns:minmax(0,1fr) 58px 58px 34px}}
 .mdx{border-top:1px solid #ffffff10;padding:8px 0}.mdx summary{cursor:pointer;list-style-position:inside}.mdx summary b{color:var(--gold)}
 .sk details summary{cursor:pointer;color:var(--gold);font-size:13px;font-weight:700;margin-top:4px}
 .sk details img{display:block;margin-top:8px;max-width:min(100%,420px);border-radius:8px;border:1px solid var(--line2)}
