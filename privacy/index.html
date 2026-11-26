@@ -586,7 +586,7 @@ $('#offOrig').innerHTML=OFF_ORIG.map(otile).join('');
 $('#homeOfficial').innerHTML=[OFF_GAME[0],OFF_GAME[1],OFF_ORIG[0],OFF_ORIG[1]].map(otile).join('');
 
 /* 라우팅 */
-function route(){const h=location.hash.slice(1);const v=PAGES[h]?h:(PAGES[window.START]?window.START:'home');
+function route(){const h=location.hash.slice(1);if(h&&PAGES[h]&&!document.querySelector('.view[data-v="'+h+'"]')){location.replace(h==='home'?'/':'/'+h+'/');return}const v=PAGES[h]?h:(PAGES[window.START]?window.START:'home');
   document.querySelectorAll('.view').forEach(s=>s.classList.toggle('on',s.dataset.v===v));
   document.querySelectorAll('[data-k]').forEach(a=>a.classList.toggle('on',a.dataset.k===v));
   document.querySelectorAll('.dd').forEach(d=>{d.classList.toggle('on',GROUPS[d.dataset.g].k.includes(v));d.classList.remove('open')});
