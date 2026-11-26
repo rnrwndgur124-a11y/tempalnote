@@ -257,6 +257,7 @@ label{font-weight:700;font-size:13.5px;display:block;margin-bottom:6px;color:#c9
 .hotl li{margin:6px 0}
 .cmbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;justify-content:space-between;margin-bottom:14px}.cmbar .who{font-weight:800}.cmbar .who small{color:var(--mute);font-weight:500}
 .gbtn{display:inline-flex;align-items:center;gap:8px;background:#fff;color:#1f1f1f;border:0;border-radius:99px;padding:8px 16px;font-weight:800;min-height:40px;cursor:pointer}.gbtn svg{width:18px;height:18px}
+.rk{list-style:none;margin:0 0 10px;padding:0;display:grid;gap:6px}.rk li{display:grid;grid-template-columns:34px 1fr auto auto;align-items:center;gap:10px;padding:9px 12px;border:1px solid var(--line2);border-radius:10px;background:var(--panel)}.rk li .n{font:900 17px/1 "Noto Serif KR",serif;color:var(--mute);text-align:center}.rk li.t1{border-color:#FFE81288;background:linear-gradient(90deg,#3a2a10,var(--panel))}.rk li.t1 .n{color:#FFE812}.rk li.t2 .n{color:#dfe6ee}.rk li.t3 .n{color:#d39a5c}.rk li.mine{outline:2px solid #7de0a8}.rk li .v{font-size:18px;color:var(--champ)}.rk li small{color:var(--mute)}.rk .rkdel{min-height:30px;padding:2px 8px;font-size:12px}
 .cmtabs{display:flex;gap:6px;margin:0 0 14px}.cmtabs button{flex:1;min-height:44px;border-radius:12px;background:#ffffff08;border:1px solid var(--line2);color:#c9d3e3;font-weight:800}.cmtabs button.on{background:linear-gradient(#f6e2a8,#c99a4e);color:#1b1206;border-color:#f6e6bd}
 .cmrow{display:grid;grid-template-columns:auto 1fr auto;gap:2px 10px;padding:12px 4px;border-top:1px solid #ffffff10;cursor:pointer;align-items:center}.cmrow:hover{background:#ffffff06}.cmrow .bd{font-size:11px;font-weight:800;color:#c9a24a;border:1px solid #c9a24a55;border-radius:99px;padding:1px 8px;white-space:nowrap}.cmrow .tt{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cmrow .tt em{font-style:normal;color:#ffb86b;font-size:13px;margin-left:4px}.cmrow .mt{grid-column:2/4;font-size:12px;color:var(--mute)}.cmrow .lk{font-size:12px;color:#ff8f8f;white-space:nowrap}
 .cmpost h2{margin:6px 0 4px;font-size:22px}.cmpost .mt{font-size:13px;color:var(--mute);margin-bottom:14px}.cmbody{white-space:pre-wrap;word-break:break-word;line-height:1.75;font-size:15px}.cmbody a,.cmc a,.cmmsg a{color:#9cc4ff;word-break:break-all}
@@ -501,7 +502,11 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
     </div>
     <div class="card"><h3 style="margin-top:0">오늘의 강화 기록 <small class="mute" id="smDay" style="font-weight:500">2026. 11. 26. · 새벽 5시 초기화</small></h3>
       <div class="chips2" id="smStat"><span>오늘 최고 <b>+0</b></span><span>시도 <b>0</b>회</span><span>파괴 <b>0</b>번</span><span>역대 최고 <b>+0</b></span></div>
-      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><button type="button" id="smShare">📢 기록 자랑하기 (복사)</button><button type="button" class="ghost" id="smReset">오늘 기록 지우기</button></div></div>
+      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><button type="button" id="smShare">📢 기록 자랑하기 (복사)</button><button type="button" class="ghost" id="smReset">+0부터 다시</button></div></div>
+    <div class="card" id="rkCard"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px"><h3 style="margin:0">👑 오늘의 강화왕 <small class="mute" style="font-weight:500">새벽 5시 초기화</small></h3><div class="cmtabs" id="cmRkTabs" style="margin:0;min-width:200px"><button type="button" class="on" data-t="best">강화왕</button><button type="button" data-t="boom">파괴왕</button></div></div>
+      <div id="cmRkMe" class="small" style="margin:0 0 10px">랭킹 불러오는 중…</div>
+      <ol id="cmRkList" class="rk"></ol>
+      <button type="button" class="ghost" id="cmRkRe">순위 새로고침</button></div>
   </div>
   <div id="smSum" hidden>
     <div class="card" style="text-align:center">
@@ -512,7 +517,7 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
     <div class="card"><h3 style="margin-top:0">오늘 소환 기록</h3><div class="chips2" id="smSStat"><span>소환 <b>0</b>회</span><span>다이아 <b>0</b></span><span>원화 환산 <b>0원</b></span><span>유니크 <b>0</b></span><span>에픽 <b>0</b></span></div><div id="smUniq" class="small" style="margin-top:10px"><span class="mute">아직 유니크가 없어요. 평균 1,667회에 한 번이에요.</span></div>
       <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><button type="button" id="smSShare">📢 결과 자랑하기 (복사)</button><button type="button" class="ghost" id="smSReset">소환 기록 지우기</button></div></div>
   </div>
-  <div class="card faq" style="margin-top:18px"><h2>자주 묻는 질문</h2><h3>확률이 진짜 게임이랑 같아요?</h3><p>넥슨이 공개한 확률표(11월 26일 기준)를 그대로 넣었어요. 표는 <a href="/prob/">확률 총정리</a>에서 볼 수 있어요.</p><h3>원화는 어떻게 계산해요?</h3><p>상점 다이아는 상품 상관없이 1개 22원이라, 클래스 1회 3,000원 · 갓 핸드 1회 2,400원(11회 소환 기준)으로 계산해요.</p><h3>기록은 어디 저장돼요?</h3><p>이 브라우저에만 저장되고, 오늘 기록은 매일 새벽 5시에 새로 시작해요. 역대 최고 기록은 남아요.</p></div>
+  <div class="card faq" style="margin-top:18px"><h2>자주 묻는 질문</h2><h3>확률이 진짜 게임이랑 같아요?</h3><p>넥슨이 공개한 확률표(11월 26일 기준)를 그대로 넣었어요. 표는 <a href="/prob/">확률 총정리</a>에서 볼 수 있어요.</p><h3>원화는 어떻게 계산해요?</h3><p>상점 다이아는 상품 상관없이 1개 22원이라, 클래스 1회 3,000원 · 갓 핸드 1회 2,400원(11회 소환 기준)으로 계산해요.</p><h3>기록은 어디 저장돼요?</h3><p>이 브라우저에 저장되고, 오늘 기록은 매일 새벽 5시에 새로 시작해요. 역대 최고 기록은 남아요.</p><h3>오늘의 강화왕엔 어떻게 올라가요?</h3><p>구글 로그인하고 닉네임을 정하면 오늘 최고 강화 · 시도 수 · 파괴 수가 자동으로 올라가요. 같은 강화 수치면 더 적은 시도로 찍은 사람이 위예요. 조작한 기록은 운영자가 지워요.</p></div>
 </div></div></section>
 
 <!-- 문의 -->
@@ -599,7 +604,7 @@ evRender();
 $('#homeMenu').innerHTML=GROUPS.map(g=>`<div class="mg"><h3>${g.n} <small>${g.e}</small></h3><div class="tiles sm">${g.k.map(tile).join('')}</div></div>`).join('');
 $('#homeTools').innerHTML=['starter',...GROUPS[0].k].map(tile).join('');
 $('#homeGuides').innerHTML=['systems','weapons','bm','coupons'].map(tile).join('');
-const UPD=[['11.26','새 도구: 강화 · 소환 시뮬레이터(공식 확률, 파괴 · 축복 · 시그니처, 클래스 · 갓 핸드 1회/11회, 오늘의 기록 · 자랑하기) / 확률 총정리에 「유니크 하나에 평균 얼마?」 과금 기대 비용 표'],['11.26','새 페이지: 강화 · 소환 확률 총정리 — 넥슨 공식 확률표(장비 일반/축복/저주 강화, 오버기어드, 스킬 강화, 감정, 소환권, 합성, 잠재력 24보드, 분해) + 도달 확률 계산 · 강화 기대값 계산기에 「공식 확률 불러오기」'],['11.26','개발자 후원 버튼 추가 (카카오페이 · 사이트 소개와 맨 아래)'],['11.26','커뮤니티 오픈: 자유 · 질문 · 공략 · 길드 모집 게시판, 댓글 · 추천 · 신고, 실시간 채팅(전체 · 파티 · 거래 · 질문). 구글 로그인 후 닉네임으로 이용'],['11.26','새 페이지: 방송인 서버 찾기 — 유튜브 · SOOP 방송인 32명의 서버(라우엘 · 레가스 · 루나 · 하스터 · 루비 · 파그마 · 아그너스 · 그리드), 유료 광고 표시, 길드 모집 여부, 오늘 방송 화제'],['11.26','새 페이지: 공식 소식 · 확인 중인 현상(버그 9건과 피하는 법) · 거래/단가/다이아 계산기 · 첫 주 체크리스트 · 서버별 크리에이터 · 홈 화면에 추가(앱처럼 설치) · 레가스/라우엘 생성 제한 해제 반영'],['11.26','공지 반영: 라우엘 서버 캐릭터 생성 제한 해제(레가스는 유지) · 아이폰 최소 사양 iOS 18 (12월 중 스토어 수정)'],['11.26','제작 도감 231종(재료 · 성공률 · 골드 · 이미지) · 칭호 도감 53종 · 업적 목록 · 등급별 제작 규칙 · 지역 12곳 · 스킨 수집 효과 추가'],['11.26','공식 가이드 반영: 잠재력 · 갓 핸드 확정/합성(재소환 5회 · 마일리지 15) · 연금/감정 · 던전 시간 · 왕실 무기고 · 차원 시즌 · 보스 알림 · 비접속 모드 · 사망 페널티 · 거래소 / 이벤트 총정리 · 결제 할인 7종 / 추천 영상 6편 추가'],['11.26','공식 공지 반영: 구글 플레이 포인트 전용 초보자 패키지(포인트 500 · 골드바 10만 골드) · 레가스/라우엘 서버 캐릭터 생성 제한 · 12/1 오버토크 라이브 · 선점 캐릭터 12/10 마감'],['11.26','이미지 대규모 추가: 무기 개조 30종 · 갓 핸드 27종 아이콘 · 펫 28종 · 상점/이벤트 화면 / 새 도구: 무기 비교표 · 보스 타이머 · 일정표 · 백업 · 피드백'],['11.26','추천 영상 추가: 조회수 1만 이상 템빨 유튜브 15편'],['11.26','클래스 도감 전면 개편: 클래스 55종 외형 이미지 · 능력치 · 스킬 87개 설명 + 게임 스킬 창 원본'],['11.26','유니크 활 6종 전체 스킬 · 대검 유니크 근위 기사 · 에픽 → 유니크 계승 짝 7쌍'],['11.26','레전드리 3종(서사시의 마검사 · 궁성 · 교황) 스킬 27개 · 공통 패시브 불사 · 초월자 정리'],['11.26','클래스 30종 정리: 에픽 14종 특화 옵션 · 레어 16종 규칙 (무명=공격 · 중급=명중 · 능숙한=생존)'],['11.26','상점 완전 분석: 다이아 단가 22원 · 골드 소환권 · 베니스의 가호 10단계 · 템빨 코인 · 시즌 패스'],['11.26','상점 가격표(₩9,900~₩55,000) · 제작 실측 추가'],['11.26','8주 미션 전 주차 완성 · 장비 강화 지원 미션 · 퀘스트 구조(메인 8막 · 서브 · 히든)'],['11.26','이벤트: 14일 출석부 보상표 · 8주 미션 주차별 목표 · 학살자 보상 제한 주의'],['11.26','장비 강화 실측(100% · 1,000골드 · 안전 구간 · 파괴 보호권) · 펫 도감 34종 정리'],['11.26','갓 핸드 메모리 27종 수치 · 레전드리/유니크 짝 분석 · 무기 개조 도감 · 게임 메뉴 추가'],['11.26','정식 출시 — PC·모바일 사양, 서버, 무기 개조, 템빨 코인, 무료 편의 기능 추가'],['11.25','사이트 전면 개편 — 새 디자인, 3D 첫 화면, 메뉴와 검색'],['11.25','강화 기대값 계산기 · 갓 핸드 프리셋 · 첫날 가이드 추가'],['11.25','오픈 — 강화 기록기, 숙제, 무기 추천, 공개 정보 정리'],['다음','지팡이 스킬 · 보스 목록 · 강화 비용표 · 새 쿠폰 나오면 바로']];
+const UPD=[['11.26','「오늘의 강화왕」 랭킹: 시뮬레이터 오늘 최고 강화 · 파괴 순위(구글 로그인, 새벽 5시 초기화), 첫 화면에 오늘 1위 표시'],['11.26','새 도구: 강화 · 소환 시뮬레이터(공식 확률, 파괴 · 축복 · 시그니처, 클래스 · 갓 핸드 1회/11회, 오늘의 기록 · 자랑하기) / 확률 총정리에 「유니크 하나에 평균 얼마?」 과금 기대 비용 표'],['11.26','새 페이지: 강화 · 소환 확률 총정리 — 넥슨 공식 확률표(장비 일반/축복/저주 강화, 오버기어드, 스킬 강화, 감정, 소환권, 합성, 잠재력 24보드, 분해) + 도달 확률 계산 · 강화 기대값 계산기에 「공식 확률 불러오기」'],['11.26','개발자 후원 버튼 추가 (카카오페이 · 사이트 소개와 맨 아래)'],['11.26','커뮤니티 오픈: 자유 · 질문 · 공략 · 길드 모집 게시판, 댓글 · 추천 · 신고, 실시간 채팅(전체 · 파티 · 거래 · 질문). 구글 로그인 후 닉네임으로 이용'],['11.26','새 페이지: 방송인 서버 찾기 — 유튜브 · SOOP 방송인 32명의 서버(라우엘 · 레가스 · 루나 · 하스터 · 루비 · 파그마 · 아그너스 · 그리드), 유료 광고 표시, 길드 모집 여부, 오늘 방송 화제'],['11.26','새 페이지: 공식 소식 · 확인 중인 현상(버그 9건과 피하는 법) · 거래/단가/다이아 계산기 · 첫 주 체크리스트 · 서버별 크리에이터 · 홈 화면에 추가(앱처럼 설치) · 레가스/라우엘 생성 제한 해제 반영'],['11.26','공지 반영: 라우엘 서버 캐릭터 생성 제한 해제(레가스는 유지) · 아이폰 최소 사양 iOS 18 (12월 중 스토어 수정)'],['11.26','제작 도감 231종(재료 · 성공률 · 골드 · 이미지) · 칭호 도감 53종 · 업적 목록 · 등급별 제작 규칙 · 지역 12곳 · 스킨 수집 효과 추가'],['11.26','공식 가이드 반영: 잠재력 · 갓 핸드 확정/합성(재소환 5회 · 마일리지 15) · 연금/감정 · 던전 시간 · 왕실 무기고 · 차원 시즌 · 보스 알림 · 비접속 모드 · 사망 페널티 · 거래소 / 이벤트 총정리 · 결제 할인 7종 / 추천 영상 6편 추가'],['11.26','공식 공지 반영: 구글 플레이 포인트 전용 초보자 패키지(포인트 500 · 골드바 10만 골드) · 레가스/라우엘 서버 캐릭터 생성 제한 · 12/1 오버토크 라이브 · 선점 캐릭터 12/10 마감'],['11.26','이미지 대규모 추가: 무기 개조 30종 · 갓 핸드 27종 아이콘 · 펫 28종 · 상점/이벤트 화면 / 새 도구: 무기 비교표 · 보스 타이머 · 일정표 · 백업 · 피드백'],['11.26','추천 영상 추가: 조회수 1만 이상 템빨 유튜브 15편'],['11.26','클래스 도감 전면 개편: 클래스 55종 외형 이미지 · 능력치 · 스킬 87개 설명 + 게임 스킬 창 원본'],['11.26','유니크 활 6종 전체 스킬 · 대검 유니크 근위 기사 · 에픽 → 유니크 계승 짝 7쌍'],['11.26','레전드리 3종(서사시의 마검사 · 궁성 · 교황) 스킬 27개 · 공통 패시브 불사 · 초월자 정리'],['11.26','클래스 30종 정리: 에픽 14종 특화 옵션 · 레어 16종 규칙 (무명=공격 · 중급=명중 · 능숙한=생존)'],['11.26','상점 완전 분석: 다이아 단가 22원 · 골드 소환권 · 베니스의 가호 10단계 · 템빨 코인 · 시즌 패스'],['11.26','상점 가격표(₩9,900~₩55,000) · 제작 실측 추가'],['11.26','8주 미션 전 주차 완성 · 장비 강화 지원 미션 · 퀘스트 구조(메인 8막 · 서브 · 히든)'],['11.26','이벤트: 14일 출석부 보상표 · 8주 미션 주차별 목표 · 학살자 보상 제한 주의'],['11.26','장비 강화 실측(100% · 1,000골드 · 안전 구간 · 파괴 보호권) · 펫 도감 34종 정리'],['11.26','갓 핸드 메모리 27종 수치 · 레전드리/유니크 짝 분석 · 무기 개조 도감 · 게임 메뉴 추가'],['11.26','정식 출시 — PC·모바일 사양, 서버, 무기 개조, 템빨 코인, 무료 편의 기능 추가'],['11.25','사이트 전면 개편 — 새 디자인, 3D 첫 화면, 메뉴와 검색'],['11.25','강화 기대값 계산기 · 갓 핸드 프리셋 · 첫날 가이드 추가'],['11.25','오픈 — 강화 기록기, 숙제, 무기 추천, 공개 정보 정리'],['다음','지팡이 스킬 · 보스 목록 · 강화 비용표 · 새 쿠폰 나오면 바로']];
 $('#nstripT').textContent=UPD[0][0]+' 업데이트 · '+UPD[0][1];
 $('#upd').innerHTML=UPD.slice(0,7).map(u=>`<li><b style="color:var(--champ)">${u[0]}</b> ${u[1]}</li>`).join('');
 
@@ -746,10 +751,16 @@ hcRender();
 {const q=new URLSearchParams(location.search).get('c');if(q&&cdById[q])setTimeout(()=>cdOpen(q),50)}
 
 
+const FB_CFG={apiKey:'AIzaSyCDIjNyGscJBDEGk2r6dCKgC8d2xFibeiA',authDomain:'tempalnote.firebaseapp.com',projectId:'tempalnote',storageBucket:'tempalnote.firebasestorage.app',messagingSenderId:'504853731004',appId:'1:504853731004:web:c49380fd841d5639f7e2b9'};
+window.__fb=(()=>{let p=null;return()=>p||(p=(async()=>{const B='https://www.gstatic.com/firebasejs/12.19.0/';const [a,b,c]=await Promise.all([import(B+'firebase-app.js'),import(B+'firebase-auth.js'),import(B+'firebase-firestore.js')]);const app=a.initializeApp(FB_CFG);return {A:b,F:c,auth:b.getAuth(app),db:c.getFirestore(app)}})().catch(e=>{p=null;throw e}))})();
+const RK_DAY=()=>Math.floor((Date.now()+4*3600e3)/864e5);
+async function rankQuery(field,n){const r=await fetch('https://firestore.googleapis.com/v1/projects/tempalnote/databases/(default)/documents/rank/'+RK_DAY()+':runQuery?key='+FB_CFG.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({structuredQuery:{from:[{collectionId:'u'}],orderBy:[{field:{fieldPath:field},direction:'DESCENDING'}],limit:n}})});
+ if(!r.ok)throw new Error('rank '+r.status);const j=await r.json();
+ return j.filter(x=>x.document).map(x=>{const f=x.document.fields||{},v=k=>f[k]?(f[k].integerValue!=null?+f[k].integerValue:f[k].stringValue):null;return {id:x.document.name.split('/').pop(),nick:v('nick')||'?',best:v('best')||0,bt:v('bt')||0,tries:v('tries')||0,boom:v('boom')||0}})}
+(function(){const el=document.getElementById('cmKingT');if(!el)return;setTimeout(()=>rankQuery('best',5).then(rows=>{rows.sort((a,b)=>b.best-a.best||a.bt-b.bt);const r=rows[0];if(r&&r.best>0)el.innerHTML='오늘의 강화왕 <b>'+esc(r.nick)+'</b> <b style="color:#FFE812">+'+r.best+'</b> <small style="color:var(--mute)">'+r.bt.toLocaleString()+'번째 시도에 달성 · 1위 뺏으러 가기</small>'}).catch(()=>{}),1200)})();
 (function(){
  const root=document.querySelector('.view[data-v="community"]');if(!root)return;
  const V='12.19.0',B='https://www.gstatic.com/firebasejs/'+V+'/';
- const CFG={apiKey:'AIzaSyCDIjNyGscJBDEGk2r6dCKgC8d2xFibeiA',authDomain:'tempalnote.firebaseapp.com',projectId:'tempalnote',storageBucket:'tempalnote.firebasestorage.app',messagingSenderId:'504853731004',appId:'1:504853731004:web:c49380fd841d5639f7e2b9'};
  const ADMIN='rnrwndgur124@gmail.com';
  const BOARDS={all:'전체',free:'자유',qna:'질문',tip:'공략 · 팁',guild:'길드 모집'};
  const ROOMS={all:'전체 채팅',party:'파티 · 길드',trade:'거래',qna:'질문'};
@@ -762,8 +773,7 @@ hcRender();
  const err=e=>{const c=(e&&e.code)||'';if(/permission-denied/.test(c))return '너무 빨리 썼거나 권한이 없어요. 잠시 후 다시 해 주세요.';if(/unavailable|network/.test(c))return '연결이 불안정해요. 잠시 후 다시 해 주세요.';return '문제가 생겼어요: '+(c||e)};
  const need=()=>{if(!user){login();return false}if(!me){toast('닉네임을 먼저 정해 주세요');q('#cmNick')&&q('#cmNick').focus();return false}return true};
  async function boot(){if(started)return;started=true;
-  try{const [a,b,c]=await Promise.all([import(B+'firebase-app.js'),import(B+'firebase-auth.js'),import(B+'firebase-firestore.js')]);A=b;F=c;
-   const app=a.initializeApp(CFG);auth=A.getAuth(app);db=F.getFirestore(app);
+  try{const x=await window.__fb();A=x.A;F=x.F;auth=x.auth;db=x.db;
    A.onAuthStateChanged(auth,async u=>{user=u;me=null;if(u){try{const d=await F.getDoc(F.doc(db,'users',u.uid));me=d.exists()?d.data():null}catch(e){}}drawMe();if(curPost)openPost(curPost,true)});
    drawBoards();loadList(true);const p=new URLSearchParams(location.search).get('p');if(p)openPost(p);
   }catch(e){q('#cmMe').innerHTML='<span class="mute">커뮤니티 서버에 연결하지 못했어요. 새로고침해 주세요.</span>';q('#cmList').innerHTML='<p class="mute">글을 불러오지 못했어요.</p>'}}
@@ -852,12 +862,12 @@ hcRender();
  function once(){const r=rate(D.lv);if(!r)return 'max';D.tries++;const x=Math.random()*100;let res;
   if(!r.b){if(x<r.ok){D.lv++;res='up1'}else{D.boom++;D.lv=0;res='boom'}}
   else{const [a,b,k]=r.b;if(x<a){D.lv++;res='up1'}else if(x<a+b){D.lv=Math.min(12,D.lv+2);res='up2'}else if(x<a+b+k){res='keep'}else{D.boom++;D.lv=0;res='boom'}}
-  D.best=Math.max(D.best,D.lv);D.rec=Math.max(D.rec||0,D.lv);return res}
+  if(D.lv>D.best){D.best=D.lv;D.bt=D.tries}D.rec=Math.max(D.rec||0,D.lv);return res}
  q('#smGo').onclick=()=>{const before=D.lv,res=once();sv();draw();
-  if(res==='up1')msg('성공! +'+D.lv,'#7de0a8');else if(res==='up2')msg('대성공! 2단계 +'+D.lv,'#FFE812');else if(res==='keep')msg('유지 — 그대로 +'+D.lv,'#9cc4ff');else if(res==='boom')msg('💥 파괴! (+'+before+'에서) 새 장비로 +0부터','#ff6b6b')};
- q('#smAuto').onclick=()=>{let n=0;while(D.lv<5&&n<20){once();n++}sv();draw();msg('+5까지 올렸어요 (안전 구간)','#7de0a8')};
+  if(res==='up1')msg('성공! +'+D.lv,'#7de0a8');else if(res==='up2')msg('대성공! 2단계 +'+D.lv,'#FFE812');else if(res==='keep')msg('유지 — 그대로 +'+D.lv,'#9cc4ff');else if(res==='boom')msg('💥 파괴! (+'+before+'에서) 새 장비로 +0부터','#ff6b6b');push()};
+ q('#smAuto').onclick=()=>{let n=0;while(D.lv<5&&n<20){once();n++}sv();draw();msg('+5까지 올렸어요 (안전 구간)','#7de0a8');push()};
  q('#smEq').onchange=q('#smMode').onchange=()=>draw();
- q('#smReset').onclick=()=>{if(!confirm('오늘 강화 기록을 지울까요?'))return;Object.assign(D,{lv:0,tries:0,boom:0,best:0});sv();draw();msg(' ','')};
+ q('#smReset').onclick=()=>{D.lv=0;sv();draw();msg('+0부터 다시 시작','#9cc4ff')};
  const cp=t=>{(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('복사했어요! 커뮤니티 · 단톡에 붙여 넣으세요'),()=>prompt('복사해서 쓰세요',t))};
  q('#smShare').onclick=()=>cp('[템빨 강화 시뮬] 오늘 최고 +'+D.best+' · 시도 '+D.tries+'회 · 파괴 '+D.boom+'번 💥\n공식 확률로 돌려보기 → https://tempalnote.com/sim/');
  // 소환
@@ -871,6 +881,35 @@ hcRender();
  q('#smS1').onclick=()=>summon(1,1);q('#smS11').onclick=()=>summon(11,1);q('#smS110').onclick=()=>summon(11,10);
  q('#smSReset').onclick=()=>{if(!confirm('소환 기록을 지울까요?'))return;D.s={n:0,dia:0,won:0,g:{},u:[]};sv();draw();q('#smRes').innerHTML=''};
  q('#smSShare').onclick=()=>cp('[템빨 소환 시뮬] '+D.s.n.toLocaleString()+'회 소환 · 유니크 '+(D.s.g['유니크']||0)+'개 · 에픽 '+(D.s.g['에픽']||0)+'개 (원화로 '+Math.round(D.s.won).toLocaleString()+'원어치)\n공식 확률로 돌려보기 → https://tempalnote.com/sim/');
+ // ---- 오늘의 강화왕 ----
+ let fb=null,ru=null,rme=null,rkT='best',pushT=0,lastPush='',lastLoad=0,fails=0;
+ const rkMe=q('#cmRkMe'),rkList=q('#cmRkList'),ADM='rnrwndgur124@gmail.com',isAdm=()=>!!(ru&&ru.email===ADM);
+ function rkDraw(rows){if(rkT==='best')rows.sort((a,b)=>b.best-a.best||a.bt-b.bt);else rows.sort((a,b)=>b.boom-a.boom||a.tries-b.tries);
+  const uid=ru&&ru.uid;
+  rkList.innerHTML=rows.length?rows.map((r,i)=>'<li class="'+(i<3?'t'+(i+1):'')+(r.id===uid?' mine':'')+'"><span class="n">'+(i+1)+'</span><span><b>'+esc(r.nick)+'</b><br><small>'+(rkT==='best'?(r.bt.toLocaleString()+'번째 시도에 달성 · 파괴 '+r.boom.toLocaleString()+'번'):('최고 +'+r.best+' · 시도 '+r.tries.toLocaleString()+'번'))+'</small></span><b class="v">'+(rkT==='best'?'+'+r.best:'💥 '+r.boom.toLocaleString())+'</b>'+(isAdm()?'<button type="button" class="ghost rkdel" data-id="'+esc(r.id)+'">삭제</button>':'<span></span>')+'</li>').join(''):'<li style="display:block" class="mute">아직 오늘 기록이 없어요. 첫 1위 자리가 비어 있어요!</li>'}
+ async function rkLoad(force){if(!force&&Date.now()-lastLoad<20000)return;lastLoad=Date.now();
+  try{rkDraw(await rankQuery(rkT,20))}catch(e){rkList.innerHTML='<li style="display:block" class="mute">순위를 불러오지 못했어요. 잠시 후 새로고침해 주세요.</li>'}}
+ function rkMeDraw(){
+  if(!fb){rkMe.innerHTML='<span class="mute">랭킹 참가는 잠시 후 다시 시도해 주세요. 연습은 그대로 돼요.</span>';return}
+  if(!ru){rkMe.innerHTML='<span style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><button type="button" class="gbtn" id="cmRkLogin">구글 로그인하고 랭킹 참가</button><span class="mute">로그인 안 해도 연습은 돼요</span></span>'}
+  else if(!rme){rkMe.innerHTML='<form id="cmRkNick" style="display:flex;gap:6px;flex-wrap:wrap;align-items:center"><span>랭킹에 쓸 닉네임</span><input id="cmRkNickI" maxlength="12" placeholder="2~12자" style="flex:1;min-width:120px"><button type="submit">정하기</button></form>'}
+  else rkMe.innerHTML='<b>'+esc(rme.nick)+'</b>님 기록이 자동으로 올라가요 · 오늘 최고 <b>+'+D.best+'</b>'+(D.bt?' ('+D.bt+'번째 시도)':'');
+  const b=q('#cmRkLogin');if(b)b.onclick=()=>{const p=new fb.A.GoogleAuthProvider();p.setCustomParameters({prompt:'select_account'});fb.A.signInWithPopup(fb.auth,p).catch(e=>{if(/popup-blocked|operation-not-supported/.test(e.code||''))fb.A.signInWithRedirect(fb.auth,p)})};
+  const nf=q('#cmRkNick');if(nf)nf.onsubmit=async e=>{e.preventDefault();const n=q('#cmRkNickI').value.trim();if(n.length<2){toast('닉네임은 2자 이상');return}
+   try{await fb.F.setDoc(fb.F.doc(fb.db,'users',ru.uid),{nick:n,createdAt:fb.F.serverTimestamp()});rme={nick:n};rkMeDraw();push(true);toast('반가워요, '+n+'님! 랭킹에 올라가요')}catch(x){toast(/permission/.test(x.code||'')?'쓸 수 없는 닉네임이에요':'문제가 생겼어요. 다시 해 주세요')}}}
+ function push(now){if(!fb||!ru||!rme)return;clearTimeout(pushT);pushT=setTimeout(async()=>{const bt=D.bt||D.tries,key=[D.best,bt,D.tries,D.boom].join();if(key===lastPush)return;
+   try{await fb.F.setDoc(fb.F.doc(fb.db,'rank',String(RK_DAY()),'u',ru.uid),{nick:rme.nick,best:D.best,bt:bt,tries:D.tries,boom:D.boom,at:fb.F.serverTimestamp()});lastPush=key;fails=0;rkMeDraw();rkLoad()}
+   catch(e){if(++fails<3)push()}},now?300:4000)}
+ async function rkBoot(){rkLoad(true);
+  try{fb=await window.__fb()}catch(e){fb=null;rkMeDraw();return}
+  fb.A.onAuthStateChanged(fb.auth,async u=>{ru=u;rme=null;
+   if(u){try{const d=await fb.F.getDoc(fb.F.doc(fb.db,'users',u.uid));rme=d.exists()?d.data():null}catch(e){}
+    if(rme){try{const s=await fb.F.getDoc(fb.F.doc(fb.db,'rank',String(RK_DAY()),'u',u.uid));if(s.exists()){const x=s.data();if(x.best>D.best){D.best=x.best;D.bt=x.bt}D.tries=Math.max(D.tries,x.tries||0);D.boom=Math.max(D.boom,x.boom||0);D.rec=Math.max(D.rec||0,D.best);sv();draw();lastPush=[x.best,x.bt,x.tries,x.boom].join()}}catch(e){}push(true)}}
+   rkMeDraw();rkLoad(true)})}
+ q('#cmRkTabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;rkT=b.dataset.t;[...q('#cmRkTabs').children].forEach(x=>x.classList.toggle('on',x===b));rkLoad(true)};
+ q('#cmRkRe').onclick=()=>rkLoad(true);
+ rkList.onclick=async e=>{const b=e.target.closest('.rkdel');if(!b||!isAdm())return;if(!confirm('이 기록을 지울까요?'))return;try{await fb.F.deleteDoc(fb.F.doc(fb.db,'rank',String(RK_DAY()),'u',b.dataset.id));toast('지웠어요');rkLoad(true)}catch(x){toast('지우지 못했어요')}};
+ rkBoot();
  q('#smTabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;[...q('#smTabs').children].forEach(x=>x.classList.toggle('on',x===b));q('#smEnh').hidden=b.dataset.t!=='enh';q('#smSum').hidden=b.dataset.t!=='sum'};
  draw()})();
 const ST_AT='11월 26일 오전 10시 (유튜브 · SOOP 방송 제목 · 설명 확인)';

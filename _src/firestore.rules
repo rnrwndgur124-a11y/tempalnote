@@ -118,6 +118,25 @@ service cloud.firestore {
       allow read, update, delete: if isAdmin();
     }
 
+    // 시뮬레이터 「오늘의 강화왕」: rank/{날짜번호}/u/{uid}. 날짜번호 = 한국 새벽 5시 기준 일수
+    match /rank/{day}/u/{uid} {
+      allow read: if true;
+      allow create, update: if okUser() && request.auth.uid == uid
+        && day == string(math.floor((request.time.toMillis() + 14400000) / 86400000))
+        && request.resource.data.keys().hasOnly(['nick', 'best', 'bt', 'tries', 'boom', 'at'])
+        && request.resource.data.nick == myNick()
+        && request.resource.data.best is int && request.resource.data.best >= 0 && request.resource.data.best <= 12
+        && request.resource.data.tries is int && request.resource.data.tries <= 1000000
+        && request.resource.data.bt is int && request.resource.data.bt <= request.resource.data.tries
+        && request.resource.data.bt * 2 >= request.resource.data.best
+        && request.resource.data.boom is int && request.resource.data.boom >= 0 && request.resource.data.boom <= request.resource.data.tries
+        && request.resource.data.at == request.time
+        && (resource == null || (request.resource.data.best >= resource.data.best
+            && request.resource.data.tries >= resource.data.tries
+            && request.time > resource.data.at + duration.value(3, 's')));
+      allow delete: if isAdmin();
+    }
+
     match /bans/{uid} {
       allow get: if isAdmin() || (request.auth != null && request.auth.uid == uid);
       allow list, write: if isAdmin();
