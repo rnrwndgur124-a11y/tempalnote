@@ -1,0 +1,135 @@
+"""대장간노트 단일 HTML(index.html)을 tempalnote.com용 여러 페이지로 만든다.
+각 화면(#quiz 등)을 /quiz/index.html 같은 실제 주소로 내보내고, 페이지마다 제목·설명·canonical을 붙인다."""
+import re, os, sys, html, datetime
+
+SRC = '/home/claude/tempal/index.html'
+OUT = sys.argv[1] if len(sys.argv) > 1 else '/home/claude/site'
+BASE = 'https://tempalnote.com'
+SITE = '템빨 : 대장간노트'
+
+PAGES = {
+ 'home':    ('템빨 : 대장간노트 | 템빨 오버기어드 강화 계산기·숙제·무기 추천', '템빨 오버기어드 비공식 팬 도구. 강화 기록기, 강화 기대값 계산기, 숙제 체크리스트, 무기 추천 테스트, 첫날 가이드, 로드맵을 한곳에.'),
+ 'quiz':    ('템빨 무기 추천 테스트 — 나에게 맞는 무기는?', '질문 다섯 개로 템빨 오버기어드 지팡이·대검·활·바이블 중 내 취향에 맞는 무기를 찾아 드려요.'),
+ 'enhance': ('템빨 강화 기록기 — 오버기어드 단계별 성공률', '템빨 오버기어드 강화 성공·실패를 기록하면 단계별 성공률과 실패로 얻은 파브라늄이 자동으로 쌓입니다.'),
+ 'calc':    ('템빨 강화 기대값 계산기 — 평균 시도·필요 재료', '성공률과 1회 재료를 넣으면 평균 몇 번 만에 붙는지, 목표 확률까지 몇 번 준비해야 하는지 계산합니다.'),
+ 'godhand': ('템빨 갓 핸드 프리셋 메모 — 공격·방어·보조 조합', '갓 핸드 메모리 공격형·방어형·보조형 조합을 사냥·PvP·레이드 용도별로 저장하는 메모장.'),
+ 'homework':('템빨 숙제 체크리스트 — 오늘의 할 일', '템빨 오버기어드 일일 숙제 체크리스트. 게임 초기화 시각인 매일 새벽 5시에 풀리고, 8주 미션·왕실 무기고·비접속 모드까지 내 숙제로 고쳐 쓸 수 있어요.'),
+ 'starter': ('템빨 첫날 가이드 — 첫 주 할 일·체크리스트 12개', '템빨 오버기어드 첫 주 체크리스트: 사전등록 보상, 무기 선택, 갓 핸드, 출석부, 비접속 모드, 선점 캐릭터 마감까지 놓치기 쉬운 순서대로.'),
+ 'weapons': ('템빨 클래스 도감 — 레전드리·유니크·에픽 클래스 스킬 총정리', '템빨 오버기어드 클래스 도감. 서사시의 마검사·궁성·교황 레전드리, 신궁·저격수 등 유니크, 에픽 클래스의 능력치와 스킬, 초월자까지 정리.'),
+ 'systems': ('템빨 시스템 정리 — 오버기어드·갓 핸드·차원 리그', '오버기어드 강화와 돌파, 파브라늄, 코어 점수·오버클럭, 시그니처 장비, 갓 핸드 메모리, 차원 리그 핵심 정리.'),
+ 'roadmap': ('템빨 6개월 로드맵 — 레이드·공성전·신규 클래스', '템빨 오버기어드 출시 후 6개월 업데이트 계획: 헬가오 레이드, 공성전, 신규 클래스, 새 무기 계열.'),
+ 'bm':      ('템빨 상점 정리 — 파는 것과 팔지 않는 것', '템빨 오버기어드 과금 요소와 판매하지 않는 편의 기능, 운영 방침 정리.'),
+ 'coupons': ('템빨 오버기어드 쿠폰 코드 — 지금 쓸 수 있는 쿠폰·입력 방법·이벤트 총정리', '템빨 오버기어드 쿠폰 코드 현황(공식 확인), 게임 안·홈페이지 쿠폰 입력 방법, 사전등록 보상, 웹툰 단행본 쿠폰, SOOP 드롭스, 진행 중인 이벤트를 매일 정리해요.'),
+ 'streamers':('템빨 스트리머 서버 정리 — 똘끼·뜨뜨뜨뜨·우레·쌍조·사땅 어느 서버?', '템빨 오버기어드 유튜브·SOOP 방송인 서버 총정리. 라우엘·레가스·루나·하스터·루비·파그마 서버별 방송인, 유료 광고 방송 표시, 길드원 모집 여부를 한눈에.'),
+ 'news':    ('템빨 공식 소식 · 확인 중인 현상 — 버그 피하는 법 정리', '템빨 오버기어드 공식 공지 요약과 확인 중인 현상(거래소 수수료, 스케줄 모드 자동 정비, 펫 주얼 합성 표기 등) 9건을 피하는 법과 함께 매일 정리해요.'),
+ 'trade':   ('템빨 거래소 수수료 계산기 — 판매 수령액·묶음 단가·다이아 환산', '템빨 오버기어드 거래소에 올리기 전 수수료 빼고 받는 금액, 목표 금액을 받으려면 올릴 가격, 묶음 개당 단가 비교, 다이아 원화 환산을 바로 계산해요.'),
+ 'craft':   ('템빨 제작 도감 — 레시피 231종 재료·성공률·골드 총정리', '템빨 오버기어드 제작 도감. 무기·방어구·장신구·유물·성물 레시피 231종의 재료, 성공률, 대성공(+6), 골드, 제작 경험치와 등급별 제작 규칙.'),
+ 'titles':  ('템빨 칭호 도감 — 칭호 53종 장착·보유 효과와 획득 조건', '템빨 오버기어드 칭호 53종의 장착 효과, 보유 효과, 획득 조건 정리. 사냥용 추천 칭호와 바로 챙길 칭호.'),
+ 'achieve': ('템빨 업적 목록 — 업적 182개 목표 수치 정리', '템빨 오버기어드 업적 목록. 클래스·갓 핸드·펫·강화·제작·사냥·퀘스트·생활 업적의 단계별 목표 수치.'),
+ 'pets':    ('템빨 펫 도감 — 동행 펫·비행 펫 28종 이미지', '템빨 오버기어드 펫 도감. 꽃잎 토끼, 말락서스, 선구자 등 동행 펫과 비행 펫 28종 이미지와 도감 보상 정리.'),
+ 'timer':   ('템빨 보스 타이머 · 일정표', '템빨 오버기어드 필드 보스 처치 시각을 기록하면 다음 출현까지 카운트다운. 매일 반복 일정표와 1분 전 알림.'),
+ 'backup':  ('저장함 · 백업 | 템빨 : 대장간노트', '대장간노트 강화 기록·숙제·프리셋·보스 타이머 기록을 파일로 백업하고 복원.'),
+ 'videos':  ('템빨 추천 영상 — 조회수 1만 이상 오버기어드 유튜브 모음', '템빨 오버기어드 유튜브 영상 중 조회수 1만 회 이상만 모았어요. 무과금 입문 가이드, 직업 추천, 솔직 리뷰, 공식 쇼케이스·무기 소개.'),
+ 'official':('템빨 공식 채널·원작 웹툰·웹소설 보기', '템빨 오버기어드 공식 홈페이지·유튜브·카카오톡 채널과 원작 웹툰·웹소설 바로가기.'),
+ 'contact': ('문의하기 | 템빨 : 대장간노트', '광고·제휴 제안, 정보 제보, 오류 신고 문의: rnrwndgur124@naver.com'),
+ 'privacy': ('개인정보처리방침 | 템빨 : 대장간노트', '템빨 : 대장간노트의 개인정보처리방침과 쿠키·광고 안내.'),
+ 'terms':   ('이용약관 | 템빨 : 대장간노트', '템빨 : 대장간노트 이용약관.'),
+ 'about':   ('사이트 소개 | 템빨 : 대장간노트', '템빨 오버기어드 비공식 팬 도구 사이트 템빨 : 대장간노트 소개.'),
+}
+KEYS = [k for k in PAGES if k != 'home']
+
+src = open(SRC, encoding='utf-8').read()
+
+def url(k):
+    return BASE + '/' if k == 'home' else f'{BASE}/{k}/'
+
+import json
+GROUPS = [g for g in re.findall(r"k:\[([^\]]+)\]", re.search(r'const GROUPS=\[(.*?)\];', src).group(1))]
+GROUPS = [[x.strip().strip("'") for x in g.split(',')] for g in GROUPS]
+def ldjson(k, title, desc):
+    today = datetime.date.today().isoformat()
+    if k == 'home':
+        d = [{"@context": "https://schema.org", "@type": "WebSite", "name": SITE, "alternateName": ["대장간노트", "템빨 대장간노트"], "url": BASE + '/', "inLanguage": "ko"},
+             {"@context": "https://schema.org", "@type": "Organization", "name": SITE, "url": BASE + '/', "logo": BASE + '/img/app/icon-512.png'}]
+    else:
+        d = [{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": SITE, "item": BASE + '/'},
+                {"@type": "ListItem", "position": 2, "name": title.split(" — ")[0].split(" | ")[0], "item": url(k)}]},
+             {"@context": "https://schema.org", "@type": "WebPage", "name": title, "description": desc, "url": url(k), "inLanguage": "ko",
+              "dateModified": today, "isPartOf": {"@type": "WebSite", "name": SITE, "url": BASE + '/'}, "primaryImageOfPage": BASE + f'/img/og/{k}.jpg'}]
+    return '<script type="application/ld+json">' + json.dumps(d, ensure_ascii=False) + '</script>\n'
+
+def related(k):
+    # 같은 묶음 페이지 + 많이 찾는 페이지를 정적 링크로 (검색로봇이 따라갈 수 있게)
+    grp = next((g for g in GROUPS if k in g), [])
+    keys = [x for x in grp if x != k] + [x for x in ['coupons', 'streamers', 'news', 'craft', 'starter', 'calc'] if x != k and x not in grp]
+    keys = keys[:10]
+    links = ''.join(f'<a href="{url(x)}">{html.escape(PAGES[x][0].split(" — ")[0].split(" | ")[0])}</a>' for x in keys if x in PAGES)
+    return ('<nav class="wrap relnav" aria-label="함께 보면 좋은 페이지" style="padding:8px 20px 28px">'
+            '<p style="margin:0 0 8px;font-weight:800;color:#e3c27a">함께 보면 좋은 페이지</p>'
+            f'<div style="display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px">{links}</div></nav>\n')
+
+def build(k):
+    s = src
+    title, desc = PAGES[k]
+    # 내부 링크: #home → /, #키 → /키/
+    s = s.replace('href="#home"', 'href="/"')
+    for key in KEYS:
+        s = s.replace(f'href="#{key}"', f'href="/{key}/"')
+    # 자바스크립트가 만드는 링크
+    s = s.replace('href="#${k}"', 'href="/${k}/"').replace('href="#${r.k}"', 'href="/${r.k}/"')
+    s = s.replace("${location.href.split('#')[0]}#quiz", 'https://tempalnote.com/quiz/')
+    # 제목·설명·검색용 정보
+    s = re.sub(r'<title>.*?</title>', f'<title>{html.escape(title)}</title>', s, count=1)
+    s = re.sub(r'<meta name="description" content="[^"]*">', f'<meta name="description" content="{html.escape(desc)}">', s, count=1)
+    s = re.sub(r'<meta property="og:title" content="[^"]*">', f'<meta property="og:title" content="{html.escape(title)}">', s, count=1)
+    s = re.sub(r'<meta property="og:description" content="[^"]*">', f'<meta property="og:description" content="{html.escape(desc)}">', s, count=1)
+    head = (f'<link rel="canonical" href="{url(k)}">\n<meta property="og:url" content="{url(k)}">\n'
+            '<meta property="og:type" content="website">\n<meta property="og:site_name" content="템빨 : 대장간노트">\n'
+            '<meta name="keywords" content="템빨, 템빨 오버기어드, 오버기어드, 템빨 강화, 템빨 계산기, 템빨 숙제, 템빨 무기 추천, 템빨 쿠폰, 템빨 웹툰, 갓 핸드, 파브라늄, 대장간노트">\n'
+            '<link rel="icon" href="/favicon.svg" type="image/svg+xml">\n<meta name="theme-color" content="#050a14">\n'
+            f'<meta property="og:image" content="{BASE}/img/og/{k}.jpg">\n<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n'
+            f'<meta property="og:locale" content="ko_KR">\n<meta name="twitter:card" content="summary_large_image">\n<meta name="twitter:image" content="{BASE}/img/og/{k}.jpg">\n'
+            + ldjson(k, title, desc) +
+            f'<script>window.START={k!r};</script>\n')
+    s = s.replace('<link rel="preconnect" href="https://fonts.googleapis.com">', head + '<link rel="preconnect" href="https://fonts.googleapis.com">', 1)
+    # 3D 라이브러리는 홈에서만
+    if k != 'home':
+        s = s.replace('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>\n', '')
+    # 페이지 제목이 라우팅 후에도 유지되게
+    s = s.replace("document.title=PAGES[v]?PAGES[v].t+' | 템빨 : 대장간노트':'템빨 : 대장간노트 | 템빨 오버기어드 강화 계산기·숙제·무기 추천';",
+                  "document.title=v===window.START?document.title:(PAGES[v]?PAGES[v].t+' | 템빨 : 대장간노트':'템빨 : 대장간노트 | 템빨 오버기어드 강화 계산기·숙제·무기 추천');")
+    # 페이지마다 자기 화면만 남긴다 (모든 주소가 같은 내용으로 보이면 검색엔진이 중복 페이지로 묶어 버림)
+    s = re.sub(r'<section class="view" data-v="([^"]+)">.*?</section>\n?', lambda m: m.group(0) if m.group(1) == k else '', s, flags=re.S)
+    s = s.replace("const $=s=>document.querySelector(s);", "const $=s=>document.querySelector(s)||document.createElement('div');", 1)
+    # #쿠폰 같은 해시 링크를 누르면 그 화면이 이 페이지에 없으니 진짜 주소로 이동
+    old_route = "function route(){const h=location.hash.slice(1);"
+    assert old_route in s
+    s = s.replace(old_route, old_route + "if(h&&PAGES[h]&&!document.querySelector('.view[data-v=\"'+h+'\"]')){location.replace(h==='home'?'/':'/'+h+'/');return}", 1)
+    # 다른 페이지 화면이 없으니, 처음 실행될 때 빈 값으로 저장해 내 기록을 덮어쓰지 않게: 페이지 준비가 끝난 뒤부터만 저장
+    old_save = "const save=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};"
+    assert old_save in s
+    s = s.replace(old_save, "let __live=0;document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>__live=1,0));const save=(k,v)=>{if(!__live)return;try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};", 1)
+    if k != 'home':
+        s = s.replace('</main>', related(k) + '</main>', 1)
+    return s
+
+os.makedirs(OUT, exist_ok=True)
+for k in PAGES:
+    d = OUT if k == 'home' else os.path.join(OUT, k)
+    os.makedirs(d, exist_ok=True)
+    open(os.path.join(d, 'index.html'), 'w', encoding='utf-8').write(build(k))
+
+# 404: 홈으로 보내기
+open(os.path.join(OUT, '404.html'), 'w', encoding='utf-8').write(
+    '<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="robots" content="noindex">'
+    '<meta http-equiv="refresh" content="0;url=/"><title>템빨 : 대장간노트</title></head>'
+    '<body style="background:#050a14;color:#e8edf5;font-family:sans-serif;text-align:center;padding:80px">'
+    '<p>페이지를 찾을 수 없어요. <a style="color:#e3c27a" href="/">홈으로 이동</a></p></body></html>')
+
+today = datetime.date.today().isoformat()
+pri = {'home': '1.0', 'calc': '0.9', 'enhance': '0.9', 'quiz': '0.9', 'coupons': '0.9', 'news': '0.9', 'streamers': '0.9', 'trade': '0.8', 'homework': '0.8', 'starter': '0.8'}
+urls = ''.join(f'  <url><loc>{url(k)}</loc><lastmod>{today}</lastmod><changefreq>daily</changefreq><priority>{pri.get(k, "0.6")}</priority></url>\n' for k in PAGES)
+open(os.path.join(OUT, 'sitemap.xml'), 'w', encoding='utf-8').write(
+    f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
+print('built', len(PAGES), 'pages into', OUT)
