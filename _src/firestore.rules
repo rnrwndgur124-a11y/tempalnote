@@ -122,7 +122,7 @@ service cloud.firestore {
     match /rank/{day}/u/{uid} {
       allow read: if true;
       allow create, update: if okUser() && request.auth.uid == uid
-        && day == string(math.floor((request.time.toMillis() + 14400000) / 86400000))
+        && day == string(int(math.floor((request.time.toMillis() + 14400000) / 86400000)))
         && request.resource.data.keys().hasOnly(['nick', 'best', 'bt', 'tries', 'boom', 'at'])
         && request.resource.data.nick == myNick()
         && request.resource.data.best is int && request.resource.data.best >= 0 && request.resource.data.best <= 12
