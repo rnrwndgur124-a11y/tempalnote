@@ -397,6 +397,7 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
 .wcard{grid-template-columns:96px minmax(0,1fr)}.wcard .med{width:64px;height:64px}.result{grid-template-columns:1fr;text-align:center}.result .med{margin:0 auto;width:110px;height:110px}.slots{grid-template-columns:1fr}.brand small{display:none}#sbtnTxt{display:none}.fgrid{grid-template-columns:1fr}.cd div{min-width:0;flex:1}.rmh{grid-template-columns:1fr}}
 </style>
 <script>new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document,{childList:true,subtree:true})</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7676256918707971" crossorigin="anonymous"></script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">

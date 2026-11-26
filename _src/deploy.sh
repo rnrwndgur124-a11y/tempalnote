@@ -8,7 +8,7 @@ flock -w 600 9 || { echo '배포 중단: 다른 배포가 아직 진행 중'; ex
 BAN="$(printf '\xea\xb9\xa8\xeb\xb9\x84')\|$(printf '\x6b\x6b\x61\x65\x62\x69')"
 if printf '%s' "$1" | grep -qi "$BAN" || grep -qi "$BAN" /home/claude/tempal/index.html; then echo "배포 중단: 다른 사이트 이름이 들어 있어요"; exit 1; fi
 cd /home/claude/site && git stash -q -u 2>/dev/null || true; git pull -q --rebase; git stash pop -q 2>/dev/null || true
-python3 /home/claude/tempal/build_site.py /home/claude/site && python3 /home/claude/tempal/gen_og.py && python3 /home/claude/tempal/gen_codex.py /home/claude/site && python3 /home/claude/tempal/gen_search.py /home/claude/site && python3 /home/claude/tempal/prerender.py /home/claude/site | tail -1
+cp /home/claude/tempal/data/ads.txt /home/claude/site/ads.txt && python3 /home/claude/tempal/build_site.py /home/claude/site && python3 /home/claude/tempal/gen_og.py && python3 /home/claude/tempal/gen_codex.py /home/claude/site && python3 /home/claude/tempal/gen_search.py /home/claude/site && python3 /home/claude/tempal/prerender.py /home/claude/site | tail -1
 if grep -rqi --exclude-dir=.git --include='*.html' --include='*.js' --include='*.txt' --include='*.json' --include='*.xml' --include='*.py' --include='*.sh' "$BAN" /home/claude/site; then echo "배포 중단: 다른 사이트 이름이 들어 있어요"; exit 1; fi
 # 자동 점검: 실패하면 올리지 않는다
 if ! python3 /home/claude/tempal/check_site.py /home/claude/site; then echo "배포 중단: 위 문제를 먼저 고치세요"; exit 1; fi
