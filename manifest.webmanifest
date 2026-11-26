@@ -1,0 +1,22 @@
+{
+  "name": "템빨 : 대장간노트",
+  "short_name": "대장간노트",
+  "description": "템빨 오버기어드 비공식 팬 도구 — 강화 계산기 · 숙제 · 제작 도감 · 공식 소식",
+  "lang": "ko",
+  "start_url": "/?src=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#050a14",
+  "theme_color": "#050a14",
+  "icons": [
+    {"src": "/img/app/icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "/img/app/icon-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "/img/app/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ],
+  "shortcuts": [
+    {"name": "오늘의 숙제", "url": "/homework/"},
+    {"name": "강화 기대값 계산기", "url": "/calc/"},
+    {"name": "공식 소식 · 버그", "url": "/news/"},
+    {"name": "쿠폰 · 이벤트", "url": "/coupons/"}
+  ]
+}
