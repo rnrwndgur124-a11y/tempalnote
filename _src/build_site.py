@@ -72,7 +72,13 @@ def related(k):
     keys = [x for x in grp if x != k] + [x for x in ['coupons', 'streamers', 'news', 'craft', 'starter', 'calc'] if x != k and x not in grp]
     keys = keys[:10]
     links = ''.join(f'<a href="{url(x)}">{html.escape(PAGES[x][0].split(" — ")[0].split(" | ")[0])}</a>' for x in keys if x in PAGES)
-    return ('<nav class="wrap relnav" aria-label="함께 보면 좋은 페이지" style="padding:8px 20px 28px">'
+    d = PDATE.get(k, {}).get('d', _today)
+    dd = f'{int(d[5:7])}월 {int(d[8:10])}일'
+    fix = ('<div class="wrap" style="padding:18px 20px 4px"><div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;'
+           'border:1px solid #2a3b5a;border-radius:12px;padding:12px 16px;font-size:13.5px;color:#cfd8e6">'
+           f'<span>이 페이지 마지막 수정 <b style="color:#e3c27a">{dd}</b> · 게임 화면 · 공식 가이드 기준. 패치로 바뀔 수 있어요.</span>'
+           '<a href="/contact/" style="margin-left:auto;font-weight:800;color:#e3c27a">틀린 정보 · 바뀐 내용 제보 →</a></div></div>\n')
+    return fix + ('<nav class="wrap relnav" aria-label="함께 보면 좋은 페이지" style="padding:8px 20px 28px">'
             '<p style="margin:0 0 8px;font-weight:800;color:#e3c27a">함께 보면 좋은 페이지</p>'
             f'<div style="display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px">{links}</div></nav>\n')
 
@@ -120,6 +126,22 @@ def build(k):
     if k != 'home':
         s = s.replace('</main>', related(k) + '</main>', 1)
     return s
+
+# 페이지마다 내용이 바뀐 날을 기록 (마지막 수정일 표시용)
+import hashlib
+PD_PATH = '/home/claude/tempal/data/page_dates.json'
+try:
+    PDATE = json.load(open(PD_PATH, encoding='utf-8'))
+except Exception:
+    PDATE = {}
+_today = (datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=9)).date().isoformat()
+for _k in PAGES:
+    _m = re.search(r'<section class="view" data-v="%s">.*?</section>' % re.escape(_k), src, re.S)
+    _h = hashlib.sha1((_m.group(0) if _m else '').encode('utf-8')).hexdigest()
+    if PDATE.get(_k, {}).get('h') != _h:
+        PDATE[_k] = {'h': _h, 'd': _today}
+if OUT == '/home/claude/site':
+    json.dump(PDATE, open(PD_PATH, 'w', encoding='utf-8'), ensure_ascii=False, indent=0)
 
 os.makedirs(OUT, exist_ok=True)
 for k in PAGES:

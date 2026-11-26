@@ -332,6 +332,9 @@ label{font-weight:700;font-size:13.5px;display:block;margin-bottom:6px;color:#c9
 .tiles.sm .tile{padding:12px 14px;gap:12px;overflow:visible}.tiles.sm .bd{top:-8px;right:10px}
 @media(max-width:760px){.hero.hero2{min-height:0;padding-bottom:36px}.hero2 .kick{letter-spacing:.08em;font-size:11px}}.tiles.sm .tile h3{font-size:15px}.tiles.sm .tile p{font-size:12.5px}.tiles.sm .med{width:40px;height:40px}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.toc{margin:4px 0 22px;align-items:center}.toc .tl{font-size:11px;font-weight:900;color:var(--gold);letter-spacing:.06em;margin-right:4px}.toc button{min-height:32px;padding:2px 12px;font-size:12.5px}
+.view .card{scroll-margin-top:84px}.card.flash{animation:cflash 2.2s ease-out}@keyframes cflash{0%,30%{box-shadow:0 0 0 3px var(--gold),0 0 28px #e3c27a66}100%{box-shadow:none}}
+.sres a.sc small{white-space:normal;display:block;line-height:1.45}
 .chips button{background:#ffffff06;color:#c9d3e3;border:1px solid var(--line2);min-height:38px;padding:4px 16px;border-radius:99px;font-weight:700;font-size:14px}
 .chips button.on{background:linear-gradient(#f6e2a8,#c99a4e);color:#1b1206;border-color:#f6e6bd}
 /* 무기 */
@@ -1405,14 +1408,32 @@ const IDX=Object.entries(PAGES).map(([k,p])=>({k,t:p.t,d:p.d,i:p.i,x:p.t+p.d}))
  .concat(SYS.map(s=>({k:'systems',t:s.t,d:strip(s.f[0]),i:s.i,x:s.t+strip(s.f.join(' '))})))
  .concat(WEAPONS.map(w=>({k:'weapons',t:w.n,d:w.role,i:w.art,x:w.n+w.role+w.d+w.cls.map(c=>c.n+c.d).join(' ')})))
  .concat(RM.map(r=>({k:'roadmap',t:'로드맵 · '+r.w,d:r.i.join(', '),i:'i-map',x:r.w+r.i.join(' ')})));
-function sRun(){const q=$('#sq').value.trim().toLowerCase().replace(/\s+/g,'');
-  const res=q?IDX.filter(r=>r.x.toLowerCase().replace(/\s+/g,'').includes(q)).slice(0,10):IDX.slice(0,6);
-  $('#sres').innerHTML=res.length?res.map(r=>`<a href="/${r.k}/">${med(r.i,'sm')}<span><b>${esc(r.t)}</b><small>${esc(r.d)}</small></span></a>`).join(''):'<p class="mute" style="padding:10px">찾는 내용이 없어요. <a href="/contact/">제보</a>해 주시면 채울게요.</p>'}
-const sOpen=e=>{if(e)e.preventDefault();$('#sov').classList.add('open');$('#sq').value='';sRun();setTimeout(()=>$('#sq').focus(),30)};
+let SJ=null,SJl=0;
+const sLoad=()=>{if(SJ||SJl)return;SJl=1;fetch('/data/search.json').then(r=>r.ok?r.json():[]).then(j=>{SJ=j;if($('#sov').classList.contains('open'))sRun()}).catch(()=>{SJl=0})};
+const sNorm=t=>t.toLowerCase().replace(/\s+/g,'');
+const sSnip=(x,q)=>{const n=x.toLowerCase(),qq=q.toLowerCase();let i=n.indexOf(qq);if(i<0){const w=qq.split(/\s+/)[0];i=n.indexOf(w)}if(i<0)return x.slice(0,70)+(x.length>70?'…':'');const a=Math.max(0,i-28),b=Math.min(x.length,i+qq.length+50);return (a?'…':'')+x.slice(a,b)+(b<x.length?'…':'')};
+function sRun(){const raw=$('#sq').value.trim(),q=sNorm(raw);
+  if(!q){$('#sres').innerHTML=IDX.slice(0,6).map(r=>`<a href="/${r.k}/">${med(r.i,'sm')}<span><b>${esc(r.t)}</b><small>${esc(r.d)}</small></span></a>`).join('');return}
+  const res=IDX.filter(r=>sNorm(r.x).includes(q)).slice(0,6);
+  let cards=[];if(SJ){cards=SJ.map(c=>{const tt=sNorm(c.t),xx=sNorm(c.x);return {c,sc:tt.includes(q)?2:(xx.includes(q)?1:0)}}).filter(o=>o.sc).sort((a,b)=>b.sc-a.sc).slice(0,12).map(o=>o.c)}
+  const ph=(PAGES.home?'':''),ch=cards.map(c=>{const pg=c.k==='home'?'/':'/'+c.k+'/';return `<a class="sc" href="${pg}?c=${encodeURIComponent(c.t)}">${med((PAGES[c.k]&&PAGES[c.k].i)||'i-guide','sm')}<span><b>${esc(c.t)}</b><small>${esc((c.f?'자주 묻는 질문 · ':'')+((PAGES[c.k]&&PAGES[c.k].t)||c.p))} — ${esc(sSnip(c.x||c.t,raw))}</small></span></a>`}).join('');
+  const top=res.map(r=>`<a href="/${r.k}/">${med(r.i,'sm')}<span><b>${esc(r.t)}</b><small>${esc(r.d)}</small></span></a>`).join('');
+  $('#sres').innerHTML=(top||ch)?top+(ch?'<p class="small mute" style="margin:8px 6px 2px">페이지 안 내용</p>'+ch:(SJ?'':'<p class="small mute" style="padding:6px 10px">페이지 안 내용 불러오는 중…</p>')):(SJ?'<p class="mute" style="padding:10px">찾는 내용이 없어요. <a href="/contact/">제보</a>해 주시면 채울게요.</p>':'<p class="small mute" style="padding:10px">불러오는 중…</p>')}
+const sOpen=e=>{if(e)e.preventDefault();$('#sov').classList.add('open');$('#sq').value='';sLoad();sRun();setTimeout(()=>$('#sq').focus(),30)};
 const sClose=()=>$('#sov').classList.remove('open');
 $('#sbtn').onclick=sOpen;$('#hsBtn').onclick=sOpen;
 $('#sq').addEventListener('input',sRun);
 $('#sov').addEventListener('click',e=>{if(e.target.id==='sov'||e.target.closest('.sres a'))sClose()});
+/* 긴 페이지 위 바로가기 · 검색 결과 카드로 이동 */
+function tocAdd(){document.querySelectorAll('section.view[data-v]').forEach(sec=>{if(sec.dataset.v==='home'||sec.querySelector('.toc'))return;
+  const cards=[...sec.querySelectorAll('.card')].filter(c=>!c.classList.contains('faq')&&!c.closest('.cdm')&&c.querySelector('h3,h2'));if(cards.length<5)return;
+  const nav=document.createElement('nav');nav.className='toc chips';nav.setAttribute('aria-label','이 페이지 바로가기');
+  nav.innerHTML='<span class="tl">바로가기</span>'+cards.slice(0,16).map(c=>{const t=c.querySelector('h3,h2').textContent.trim();return `<button type="button" data-t="${esc(t)}">${esc(t.length>20?t.slice(0,19)+'…':t)}</button>`}).join('');
+  const at=sec.querySelector('.lead')||sec.querySelector('.ph');if(at)at.after(nav)})}
+const cardBy=(sec,t)=>[...(sec||document).querySelectorAll('.card h3,.card h2')].find(h=>h.textContent.trim()===t);
+const cardGo=h=>{if(!h)return;const c=h.closest('.faq')?h:h.closest('.card');c.scrollIntoView({behavior:'smooth',block:'start'});c.classList.remove('flash');void c.offsetWidth;c.classList.add('flash')};
+document.addEventListener('click',e=>{const b=e.target.closest('.toc button');if(!b)return;cardGo(cardBy(b.closest('section'),b.dataset.t))});
+setTimeout(()=>{tocAdd();const c=new URLSearchParams(location.search).get('c');if(c)setTimeout(()=>cardGo(cardBy(document.querySelector('section.view.on')||document.querySelector('section.view[data-v="'+(window.START||'home')+'"]'),c)),250)},700);
 addEventListener('keydown',e=>{if(e.key==='Escape')sClose();if(e.key==='/'&&!/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)){sOpen(e)}});
 
 /* 3D 첫 화면: 금빛 코어 + 떠다니는 크리스털 + 빛 입자 */
