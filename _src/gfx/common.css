@@ -1,0 +1,11 @@
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:var(--w);height:var(--h);overflow:hidden;font-family:'Noto Sans CJK KR','Noto Sans KR',sans-serif;color:#e8edf5;
+ background:radial-gradient(900px 500px at 85% 20%,#1c2f55 0%,transparent 60%),radial-gradient(700px 500px at 10% 100%,#3a2a0e 0%,transparent 55%),#050a14}
+.frame{position:absolute;inset:14px;border:1px solid #c9a24a55;border-radius:22px}
+.brand{position:absolute;left:56px;top:46px;font-size:22px;font-weight:800;color:#e3c27a;letter-spacing:.5px}
+.brand small{display:block;font-size:12px;color:#8b97ab;letter-spacing:3px;font-weight:600;margin-top:2px}
+.left{position:absolute;left:56px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center;width:44%}
+h1{font-size:68px;line-height:1.1;font-weight:900;background:linear-gradient(#fff3cf,#e3c27a 60%,#b9862f);-webkit-background-clip:text;color:transparent;margin:14px 0 14px}
+.sub{font-size:24px;color:#c9d3e3;font-weight:600;line-height:1.5}
+.url{position:absolute;left:56px;bottom:40px;font-size:20px;color:#e3c27a;font-weight:800}
+.pill{display:inline-flex;align-items:center;gap:8px;font-weight:900;font-size:18px;padding:6px 14px;border-radius:99px;width:max-content}
