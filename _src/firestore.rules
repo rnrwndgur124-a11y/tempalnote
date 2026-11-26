@@ -1,0 +1,126 @@
+rules_version = '2';
+// 대장간노트 커뮤니티 보안 규칙 — 읽기는 누구나, 쓰기는 구글 로그인 + 닉네임 만든 사람만. 운영자만 남의 글 삭제·차단.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null && request.auth.token.firebase.sign_in_provider == 'google.com'; }
+    function isAdmin() { return request.auth != null && request.auth.token.email == 'rnrwndgur124@gmail.com' && request.auth.token.email_verified == true; }
+    function me() { return /databases/$(database)/documents/users/$(request.auth.uid); }
+    function banned() { return exists(/databases/$(database)/documents/bans/$(request.auth.uid)); }
+    function okUser() { return signedIn() && !banned() && exists(me()); }
+    function myNick() { return get(me()).data.nick; }
+    function str(v, lo, hi) { return v is string && v.size() >= lo && v.size() <= hi; }
+    function nickOk(n) { return str(n, 2, 12) && (isAdmin() || !n.lower().matches('.*(운영자|관리자|대장간|admin|운영진).*')); }
+    // 도배 방지: 같은 배치에서 users/{uid}.<field> 를 지금 시각으로 바꾸고, 직전 기록과 secs초 이상 떨어져야 함
+    function paced(field, secs) {
+      return getAfter(me()).data.get(field, null) == request.time
+        && (get(me()).data.get(field, null) == null || request.time > get(me()).data.get(field, null) + duration.value(secs, 's'));
+    }
+    function changed() { return request.resource.data.diff(resource.data).affectedKeys(); }
+    function tsOk(f) { return !(f in changed()) || request.resource.data[f] == request.time; }
+
+    match /users/{uid} {
+      allow read: if true;
+      allow create: if signedIn() && request.auth.uid == uid && !banned()
+        && request.resource.data.keys().hasOnly(['nick', 'createdAt'])
+        && nickOk(request.resource.data.nick)
+        && request.resource.data.createdAt == request.time;
+      allow update: if signedIn() && request.auth.uid == uid && !banned()
+        && changed().hasOnly(['nick', 'lastPost', 'lastComment', 'lastChat', 'lastReport'])
+        && nickOk(request.resource.data.nick)
+        && tsOk('lastPost') && tsOk('lastComment') && tsOk('lastChat') && tsOk('lastReport');
+      allow delete: if isAdmin() || (signedIn() && request.auth.uid == uid);
+    }
+
+    match /posts/{pid} {
+      allow read: if true;
+      allow create: if okUser()
+        && request.resource.data.keys().hasOnly(['board', 'server', 'title', 'body', 'nick', 'uid', 'createdAt', 'likes', 'comments', 'deleted'])
+        && request.resource.data.board in ['free', 'qna', 'tip', 'guild']
+        && request.resource.data.get('server', '') is string && request.resource.data.get('server', '').size() <= 12
+        && str(request.resource.data.title, 2, 60)
+        && str(request.resource.data.body, 2, 5000)
+        && request.resource.data.nick == myNick()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.likes == 0 && request.resource.data.comments == 0 && request.resource.data.deleted == false
+        && paced('lastPost', 30);
+      allow update: if isAdmin()
+        // 글쓴이: 제목·본문 수정, 또는 삭제 표시
+        || (okUser() && resource.data.uid == request.auth.uid
+            && changed().hasOnly(['title', 'body', 'deleted', 'editedAt'])
+            && str(request.resource.data.title, 2, 60) && str(request.resource.data.body, 2, 5000)
+            && (request.resource.data.deleted == resource.data.deleted || request.resource.data.deleted == true)
+            && tsOk('editedAt'))
+        // 추천 +1: 같은 배치에서 likes/{pid}_{uid} 를 처음 만들 때만
+        || (okUser() && changed().hasOnly(['likes'])
+            && request.resource.data.likes == resource.data.likes + 1
+            && !exists(/databases/$(database)/documents/likes/$(pid + '_' + request.auth.uid))
+            && existsAfter(/databases/$(database)/documents/likes/$(pid + '_' + request.auth.uid)))
+        // 댓글 수 +1: 댓글 쓰는 배치에서만
+        || (okUser() && changed().hasOnly(['comments'])
+            && request.resource.data.comments == resource.data.comments + 1
+            && paced('lastComment', 10));
+      allow delete: if isAdmin();
+
+      match /comments/{cid} {
+        allow read: if true;
+        allow create: if okUser()
+          && request.resource.data.keys().hasOnly(['body', 'nick', 'uid', 'createdAt', 'deleted'])
+          && str(request.resource.data.body, 1, 1000)
+          && request.resource.data.nick == myNick()
+          && request.resource.data.uid == request.auth.uid
+          && request.resource.data.createdAt == request.time
+          && request.resource.data.deleted == false
+          && get(/databases/$(database)/documents/posts/$(pid)).data.deleted == false
+          && paced('lastComment', 10);
+        allow update: if isAdmin()
+          || (okUser() && resource.data.uid == request.auth.uid && changed().hasOnly(['deleted']) && request.resource.data.deleted == true);
+        allow delete: if isAdmin();
+      }
+    }
+
+    match /likes/{lid} {
+      allow get: if signedIn() && lid.matches('.*_' + request.auth.uid);
+      allow list: if false;
+      allow create: if okUser()
+        && request.resource.data.keys().hasOnly(['pid', 'uid', 'createdAt'])
+        && lid == request.resource.data.pid + '_' + request.auth.uid
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.createdAt == request.time
+        && getAfter(/databases/$(database)/documents/posts/$(request.resource.data.pid)).data.likes
+           == get(/databases/$(database)/documents/posts/$(request.resource.data.pid)).data.likes + 1;
+      allow update, delete: if false;
+    }
+
+    match /chats/{room}/msgs/{mid} {
+      allow read: if true;
+      allow create: if okUser()
+        && room in ['all', 'party', 'trade', 'qna']
+        && request.resource.data.keys().hasOnly(['text', 'nick', 'uid', 'createdAt'])
+        && str(request.resource.data.text, 1, 200)
+        && request.resource.data.nick == myNick()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.createdAt == request.time
+        && paced('lastChat', 3);
+      allow update: if false;
+      allow delete: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
+    }
+
+    match /reports/{rid} {
+      allow create: if okUser()
+        && request.resource.data.keys().hasOnly(['kind', 'path', 'reason', 'uid', 'createdAt'])
+        && request.resource.data.kind in ['post', 'comment', 'chat']
+        && str(request.resource.data.path, 1, 200)
+        && str(request.resource.data.reason, 1, 300)
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.createdAt == request.time
+        && paced('lastReport', 20);
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /bans/{uid} {
+      allow get: if isAdmin() || (request.auth != null && request.auth.uid == uid);
+      allow list, write: if isAdmin();
+    }
+  }
+}

@@ -54,7 +54,7 @@ async def main():
         b = await p.chromium.launch()
         for path, f in pages():
             src = open(f, encoding='utf-8').read()
-            ids = [m.group(3) for m in EMPTY.finditer(src) if m.group(3) not in SKIP]
+            ids = [m.group(3) for m in EMPTY.finditer(src) if m.group(3) not in SKIP and not m.group(3).startswith('cm')]
             if not ids:
                 continue
             ctx = await b.new_context(timezone_id='Asia/Seoul', locale='ko-KR', viewport={'width': 1366, 'height': 900})

@@ -20,6 +20,7 @@ PAGES = {
  'roadmap': ('템빨 6개월 로드맵 — 레이드·공성전·신규 클래스', '템빨 오버기어드 출시 후 6개월 업데이트 계획: 헬가오 레이드, 공성전, 신규 클래스, 새 무기 계열.'),
  'bm':      ('템빨 상점 정리 — 파는 것과 팔지 않는 것', '템빨 오버기어드 과금 요소와 판매하지 않는 편의 기능, 운영 방침 정리.'),
  'coupons': ('템빨 오버기어드 쿠폰 코드 — 지금 쓸 수 있는 쿠폰·입력 방법·이벤트 총정리', '템빨 오버기어드 쿠폰 코드 현황(공식 확인), 게임 안·홈페이지 쿠폰 입력 방법, 사전등록 보상, 웹툰 단행본 쿠폰, SOOP 드롭스, 진행 중인 이벤트를 매일 정리해요.'),
+ 'community':('템빨 커뮤니티 — 오버기어드 자유게시판·길드 모집·실시간 채팅', '템빨 오버기어드 유저 커뮤니티. 자유 · 질문 · 공략 · 길드 모집 게시판과 실시간 채팅(전체 · 파티 · 거래 · 질문). 구글 로그인 후 닉네임으로 글쓰기.'),
  'streamers':('템빨 스트리머 서버 정리 — 똘끼·뜨뜨뜨뜨·우레·쌍조·사땅 어느 서버?', '템빨 오버기어드 유튜브·SOOP 방송인 서버 총정리. 라우엘·레가스·루나·하스터·루비·파그마 서버별 방송인, 유료 광고 방송 표시, 길드원 모집 여부를 한눈에.'),
  'news':    ('템빨 공식 소식 · 확인 중인 현상 — 버그 피하는 법 정리', '템빨 오버기어드 공식 공지 요약과 확인 중인 현상(거래소 수수료, 스케줄 모드 자동 정비, 펫 주얼 합성 표기 등) 9건을 피하는 법과 함께 매일 정리해요.'),
  'trade':   ('템빨 거래소 수수료 계산기 — 판매 수령액·묶음 단가·다이아 환산', '템빨 오버기어드 거래소에 올리기 전 수수료 빼고 받는 금액, 목표 금액을 받으려면 올릴 가격, 묶음 개당 단가 비교, 다이아 원화 환산을 바로 계산해요.'),
@@ -128,7 +129,7 @@ open(os.path.join(OUT, '404.html'), 'w', encoding='utf-8').write(
     '<p>페이지를 찾을 수 없어요. <a style="color:#e3c27a" href="/">홈으로 이동</a></p></body></html>')
 
 today = datetime.date.today().isoformat()
-pri = {'home': '1.0', 'calc': '0.9', 'enhance': '0.9', 'quiz': '0.9', 'coupons': '0.9', 'news': '0.9', 'streamers': '0.9', 'trade': '0.8', 'homework': '0.8', 'starter': '0.8'}
+pri = {'home': '1.0', 'calc': '0.9', 'enhance': '0.9', 'quiz': '0.9', 'coupons': '0.9', 'news': '0.9', 'streamers': '0.9', 'community': '0.9', 'trade': '0.8', 'homework': '0.8', 'starter': '0.8'}
 urls = ''.join(f'  <url><loc>{url(k)}</loc><lastmod>{today}</lastmod><changefreq>daily</changefreq><priority>{pri.get(k, "0.6")}</priority></url>\n' for k in PAGES)
 open(os.path.join(OUT, 'sitemap.xml'), 'w', encoding='utf-8').write(
     f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
