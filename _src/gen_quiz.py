@@ -90,3 +90,42 @@ for b in bosses:
     LP['b'].append([b[0], b[1], b[2], b[5]])
 json.dump(LP, open(P + 'data/lvplan.json', 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 print('레벨 계획', len(LP['ul']), len(LP['uq']), len(LP['g']), len(LP['b']))
+
+# ---------- 지금 여기(region.json) ----------
+REG = ['바이란', '노튼', '윈스톤', '킨바이', '엑카루', '레이단', '라인하르트', '수아즈 협곡', '레베카', '코크로 섬', '크라임 숲', '알테스', '벨두인', '지브라']
+H = D('hidden.json'); MN = D('mining.json')
+RJ = {'at': H['at'], 'main': H['main'], 'r': {r: {'h': [], 'g': [], 'o': [], 'b': []} for r in REG}}
+def hint(st):
+    out = []
+    for n in st[2]:
+        if n[0] == 'k': out.append(f'{n[1]} 몬스터 {n[2]:,}마리')
+        elif n[0] == 'c': out.append(f'단서 「{n[1]}」')
+        elif n[0] == 'g': out.append(n[1])
+        elif n[0] == 'p': out.append(f'「{n[1]}」 끝낸 뒤')
+    seen = []
+    for x in out:
+        if not any(x.split(' 몬스터')[0] == y.split(' 몬스터')[0] and '몬스터' in x for y in seen) or '몬스터' not in x: seen.append(x)
+    w = st[3]; place = ' — '.join([x for x in [w[0], w[1]] if x])
+    return ' · '.join(seen[:3]), place
+for q in H['q']:
+    if q[0] not in RJ['r']: continue
+    need, place = hint(q[4][0])
+    exp = sum(s[4][0] for s in q[4])
+    RJ['r'][q[0]]['h'].append([q[1], q[2], q[3], len(q[4]), need, place, exp])
+gplace = {}
+for g in hx:
+    if g[1] in RJ['r'] and g[3]:
+        RJ['r'][g[1]]['g'].append([g[0], min(m[1] for m in g[3]), max(m[1] for m in g[3]), [m[0] for m in g[3]]])
+        gplace[g[0]] = g[1]
+oc = {}
+for st in MN['sites']:
+    if st[1] in RJ['r']:
+        o = MN['ores'].get(str(st[2]))
+        if o: oc.setdefault(st[1], {}).setdefault(o[0], [o[1], 0]); oc[st[1]][o[0]][1] += st[3]
+for r, d in oc.items():
+    RJ['r'][r]['o'] = sorted([[k, v[0], v[1]] for k, v in d.items()], key=lambda x: -x[2])
+for b in bosses:
+    r = gplace.get(b[5])
+    if r: RJ['r'][r]['b'].append([b[0], b[1], b[2], b[5]])
+json.dump(RJ, open(P + 'data/region.json', 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
+print('지역', {r: [len(v['h']), len(v['g']), len(v['o']), len(v['b'])] for r, v in RJ['r'].items()})

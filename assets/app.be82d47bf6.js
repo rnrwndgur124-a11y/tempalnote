@@ -42,6 +42,7 @@ const PAGES={
  daily:{t:'오늘의 퀴즈 · 출석',d:'매일 5문제 · 연속 기록 · 출석 도장 · 업적',i:'i-quiz',b:'new'},
  lvplan:{t:'레벨별 할 일',d:'내 레벨에 맞는 사냥터 · 보스 · 열리는 기능',i:'i-guide',b:'new'},
  vote:{t:'이번 주 투표',d:'다들 뭐 키워? 무기 · 목표 클래스 투표',i:'i-crown',b:'new'},
+ here:{t:'지금 여기 · 지역 할 일',d:'이 지역 남은 큐브 · 히든 · 보스 한 화면',i:'i-map',b:'new'},
  archive:{t:'탐사 · 아카이브',d:'데이터 큐브 · 히든 퀘스트 · 지역 달성도 체크리스트',i:'i-map',b:'new'},
  prob:{t:'확률 총정리',d:'강화 · 축복 · 오버기어드 · 소환 · 잠재력 공식 확률',i:'i-anvil',b:'hot'},
  craft:{t:'제작 도감',d:'레시피 231종 · 재료 · 성공률 · 골드',i:'i-anvil',b:'new'},
@@ -58,7 +59,7 @@ const PAGES={
 (()=>{try{let pv=sessionStorage.getItem('tn_prev');if(pv===null){pv=localStorage.getItem('tn_vd')||'';sessionStorage.setItem('tn_prev',pv)}window.__PREV=pv}catch(e){window.__PREV=''}})();
 (()=>{const P=window.PDATE;if(!P)return;const td=new Date(Date.now()+9*3600e3).toISOString().slice(0,10);for(const k in PAGES){if(PAGES[k].b==='new')delete PAGES[k].b;if(P[k]===td&&!PAGES[k].b)PAGES[k].b='new'}})();
 window.PAGES=PAGES;
-const GROUPS=[{n:'도구',e:'TOOLS',k:['sim','daily','quiz','godhand','enhance','calc','gear','growth','trade','timer','homework','backup']},{n:'가이드',e:'GUIDES',k:['prob','hunt','lvplan','drops','mining','collect','weapons','starter','map','codex','archive','hidden','craft','titles','achieve','pets','outfit','systems']},{n:'정보',e:'INFO',k:['coupons','streamers','vote','news','videos','official','roadmap','bm','about']}];
+const GROUPS=[{n:'도구',e:'TOOLS',k:['sim','daily','quiz','godhand','enhance','calc','gear','growth','trade','timer','homework','backup']},{n:'가이드',e:'GUIDES',k:['prob','hunt','lvplan','drops','mining','collect','weapons','starter','map','here','codex','archive','hidden','craft','titles','achieve','pets','outfit','systems']},{n:'정보',e:'INFO',k:['coupons','streamers','vote','news','videos','official','roadmap','bm','about']}];
 const link=k=>`<a href="/${k}/" data-k="${k}">${med(PAGES[k].i,'sm')}<span>${PAGES[k].t}<small>${PAGES[k].d}</small></span></a>`;
 $('#menu').innerHTML=GROUPS.map((g,gi)=>`<div class="dd" data-g="${gi}"><button type="button" aria-haspopup="true">${g.n}</button><div class="ddm">${g.k.map(link).join('')}</div></div>`).join('');
 $('#drawer').innerHTML=GROUPS.map(g=>`<h4>${g.e}</h4>${g.k.map(link).join('')}`).join('');
@@ -85,6 +86,7 @@ $('#homeGuides').innerHTML=['systems','weapons','bm','coupons'].map(tile).join('
  const d=pv.slice(5).replace('-','/');box.innerHTML=`<div class="since"><b>다시 오셨네요 👋</b> 지난 방문(${d}) 이후 바뀐 곳 <span class="mute">${ks.length}곳</span><div class="sl">${ks.slice(0,10).map(k=>`<a href="/${k}/">${esc(PAGES[k].t)}</a>`).join('')}</div></div>`})();
 // ---------- 오늘 업데이트 ----------
 const CHG=[
+ ['2026-11-27','지금 여기: 지역 하나 고르면 남은 큐브 · 히든 · 보스를 한 화면에','here'],
  ['2026-11-27','이번 주 투표: 무기 · 목표 클래스 인기 순위','vote'],
  ['2026-11-27','레벨별 할 일: 레벨만 넣으면 사냥터 · 보스 · 열리는 기능','lvplan'],
  ['2026-11-27','오늘의 템빨 퀴즈 · 출석 도장 · 업적 16개 추가','daily'],
@@ -114,6 +116,7 @@ const CHG=[
  const bs=(g('dn-boss')||[]).filter(b=>b.at&&b.at>Date.now()).sort((a,b)=>a.at-b.at);if(bs.length){const m=Math.round((bs[0].at-Date.now())/60000);it.push(`<a href="/timer/">⏱ ${esc(bs[0].n)} <b>${m<60?m+'분':Math.floor(m/60)+'시간 '+m%60+'분'}</b> 뒤</a>`)}
  {const td=Math.floor((Date.now()+9*36e5)/864e5),dq=g('tn_daily'),h=dq&&dq.hist&&dq.hist[td],at=g('tn_att')||[];let st=0;{const S=new Set(at);let d=S.has(td)?td:td-1;while(S.has(d)){st++;d--}}
   it.unshift(h&&h.length>=5?`<a href="/daily/">🧠 오늘의 퀴즈 <b>${h.filter(Boolean).length}/5</b>${st>1?' · 📅 '+st+'일 연속':''}</a>`:`<a href="/daily/" class="hot">🧠 오늘의 퀴즈 <b>${h&&h.length?h.length+'/5 푸는 중':'풀기'}</b>${st>1?' · 📅 '+st+'일 연속 출석':''}</a>`)}
+ {const hr=g('tn_here'),cm0=g('tn_cube')||{};if(hr&&hr.r){const l=5-Object.keys(cm0).filter(k=>k.startsWith(hr.r+'|')).length;it.unshift(`<a href="/here/" class="hot">📍 ${esc(hr.r)} ${l>0?'큐브 '+l+'개 남음':'큐브 완료'} · 이어서 하기</a>`)}else it.push(`<a href="/here/">📍 지금 여기 — 지역별 남은 것</a>`)}
  {const cm=g('tn_cube');const n=cm?Object.keys(cm).length:0;if(n)it.push(`<a href="/archive/">📦 데이터 큐브 <b>${n}/70</b>${n>=70?' 완료!':''}</a>`)}
  let sv='';try{sv=localStorage.getItem('tn_sv')||''}catch(e){}if(sv)it.unshift(`<a href="/streamers/">⭐ 내 서버 <b>${esc(sv)}</b></a>`);
  const hq=g('tn_hq');if(hq&&hq.done){const n=Object.keys(hq.done).length;if(n)it.push(`<a href="/hidden/">🗝 히든 퀘스트 <b>${n}/156</b></a>`)}
@@ -1241,6 +1244,7 @@ const cmSvg=n=>{const m=CMAP[n];if(!m)return '';const e=x=>String(x).replace(/[&
  const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const S=Object.assign({done:{},main:'',lv:'',reg:'전체',sort:'open',todo:0,now:0},ls('tn_hq')||{});
  const put=()=>ls('tn_hq',S);
+ document.addEventListener('tnhq',()=>{const x=ls('tn_hq');if(x){S.done=x.done||{};if(x.reg)S.reg=x.reg}try{chips();draw()}catch(e){}});
  const mk=s=>{const m=String(s||'').match(/(\d+)\s*[-.\s]\s*(\d+)/);return m?[+m[1],+m[2]]:null};
  const ge=(a,b)=>a[0]>b[0]||(a[0]===b[0]&&a[1]>=b[1]);
  const cmpM=(a,b)=>{const x=mk(a)||[0,0],y=mk(b)||[0,0];return x[0]-y[0]||x[1]-y[1]};
@@ -1677,6 +1681,55 @@ const cmSvg=n=>{const m=CMAP[n];if(!m)return '';const e=x=>String(x).replace(/[&
   if(SV.length)box(C,'c','어느 서버에서 해요?',SV);else C.remove();box(D,'d','지금 내 레벨은?',LV);box(E,'e','과금 스타일은? (익명)',PY)};
  let done=false;const load=()=>{if(done)return;done=true;get().then(draw)};
  if(/\/vote/.test(location.pathname)||location.hash==='#vote'||!('IntersectionObserver' in window))load();else{const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io.disconnect();load()}},{rootMargin:'800px'});io.observe(VA)}
+})();
+// ---------- 지금 여기 ----------
+(()=>{const BOX=document.getElementById('hrBox');if(!BOX)return;const SEL=document.getElementById('hrSel');
+ const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const ls=(k,v)=>{try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||'null');localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}};
+ const RG=['바이란','노튼','윈스톤','킨바이','엑카루','레이단','라인하르트','수아즈 협곡','레베카','코크로 섬','크라임 숲','알테스','벨두인','지브라'];
+ let D=null,loading=false;const S=Object.assign({r:'',left:1},ls('tn_here')||{});const put=()=>ls('tn_here',S);
+ const hq=()=>Object.assign({done:{}},ls('tn_hq')||{});
+ const mk=x=>{const m=/^(\d+)-(\d+)/.exec(x||'');return m?[+m[1],+m[2]]:null},ge=(a,b)=>a[0]>b[0]||a[0]===b[0]&&a[1]>=b[1];
+ const open=(h,H)=>{const r=mk(h[1]);if(r&&!(r[0]===0&&r[1]===0)){const m=mk(H.main);if(!m)return null;if(!ge(m,r))return false}if(h[2]){const lv=+H.lv||0;if(!lv)return null;if(lv<h[2])return false}return true};
+ const man=n=>n>=1e4?(Math.round(n/1e3)/10).toLocaleString()+'만':n.toLocaleString();
+ const cubesOf=r=>(typeof CUBE!=='undefined'&&CUBE[r]||[]).map((x,j)=>({j,n:tnCube.name(r,j),d:String(x).replace(/<[^>]+>/g,'').split(' — ')[1]||''}));
+ const stat=r=>{const H=hq(),c=cubesOf(r),h=(D.r[r]||{h:[]}).h;const done=c.filter(x=>tnCube.has(r,x.j)).length+h.filter(x=>H.done[r+'|'+x[0]]).length;return{done,tot:c.length+h.length}};
+ const pick=()=>{if(S.r&&RG.includes(S.r))return S.r;const H=hq();let lv=+H.lv||0;if(!lv){try{lv=+localStorage.getItem('dn-hulv')||0}catch(e){}}
+  if(lv){let best='',bd=99;RG.forEach(r=>(D.r[r].g||[]).forEach(g=>{const d=lv<g[1]?(g[1]-lv)*2:lv>g[2]?lv-g[2]:0;if(d<=bd){bd=d;best=r}}));if(best)return best}return '바이란'};
+ // 화면 켜두기
+ let wl=null,wantWL=false;const wlOn=async()=>{try{wl=await navigator.wakeLock.request('screen');wl.addEventListener('release',()=>{wl=null;drawTools()})}catch(e){wantWL=false}drawTools()};
+ document.addEventListener('visibilitychange',()=>{if(wantWL&&!wl&&document.visibilityState==='visible')wlOn()});
+ function drawTools(){const t=document.getElementById('hrTools');if(!t)return;t.innerHTML=`<button type="button" data-t="left" class="${S.left?'on':''}">${S.left?'✓ ':''}남은 것만</button>${'wakeLock' in navigator?`<button type="button" data-t="wl" class="${wl?'on':''}">${wl?'🔆 화면 켜두는 중':'🔅 화면 켜두기'}</button>`:''}<a class="btnlink ghost" href="/map/" data-mpr="${esc(S.r)}" style="padding:7px 12px;border-radius:99px;font-size:13px;min-height:0">🗺 지도</a>`}
+ function chips(){SEL.innerHTML=RG.map(r=>{const s=stat(r),ok=s.tot&&s.done>=s.tot;return `<button type="button" data-r="${esc(r)}" class="${r===S.r?'on':''}${ok?' ok':''}">${ok?'✅ ':''}${esc(r)}<small>${ok?'':'남음 '+(s.tot-s.done)}</small></button>`}).join('');const on=SEL.querySelector('.on');if(on)on.scrollIntoView({block:'nearest',inline:'center'})}
+ function draw(){if(!D)return;const r=S.r,R=D.r[r],H=hq(),s=stat(r),pct=s.tot?s.done/s.tot:0,C=2*Math.PI*42;
+  const cs=cubesOf(r).map(c=>({...c,ok:tnCube.has(r,c.j)}));
+  const hs=R.h.map(h=>({h,ok:!!H.done[r+'|'+h[0]],op:open(h,H)})).sort((a,b)=>(a.ok-b.ok)||((b.op===true)-(a.op===true))||(mk(a.h[1])||[0,0])[0]-(mk(b.h[1])||[0,0])[0]||(mk(a.h[1])||[0,0])[1]-(mk(b.h[1])||[0,0])[1]);
+  const vis=x=>!S.left||!x.ok;const cL=cs.filter(vis),hL=hs.filter(vis);const cOk=cs.filter(x=>x.ok).length,hOk=hs.filter(x=>x.ok).length;
+  const nx=RG.find(x=>{const t=stat(x);return t.tot&&t.done<t.tot&&x!==r});
+  let h=`<div class="hrhead"><div class="hrring"><svg viewBox="0 0 96 96"><circle cx="48" cy="48" r="42" fill="none" stroke="#ffffff14" stroke-width="9"/><circle cx="48" cy="48" r="42" fill="none" stroke="${pct>=1?'#3fb96b':'#e2b04a'}" stroke-width="9" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-pct)}" style="transition:stroke-dashoffset .6s"/></svg><b>${Math.round(pct*100)}%<small>${s.done} / ${s.tot}</small></b></div><div style="flex:1;min-width:200px"><h2>${esc(r)}</h2><div class="small mute">📦 큐브 ${cOk}/${cs.length} · 🗝 히든 ${hOk}/${hs.length}${H.main||H.lv?` · 내 진행 ${H.main?'메인 '+esc(H.main):''}${H.main&&H.lv?' · ':''}${H.lv?'Lv.'+esc(H.lv):''}`:' · <a href="/hidden/">내 메인 퀘스트 넣기</a>'}</div><div class="hrtools" id="hrTools"><button type="button" data-t="left" class="on">✓ 남은 것만</button><button type="button" data-t="wl" class="">🔅 화면 켜두기</button><a class="btnlink ghost" href="/map/" data-mpr="바이란" style="padding:7px 12px;border-radius:99px;font-size:13px;min-height:0">🗺 지도</a></div></div></div>`;
+  if(s.tot&&s.done>=s.tot)h+=`<div class="hrdone"><div class="big">🎉</div><b>${esc(r)} 탐사 완료!</b><span class="small mute">큐브 ${cs.length}개 · 히든 퀘스트 ${hs.length}개 전부 끝냈어요.</span>${nx?`<div style="margin-top:10px"><button type="button" class="btn" data-go="${esc(nx)}">다음 지역 ${esc(nx)} →</button></div>`:''}</div>`;
+  h+=`<div class="hrsec"><h3>📦 데이터 큐브 <small>${cOk} / ${cs.length}</small></h3>${cL.map(c=>`<div class="hrit${c.ok?' done':''}" data-c="${c.j}"><button type="button" class="ck" aria-pressed="${c.ok}" aria-label="${esc(c.n)} 찾음">${c.ok?'✓':c.j+1}</button><div class="tx"><b>${esc(c.n)}</b><span>${esc(c.d)}</span></div></div>`).join('')||(cs.length?'<div class="hrempty">✅ 이 지역 큐브는 다 찾았어요</div>':'<div class="hrempty">이 지역 큐브 정보가 없어요</div>')}</div>`;
+  const hRow=x=>{const q=x.h,tag=x.ok?'':x.op===true?'<span class="tg go">지금 가능</span>':x.op===false?`<span class="tg lk">${q[1]&&q[1]!=='0-0'?'메인 '+esc(q[1])+' 뒤':''}${q[2]?' Lv.'+q[2]:''}</span>`:`<span class="tg">${q[1]&&q[1]!=='0-0'?'메인 '+esc(q[1])+' 뒤':'처음부터'}${q[2]?' · Lv.'+q[2]:''}</span>`;
+   return `<div class="hrit${x.ok?' done':x.op===false?' lock':''}" data-h="${esc(q[0])}"><button type="button" class="ck" aria-pressed="${x.ok}" aria-label="${esc(q[0])} 깸">${x.ok?'✓':''}</button><div class="tx"><b>${esc(q[0])}${tag}</b><span>${q[5]?'📍 '+esc(q[5]):''}${q[4]?(q[5]?' · ':'')+esc(q[4]):''}${q[3]>1?` · ${q[3]}단계`:''} · EXP ${man(q[6])}</span></div></div>`};const hA=hL.filter(x=>x.op!==false),hB=hL.filter(x=>x.op===false);
+  h+=`<div class="hrsec"><h3>🗝 히든 퀘스트 <small>${hOk} / ${hs.length}</small></h3>${hA.map(hRow).join('')}${hB.length?`<details class="hrlock"${hA.length?'':' open'}><summary>🔒 아직 조건이 안 된 것 ${hB.length}개</summary>${hB.map(hRow).join('')}</details>`:''}${hL.length?'':(hs.length?'<div class="hrempty">✅ 이 지역 히든 퀘스트는 다 깼어요</div>':'<div class="hrempty">이 지역 히든 퀘스트는 없어요</div>')}<p class="small" style="margin:4px 0 0"><a href="/hidden/" data-hreg="${esc(r)}">단계별 조건 · 보상 자세히 →</a></p></div>`;
+  if(R.b.length)h+=`<div class="hrsec"><h3>⚔ 보스 · 오염된 존재</h3><div class="hrmini">${R.b.map(b=>`<div><b>${esc(b[0])}</b><span>${esc(b[1])} · Lv.${b[2]} · ${esc(b[3])}</span></div>`).join('')}</div><p class="small" style="margin:6px 0 0"><a href="/drops/">드롭 보기 →</a></p></div>`;
+  if(R.g.length)h+=`<div class="hrsec"><h3>🗡 사냥터</h3><div class="hrmini">${R.g.map(g=>`<div><b>${esc(g[0])}</b><span>Lv.${g[1]===g[2]?g[1]:g[1]+'~'+g[2]} · ${g[3].length}종</span><details style="margin-top:4px"><summary class="small">몬스터 보기</summary><span class="small">${g[3].map(esc).join(' · ')}</span></details></div>`).join('')}</div><p class="small" style="margin:6px 0 0"><a href="/hunt/">시간당 경험치 계산 →</a></p></div>`;
+  if(R.o.length)h+=`<div class="hrsec"><h3>⛏ 캘 수 있는 광물</h3><div class="hrmini">${R.o.slice(0,8).map(o=>`<div><b>${esc(o[0])}</b><span>${esc(o[1])} · 이 지역 ${o[2]}개</span></div>`).join('')}</div><p class="small" style="margin:6px 0 0"><a href="/mining/">채광 계산기 →</a></p></div>`;
+  BOX.innerHTML=h;drawTools()}
+ const celebrate=(r)=>{const d=document.createElement('div');d.className='dqtoast';d.innerHTML='🎉 <b>'+esc(r)+'</b> 탐사 완료! 큐브 · 히든 전부 끝';document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add('on'));setTimeout(()=>{d.classList.remove('on');setTimeout(()=>d.remove(),400)},4000)};
+ const toggle=(el,fn)=>{const was=stat(S.r);fn();const now=stat(S.r);if(S.left&&el&&!el.classList.contains('done')){el.classList.add('out');setTimeout(()=>{draw();chips()},330)}else{draw();chips()}if(now.done>=now.tot&&was.done<was.tot)celebrate(S.r)};
+ BOX.addEventListener('click',e=>{const t=e.target.closest('[data-t]');if(t){if(t.dataset.t==='left'){S.left=S.left?0:1;put();draw()}else if(t.dataset.t==='wl'){if(wl){wantWL=false;wl.release()}else{wantWL=true;wlOn()}}return}
+  const go=e.target.closest('[data-go]');if(go){S.r=go.dataset.go;put();chips();draw();window.scrollTo({top:0,behavior:'smooth'});return}
+  const mp=e.target.closest('[data-mpr]');if(mp){try{sessionStorage.setItem('tn_mpr',mp.dataset.mpr)}catch(x){}return}
+  const hr=e.target.closest('[data-hreg]');if(hr){const H=hq();H.reg=hr.dataset.hreg;ls('tn_hq',H);return}
+  const ck=e.target.closest('.ck');if(!ck)return;const it=ck.closest('.hrit');
+  if(it.dataset.c!=null){const j=+it.dataset.c;toggle(it,()=>tnCube.set(S.r,j,!tnCube.has(S.r,j)))}
+  else if(it.dataset.h!=null){const H=hq(),k=S.r+'|'+it.dataset.h;toggle(it,()=>{if(H.done[k])delete H.done[k];else H.done[k]=1;ls('tn_hq',H);document.dispatchEvent(new CustomEvent('tnhq'))})}});
+ SEL.onclick=e=>{const b=e.target.closest('button[data-r]');if(!b)return;S.r=b.dataset.r;put();chips();draw()};
+ document.addEventListener('tncube',()=>{if(D){chips();draw()}});
+ const boot=j=>{D=j;S.r=pick();put();chips();draw()};
+ const load=()=>{if(D||loading)return;loading=true;fetch('/data/region.json').then(r=>r.json()).then(boot).catch(()=>{loading=false;BOX.innerHTML='<p class="mute small">자료를 못 불러왔어요. 새로고침해 주세요.</p>'})};
+ if(/\/here/.test(location.pathname)||location.hash==='#here'||!('IntersectionObserver' in window))load();else{const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io.disconnect();load()}},{rootMargin:'1500px'});io.observe(BOX)}
 })();
 // ---------- 탐사 지도 ----------
 (function(){const S=document.getElementById('mpSvg');if(!S)return;
