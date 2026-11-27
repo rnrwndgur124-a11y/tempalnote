@@ -9,6 +9,10 @@ BAN="$(printf '\xea\xb9\xa8\xeb\xb9\x84')\|$(printf '\x6b\x6b\x61\x65\x62\x69')"
 if printf '%s' "$1" | grep -qi "$BAN" || grep -qi "$BAN" /home/claude/tempal/index.html; then echo "배포 중단: 다른 사이트 이름이 들어 있어요"; exit 1; fi
 cd /home/claude/site && git stash -q -u 2>/dev/null || true; git pull -q --rebase; git stash pop -q 2>/dev/null || true
 cp /home/claude/tempal/data/ads.txt /home/claude/site/ads.txt && python3 /home/claude/tempal/build_site.py /home/claude/site && python3 /home/claude/tempal/gen_og.py && python3 /home/claude/tempal/gen_codex.py /home/claude/site && python3 /home/claude/tempal/gen_alchemy.py /home/claude/site && python3 /home/claude/tempal/gen_search.py /home/claude/site && python3 /home/claude/tempal/prerender.py /home/claude/site | tail -1 && python3 /home/claude/tempal/extract_assets.py /home/claude/site
+python3 -c "
+import glob,re,os,sys
+bad=[f for f in glob.glob('/home/claude/site/*/index.html') if '/_src/' not in f for m in re.findall(r'og:image\" content=\"https://tempalnote.com(/img/og/[^\"]+)',open(f,encoding='utf-8').read()) if not os.path.exists('/home/claude/site'+m)]
+print('공유 이미지 없음:',bad) if bad else None; sys.exit(1 if bad else 0)" || { echo "배포 중단: 공유 이미지가 없는 페이지가 있어요 (gen_og.py IMG에 추가)"; exit 1; }
 if grep -rqi --exclude-dir=.git --include='*.html' --include='*.js' --include='*.txt' --include='*.json' --include='*.xml' --include='*.py' --include='*.sh' "$BAN" /home/claude/site; then echo "배포 중단: 다른 사이트 이름이 들어 있어요"; exit 1; fi
 # 자동 점검: 실패하면 올리지 않는다
 if ! python3 /home/claude/tempal/check_site.py /home/claude/site; then echo "배포 중단: 위 문제를 먼저 고치세요"; exit 1; fi
