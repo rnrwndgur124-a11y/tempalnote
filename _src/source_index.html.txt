@@ -280,6 +280,8 @@ label{font-weight:700;font-size:13.5px;display:block;margin-bottom:6px;color:#c9
 .hrit.out{animation:hrout .35s forwards}@keyframes hrout{to{opacity:0;transform:translateX(30px);height:0;padding:0;margin:0;border-width:0}}
 .hrmini{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:8px}.hrmini div{border:1px solid var(--line2);border-radius:12px;padding:10px 12px;font-size:13px;background:#ffffff04}.hrmini div b{font-size:15px;display:block}.hrmini div span{color:var(--mute)}
 .hrdone{text-align:center;padding:22px 14px;border:1px solid #3fb96b;border-radius:16px;background:#3fb96b14;margin-bottom:14px}.hrdone .big{font-size:40px}.hrdone b{font-size:20px;display:block;margin:4px 0}
+.homemore{max-width:1200px;margin:10px auto 30px;padding:0 max(4vw,16px)}.homemore>summary{cursor:pointer;list-style:none;padding:16px 18px;border:1px solid var(--line2);border-radius:16px;background:#ffffff06;display:flex;flex-direction:column;gap:4px;font-weight:800;font-size:17px}.homemore>summary::after{content:'펼치기 ▾';font-size:13px;color:var(--gold2);font-weight:700}.homemore[open]>summary::after{content:'접기 ▴'}.homemore>summary small{font-weight:500;color:var(--mute);font-size:13px}.homemore>summary::-webkit-details-marker{display:none}
+.featg .fc.fmore{display:none}.featg.open .fc.fmore{display:block}
 .herobtn{display:block;margin:0 0 14px;padding:14px 16px;border-radius:14px;border:1px solid var(--gold);background:linear-gradient(90deg,#e2b04a22,#e2b04a08);color:#fff;text-decoration:none;font-size:15px}.herobtn:hover{background:#e2b04a2e}.hrrw{border:1px solid var(--gold);border-radius:14px;padding:12px 14px;margin:0 0 14px;background:linear-gradient(90deg,#e2b04a1a,transparent)}.hrrwg{display:flex;gap:14px;flex-wrap:wrap;margin-top:4px;font-size:14px}.hrrwg b{color:var(--gold2);font-size:17px}
 .hrroute{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:8px}.hrroute button{display:grid;grid-template-columns:30px 1fr auto;gap:4px 10px;align-items:center;text-align:left;padding:10px 12px;border-radius:12px;border:1px solid var(--line2);background:#ffffff05;color:inherit;font:inherit;cursor:pointer;min-height:0}.hrroute button>i{font-style:normal;font-weight:900;color:var(--gold2);text-align:center}.hrroute button b{display:block;font-size:15px}.hrroute button small{color:var(--mute);font-size:12px}.hrroute button em{font-style:normal;font-size:13px;font-weight:700;color:var(--mute)}.hrroute button .lvbar{grid-column:1/-1;margin:0}.hrroute button.cur{border-color:var(--gold);background:#e2b04a14}.hrroute button.ok{border-color:#3fb96b}.hrroute button.ok .lvbar i{background:#3fb96b}.hrroute button.far{opacity:.55}
 .hrlock{margin:4px 0 8px}.hrlock summary{cursor:pointer;padding:10px 12px;border:1px dashed var(--line2);border-radius:12px;font-weight:700;font-size:14px;color:var(--mute);margin-bottom:8px}.hrempty{padding:12px;border:1px dashed var(--line2);border-radius:12px;color:var(--mute);font-size:14px;text-align:center}
@@ -565,7 +567,7 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
       <p class="hsub"><b>히든 퀘스트 156개 · 아이템 1,800종 · 수집 1,091개 · 보스 · 사냥터 드롭</b>을 한곳에. 레벨만 넣으면 <b>지금 할 것</b>을 골라 드려요. 매일 아침 공식 소식 · 쿠폰 업데이트.</p>
       <button type="button" class="hsearch" id="hsBtn"><svg class="i"><use href="#i-search"/></svg><span>아이템 · 퀘스트 · 보스 · 클래스 이름으로 검색</span><kbd>/</kbd></button>
       <div class="hkw"><b>인기</b><a href="#coupons">1 쿠폰·이벤트</a><a href="#hidden">2 히든 퀘스트</a><a href="#drops">3 드롭 찾기</a><a href="#archive">4 데이터 큐브</a><a href="#weapons">5 클래스 도감</a></div>
-      <div class="cdl" id="cdTitle">정식 출시까지 · 11월 26일(목) 00:00</div>
+      <div class="cdl" id="cdTitle">정식 서비스 중 · 11월 26일 출시</div>
       <div class="cd" id="cd"><div><b id="cdD">-</b><span>DAYS</span></div><div><b id="cdH">-</b><span>HOURS</span></div><div><b id="cdM">-</b><span>MIN</span></div><div><b id="cdS">-</b><span>SEC</span></div></div>
     </div></div>
   </div>
@@ -581,12 +583,13 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
       <div id="meOut" class="meout"></div></div>
     <div id="sinceBox"></div><div id="todayBox"></div><div id="myBox" class="mybox" hidden></div>
     <a class="nstrip" id="nstrip" href="#coupons"><span class="nb">이벤트</span><span class="nt" id="nstripT">진행 중인 이벤트 · 쿠폰</span><span class="na">바로가기 →</span></a>
-    <a class="nstrip" id="cmKing" href="#sim"><span class="nb" style="background:#FFE812;color:#111">👑 랭킹</span><span class="nt" id="cmKingT">오늘의 강화왕 — 1위 자리가 비어 있어요. 공식 확률로 도전!</span><span class="na">도전하기 →</span></a>
+    <a class="nstrip" id="cmKing" href="#sim"><span class="nb" style="background:#FFE812;color:#111">👑 랭킹</span><span class="nt" id="cmKingT">오늘의 강화왕 — 오늘 첫 1위가 되어 보세요. 공식 확률로 도전!</span><span class="na">도전하기 →</span></a>
   </div>
 
   <div class="band" style="padding-bottom:20px"><div class="wrap">
     <div class="sh"><div><span class="k">FEATURED</span><h2 class="gt">지금 많이 보는 곳</h2></div></div>
     <div class="featg" id="homeFeat"></div>
+    <button type="button" class="btn ghost" id="featMore" style="margin:12px auto 0;display:block">기능 전체 보기 ▾</button>
   </div></div>
 
   <div class="band" style="padding-top:20px"><div class="wrap">
@@ -594,7 +597,7 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
       <div class="card"><div class="ch"><span class="med sm"><svg><use href="#i-gift"/></svg></span><h3>진행 중 이벤트</h3><a class="small" href="#coupons" style="margin-left:auto">전체 →</a></div><div id="homeEv"></div></div>
       <div>
         <div class="card"><div class="ch"><span class="med sm"><svg><use href="#i-coin"/></svg></span><h3>쿠폰 번호</h3><a class="small" href="#coupons" style="margin-left:auto">쓰는 법 →</a></div>
-          <div class="empty" style="padding:16px"><b style="color:var(--champ)">공식 쿠폰 대기 중</b><p class="small" style="margin:6px 0 0">공식 채널에 올라온 쿠폰만 올려요. 출처 없는 코드는 올리지 않습니다.</p></div></div>
+          <div class="empty" style="padding:16px"><b style="color:var(--champ)">지금 공개된 쿠폰 번호 없음</b><p class="small" style="margin:6px 0 0">공식 홈페이지 · 유튜브 · 카카오 채널을 매일 아침 확인해요. <b>마지막 확인: <span class="lastchk"></span></b></p><p class="small" style="margin:6px 0 0">대신 지금 받을 수 있는 것 → <a href="#coupons">우편 · 출석 보상 체크</a></p></div></div>
       </div>
     </div>
   </div></div>
@@ -1300,7 +1303,7 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
       <tr><td>일반 몬스터 처치</td><td>10,000 → 골드 5만 · 30,000 → 5만 · 50,000 → 10만</td></tr>
     </tbody></table></div>
     <p class="small" style="margin-bottom:0;color:var(--champ)">강화 시도·분해 숫자는 8주 미션(1주 강화 100, 5주 500)과 같이 올라가요. 안 쓰는 장비는 버리지 말고 분해해서 두 미션을 동시에 채우세요.</p></div>
-  <div class="empty"><h3 style="color:var(--champ)">공식 쿠폰 대기 중</h3><p style="margin:0">공식 채널에서 확인된 쿠폰만 올려요. 출처 없는 코드는 올리지 않습니다.</p><p class="small" style="margin:8px 0 0">마지막 확인 · 2026년 11월 26일 밤 8시 50분 (공식 공지 · 쿠폰 페이지 확인, 새 코드 없음)</p></div>
+  <div class="empty"><h3 style="color:var(--champ)">공식 쿠폰 대기 중</h3><p style="margin:0">공식 채널에서 확인된 쿠폰만 올려요. 출처 없는 코드는 올리지 않습니다.</p><p class="small" style="margin:8px 0 0">마지막 확인 · <span class="lastchk"></span> (공식 공지 · 쿠폰 페이지 확인, 새 코드 없음)</p></div>
   <div class="card" style="margin-top:18px"><div class="ch"><span class="med sm"><svg><use href="#i-gift"/></svg></span><h3>쿠폰 쓰는 법</h3></div>
     <p style="margin:0 0 4px"><b>게임 안에서</b></p><ol class="facts"><li>오른쪽 위 <b>메뉴</b> → 오른쪽 아래 <b>설정</b></li><li><b>계정</b> → <b>쿠폰 입력</b> → 코드 붙여넣기</li></ol>
     <p style="margin:8px 0 4px"><b>홈페이지에서</b></p><ol class="facts"><li>넥슨 쿠폰 페이지 <a href="https://coupon.nexon.com/ko-kr/temppal" target="_blank" rel="noopener"><b>coupon.nexon.com/ko-kr/temppal</b></a> (공식 홈페이지 위쪽 「쿠폰입력」과 같은 곳)으로 이동</li><li>넥슨 계정으로 로그인</li><li>서버와 캐릭터를 고르고 쿠폰 번호 입력 → 쿠폰 사용</li><li>보상은 게임 안 우편함으로 들어와요</li></ol>
@@ -1563,6 +1566,7 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
   <div class="pk">STREAMERS · SERVERS</div>
   <div class="ph"><span class="med lg"><svg><use href="#i-play"/></svg></span><h1 class="gt">서버 목록 · 방송인 서버 찾기</h1></div>
   <p class="lead"><b>서버 20개</b>(일반 14 · 크리에이터 6)와 유튜브 · SOOP 방송인이 <b>어느 서버에서 하는지</b> 모았어요. 같은 서버로 가면 그 방송 길드 · 파티에 함께할 수 있어요. 방송 제목 · 설명 · 채널 공지에 적힌 서버만 넣었어요.</p>
+  <p class="small mute" style="margin:-4px 0 14px">방송인 이름과 서버는 각 방송에서 공개한 정보만 모았어요. <b>본인이 내려 달라고 하시면 바로 지워요</b> — <a href="#contact">문의</a> 또는 rnrwndgur124@naver.com 으로 알려 주세요.</p>
   <div class="shots" style="margin-bottom:16px"><figure class="shot"><img loading="lazy" src="https://tempalnote.com/img/ui/streamers.webp" alt="방송인 서버 찾기 — 라우엘 · 레가스 · 하스터 · 루나 서버별 방송인" width="1280" height="591" data-zoom="1"><figcaption>같은 서버여야 같은 길드 · 파티 · 거래소를 써요. 캐릭터는 서버마다 따로예요</figcaption></figure></div>
   <div class="card" id="servers" style="margin-bottom:16px;border-color:var(--gold)"><div class="ch"><span class="med sm"><svg><use href="#i-server"/></svg></span><h3>서버 20개 한눈에 <small class="mute" style="font-weight:500">공식 공지 기준 · 누르면 그 서버 방송인만</small></h3></div>
     <p class="small" style="margin:0 0 6px"><b>크리에이터 서버 6개</b> — 프로모션 방송인이 활동하는 서버</p>
@@ -2041,11 +2045,11 @@ const copy=(t,msg)=>{try{navigator.clipboard.writeText(t).then(()=>toast(msg),()
 
 /* 페이지 정의 */
 const PAGES={
- gear:{t:'연금 옵션 · 장비 비교',d:'공식 연금 확률 1,701줄 · 목표 옵션 확률 · 장비 비교',i:'i-sig',b:'new'},
- quiz:{t:'무기 추천 테스트',d:'질문 다섯 개로 내 무기 찾기',i:'i-quiz',b:'hot'},
- enhance:{t:'강화 기록기',d:'단계별 성공률과 파브라늄 기록',i:'i-log',b:'new'},
- calc:{t:'강화 기대값 계산기',d:'평균 시도 횟수와 필요한 재료',i:'i-calc',b:'new'},
- godhand:{t:'갓 핸드 프리셋 메모',d:'슬롯 조합을 상황별로 저장',i:'i-hand',b:'new'},
+ gear:{t:'연금 옵션 · 장비 비교',d:'공식 연금 확률 1,701줄 · 목표 옵션 확률 · 장비 비교',i:'i-sig'},
+ quiz:{t:'무기 추천 테스트',d:'질문 다섯 개로 내 무기 찾기',i:'i-quiz'},
+ enhance:{t:'강화 기록기',d:'단계별 성공률과 파브라늄 기록',i:'i-log'},
+ calc:{t:'강화 기대값 계산기',d:'평균 시도 횟수와 필요한 재료',i:'i-calc'},
+ godhand:{t:'갓 핸드 프리셋 메모',d:'슬롯 조합을 상황별로 저장',i:'i-hand'},
  homework:{t:'오늘의 숙제',d:'매일 새벽 5시에 초기화되는 체크리스트',i:'i-check'},
  starter:{t:'첫날 가이드',d:'첫 주 할 일 · 체크리스트 12개',i:'i-guide',b:'hot'},
  weapons:{t:'클래스 도감',d:'레전드리·유니크·에픽 클래스와 스킬',i:'w-sword',b:'hot'},
@@ -2053,31 +2057,31 @@ const PAGES={
  roadmap:{t:'6개월 로드맵',d:'레이드·공성전·신규 클래스',i:'i-map'},
  bm:{t:'상점 정리',d:'파는 것과 팔지 않는 것',i:'i-coin'},
  coupons:{t:'쿠폰·이벤트',d:'출석부 · 8주 미션 · 쿠폰',i:'i-gift',b:'hot'},
- pets:{t:'펫 도감',d:'펫 28종 이미지 · 도감 보상',i:'i-gift',b:'new'},
- outfit:{t:'코디 · 펫 미리보기',d:'스킨 갈아입히기 · 펫 · 탈것 48종 돌려보기',i:'i-gift',b:'new'},
- community:{t:'커뮤니티',d:'게시판 · 실시간 채팅 (구글 로그인)',i:'i-chat',b:'new'},
- streamers:{t:'서버 목록 · 방송인',d:'서버 20개 · 똘끼 · 뜨뜨뜨뜨 · 우레 등 서버별 방송인',i:'i-play',b:'hot'},
- news:{t:'공식 소식 · 버그',d:'점검 정리 · 공지 요약 · 확인 중인 현상 · 피하는 법',i:'i-chat',b:'hot'},
- trade:{t:'거래 · 단가 계산기',d:'판매 수령액 · 묶음 단가 · 다이아 환산',i:'i-coin',b:'new'},
+ pets:{t:'펫 도감',d:'펫 28종 이미지 · 도감 보상',i:'i-gift'},
+ outfit:{t:'코디 · 펫 미리보기',d:'스킨 갈아입히기 · 펫 · 탈것 48종 돌려보기',i:'i-gift'},
+ community:{t:'커뮤니티',d:'게시판 · 실시간 채팅 (구글 로그인)',i:'i-chat'},
+ streamers:{t:'서버 목록 · 방송인',d:'서버 20개 · 똘끼 · 뜨뜨뜨뜨 · 우레 등 서버별 방송인',i:'i-play'},
+ news:{t:'공식 소식 · 버그',d:'점검 정리 · 공지 요약 · 확인 중인 현상 · 피하는 법',i:'i-chat'},
+ trade:{t:'거래 · 단가 계산기',d:'판매 수령액 · 묶음 단가 · 다이아 환산',i:'i-coin'},
  sim:{t:'강화 · 소환 시뮬레이터',d:'11연 · 110연 뽑기 · 레전드리 합성 · 강화 계산기',i:'i-anvil',b:'hot'},
  hunt:{t:'레벨별 사냥터 · 경험치',d:'Lv.1~85 사냥터 61곳 · 시간당 경험치 계산기 · 내 레벨 추천',i:'i-raid',b:'hot'},
- map:{t:'탐사 지도',d:'지역 14곳 위치 · 데이터 큐브 · 명소',i:'i-map',b:'new'},
- codex:{t:'아이템 도감',d:'아이템 1,800종+ 획득처 · 드롭 · 사용처 · 수집',i:'i-guide',b:'new'},
- hidden:{t:'히든 퀘스트 156개',d:'지역 · 공통 히든 퀘스트 시작 조건 · 위치 · 보상 · 내 진행 체크',i:'i-map',b:'new'},
- drops:{t:'드롭 찾기 · 보스 · 사냥터',d:'보스 35 · 사냥터 95곳 드롭 · 아이템으로 거꾸로 찾기',i:'i-raid',b:'new'},
- collect:{t:'수집 1,091개 · 플래너',d:'수집 전체 · 능력치로 찾기 · 내 효과 합계',i:'i-check',b:'new'},
- growth:{t:'성장 계산기 · 성장 도감',d:'오버기어드 · 스킬 강화 · 잠재력 · 무기 개조 · 갓 핸드 · 펫 · 차원 카드',i:'i-calc',b:'new'},
- mining:{t:'채광 · 광물 지도',d:'광물 29종 위치 · 나오는 재료 · 시간당 채광',i:'i-ore',b:'new'},
+ map:{t:'탐사 지도',d:'지역 14곳 위치 · 데이터 큐브 · 명소',i:'i-map'},
+ codex:{t:'아이템 도감',d:'아이템 1,800종+ 획득처 · 드롭 · 사용처 · 수집',i:'i-guide'},
+ hidden:{t:'히든 퀘스트 156개',d:'지역 · 공통 히든 퀘스트 시작 조건 · 위치 · 보상 · 내 진행 체크',i:'i-map'},
+ drops:{t:'드롭 찾기 · 보스 · 사냥터',d:'보스 35 · 사냥터 95곳 드롭 · 아이템으로 거꾸로 찾기',i:'i-raid'},
+ collect:{t:'수집 1,091개 · 플래너',d:'수집 전체 · 능력치로 찾기 · 내 효과 합계',i:'i-check'},
+ growth:{t:'성장 계산기 · 성장 도감',d:'오버기어드 · 스킬 강화 · 잠재력 · 무기 개조 · 갓 핸드 · 펫 · 차원 카드',i:'i-calc'},
+ mining:{t:'채광 · 광물 지도',d:'광물 29종 위치 · 나오는 재료 · 시간당 채광',i:'i-ore'},
  daily:{t:'오늘의 퀴즈 · 출석',d:'매일 5문제 · 연속 기록 · 출석 도장 · 업적',i:'i-quiz',b:'new'},
  lvplan:{t:'레벨별 할 일',d:'내 레벨에 맞는 사냥터 · 보스 · 열리는 기능',i:'i-guide',b:'new'},
  vote:{t:'이번 주 투표',d:'다들 뭐 키워? 무기 · 목표 클래스 투표',i:'i-crown',b:'new'},
  here:{t:'지금 여기 · 지역 할 일',d:'이 지역 남은 큐브 · 히든 · 보스 한 화면',i:'i-map',b:'new'},
- archive:{t:'탐사 · 아카이브',d:'데이터 큐브 · 히든 퀘스트 · 지역 달성도 체크리스트',i:'i-map',b:'new'},
- prob:{t:'확률 총정리',d:'강화 · 축복 · 오버기어드 · 소환 · 잠재력 공식 확률',i:'i-anvil',b:'hot'},
- craft:{t:'제작 도감',d:'레시피 231종 · 재료 · 성공률 · 골드',i:'i-anvil',b:'new'},
- titles:{t:'칭호 도감',d:'칭호 72종 장착·보유 효과',i:'i-crown',b:'new'},
- achieve:{t:'업적 목록',d:'업적 목표 수치 · 단계별 정리',i:'i-check',b:'new'},
- timer:{t:'보스 타이머',d:'처치 시각 기록 · 매일 일정표',i:'i-raid',b:'new'},
+ archive:{t:'탐사 · 아카이브',d:'데이터 큐브 · 히든 퀘스트 · 지역 달성도 체크리스트',i:'i-map'},
+ prob:{t:'확률 총정리',d:'강화 · 축복 · 오버기어드 · 소환 · 잠재력 공식 확률',i:'i-anvil'},
+ craft:{t:'제작 도감',d:'레시피 231종 · 재료 · 성공률 · 골드',i:'i-anvil'},
+ titles:{t:'칭호 도감',d:'칭호 72종 장착·보유 효과',i:'i-crown'},
+ achieve:{t:'업적 목록',d:'업적 목표 수치 · 단계별 정리',i:'i-check'},
+ timer:{t:'보스 타이머',d:'처치 시각 기록 · 매일 일정표',i:'i-raid'},
  backup:{t:'저장함 · 백업',d:'내 기록 백업 · 복원',i:'i-panel'},
  videos:{t:'추천 영상',d:'조회수 1만 이상 템빨 유튜브',i:'i-play'},
  official:{t:'공식 채널·원작',d:'공식 유튜브·홈페이지·웹툰·웹소설',i:'i-home'},
@@ -2099,7 +2103,8 @@ $('#burger').onclick=()=>{const o=$('#drawer').classList.toggle('open');$('#burg
 
 const tile=k=>{const p=PAGES[k];return `<a class="tile" href="#${k}">${p.b?`<span class="bd ${p.b}">${p.b==='new'?'NEW':'HOT'}</span>`:''}${med(p.i)}<span><h3>${p.t}</h3><p>${p.d}</p></span></a>`};
 const FEAT=[['hidden','히든 퀘스트 156개','언제 열리고 어디서 시작? 내 진행으로 걸러 보기','ui/feat-archive.webp','new','NEW'],['drops','드롭 찾기 · 보스 · 사냥터','이 아이템 어디서 나와? 보스 35 · 사냥터 95곳','ui/feat-map.webp','new','NEW'],['codex','아이템 도감','아이템 1,800종+ 획득처 · 드롭 · 사용처','ui/feat-codex.webp','new','NEW'],['collect','수집 1,091개 · 플래너','능력치로 찾기 · 지금 켜진 효과 합계','ui/feat-codex.webp','new','NEW'],['growth','성장 계산기','오버기어드 · 스킬 강화 · 잠재력 · 무기 개조 평균 비용','ui/overgeared.webp','new','NEW'],['mining','채광 · 광물 지도','광물 29종 위치 · 재료로 찾기 · 시간당 다이아','ui/enhsup.webp','new','NEW'],['archive','탐사 · 아카이브','데이터 큐브 · 히든 퀘스트 · 지역 12곳 체크','ui/feat-archive.webp','new','NEW'],['hunt','레벨별 사냥터','Lv.1 → 85 사냥터 61곳 · 지역 14곳 도감','map/north.webp','hot','HOT'],['coupons','쿠폰 · 이벤트','결제 할인 7종 · 외부 이벤트 · 출석부','ui/attend.webp','hot','HOT'],['gear','연금 옵션 · 장비 비교','원하는 옵션 평균 몇 번? 공식 확률 1,701줄','ui/feat-prob.webp','new','NEW'],['sim','강화 · 뽑기 시뮬레이터','+12 강화 도전 · 11연 · 110연 뽑기 · 레전드리 합성','ui/feat-sim.webp','hot','HOT'],['prob','강화 확률 총정리','+6 60% → +12 1% · 축복 · 파괴 · 소환 확률','ui/feat-prob.webp','hot','HOT'],['streamers','서버 목록 · 방송인','서버 20개 · 똘끼 · 뜨뜨뜨뜨 · 우레 등 34명','ui/feat-streamers.webp','hot','HOT'],['outfit','코디 · 펫 미리보기','스킨 갈아입히기 · 펫 · 탈것 48종 돌려보기','ui/feat-outfit.webp','new','NEW'],['news','공식 소식 · 버그','27일 점검 정리 · 확인 중인 현상 10건','ui/attend.webp','hot','HOT'],['weapons','클래스 도감','55종 외형 · 스킬 87개 · 스킬 창 원본','ui/feat-cls.webp','hot','인기'],['godhand','갓 핸드','메모리 27종 수치 · 짝 분석','ui/ghsum.webp','hot','인기'],['map','탐사 지도','지역 14곳 · 데이터 큐브 · 명소 · 내 진행도','ui/feat-map.webp','new','NEW'],['trade','거래 · 단가 계산기','수령액 · 묶음 단가 · 다이아 환산','ui/exchange.webp','new','NEW'],['craft','제작 도감','레시피 231종 · 재료 · 성공률 · 골드','ui/craft.webp','new','NEW'],['titles','칭호 도감','72종 장착 · 보유 효과','ui/titles.webp','new','NEW'],['systems','시스템 가이드','월드맵 기억 · 분해 · 절전 · 채팅 등 52종','ui/growth.webp','new','NEW'],['pets','펫 도감','동행 · 비행 펫 28종','ui/feat-pet.webp','new','NEW'],['weapons','무기 개조 도감','개조 무기 30종 이미지','ui/feat-wpn.webp','new','NEW'],['timer','보스 타이머','처치 기록 · 1분 전 알림 · 일정표','ui/quest.webp','new','NEW'],['bm','상점 정리','다이아 단가 · 골드 소환권 · 가호 10단계','ui/dia.webp','',''],['videos','추천 영상','조회수 1만+ 템빨 영상 15편','ui/art.webp','','']];
-const featDraw=V=>{const L=FEAT.map((f,i)=>[f,i]);if(V)L.sort((a,b)=>((a[0][4]==='hot'?0:1)-(b[0][4]==='hot'?0:1))||((V[b[0][0]]||0)-(V[a[0][0]]||0))||(a[1]-b[1]));$('#homeFeat').innerHTML=L.map(([f])=>`<a class="fc" href="#${f[0]}"><div class="ft" style="background-image:url(${IB}${f[3]})">${f[5]?`<span class="fb ${f[4]}">${f[5]}</span>`:''}</div><h3>${f[1]}</h3><p>${f[2]}</p></a>`).join('')};featDraw();
+const featDraw=V=>{const L=FEAT.map((f,i)=>[f,i]);if(V)L.sort((a,b)=>((a[0][4]==='hot'?0:1)-(b[0][4]==='hot'?0:1))||((V[b[0][0]]||0)-(V[a[0][0]]||0))||(a[1]-b[1]));$('#homeFeat').innerHTML=L.map(([f],i)=>`<a class="fc${i>=6?' fmore':''}" href="#${f[0]}"><div class="ft" style="background-image:url(${IB}${f[3]})">${f[5]?`<span class="fb ${f[4]}">${f[5]}</span>`:''}</div><h3>${f[1]}</h3><p>${f[2]}</p></a>`).join('')};featDraw();
+{const fb=document.getElementById('featMore');if(fb)fb.onclick=()=>{const g=document.getElementById('homeFeat');g.classList.toggle('open');fb.textContent=g.classList.contains('open')?'접기 ▴':'기능 전체 보기 ▾'}}
 setTimeout(()=>{if(!window.__pvGet||!document.getElementById('homeFeat'))return;Promise.all([__pvGet(0),__pvGet(1)]).then(([a,b])=>{const V={};for(const k in a)if(k[0]!=='x')V[k]=(V[k]||0)+a[k];for(const k in b)if(k[0]!=='x')V[k]=(V[k]||0)+b[k];let T=0;for(const k in V)T+=V[k];if(T>=300)featDraw(V)})},1200);
 const EVS=[['클래스 · 갓 핸드 · 장비 성장 핫딜 (3일 한정)','2026-11-30','#bm','11월 30일(월) 밤 11시 58분까지','2026-11-30T23:58:00+09:00'],['「그리드의」 클래스 · 갓 핸드 핫딜','2026-12-02','#bm','12월 2일(수) 새벽 4시 59분까지','2026-12-02T04:59:00+09:00'],['점검 재화(코인 환급 · 거래소 정산) 우편','2026-12-03','#coupons','12월 3일(목) 밤 11시 59분까지 캐릭터 우편함','2026-12-03T23:59:00+09:00'],['최초의 초월자 기념 접속 선물 (계정당 1회)','2026-12-01','#coupons','12월 1일(화) 밤 11시 59분까지 접속','2026-12-01T23:59:00+09:00'],['구글 플레이 게임즈 PC 결제 30% 할인','2026-11-30','#coupons','11월 30일(월) 밤 11시 59분까지','2026-11-30T23:59:00+09:00'],['템빨고사 댓글 이벤트 · 플레이 포인트 9배','2026-12-02','#coupons','12월 2일(수) 밤 11시 59분까지','2026-12-02T23:59:00+09:00'],['템빨 정주행 챌린지 (웹툰 연계)','2026-12-11','#coupons','12월 11일(금) 밤 11시 59분까지','2026-12-11T23:59:00+09:00'],['SOOP 드롭스 (주마다 쿠폰 3개)','2026-12-31','#coupons','12월 31일(목) 밤 11시 59분까지','2026-12-31T23:59:00+09:00'],['오버토크 라이브 방송 (유튜브 · SOOP)','2026-12-01','#official','12월 1일(화) 밤 9시 방송','2026-12-01T21:00:00+09:00'],['선점 캐릭터 생성 마감','2026-12-10','#starter','12월 10일(목)까지 생성','2026-12-10T23:59:00+09:00'],['구글 플레이 포인트 초보자 패키지','2026-12-31','#bm','12월 31일(목) 밤 11시 59분까지','2026-12-31T23:59:00+09:00'],['런칭 기념 14일 출석부','2026-12-16','#coupons'],['장비 강화 지원 미션','2026-12-09','#coupons'],['런칭 소환 · 성물 패키지','2026-12-09','#bm'],['첫걸음 응원 패키지 ₩9,900','2026-12-09','#bm'],['프리미엄 시즌 패스','2027-01-01','#bm'],['새로운 전설의 시작! 8주 미션','2027-01-21','#coupons']];
 function evRender(){const st=new Date('2026-11-26T00:00:00+09:00').getTime(),now=Date.now();
@@ -3108,6 +3113,13 @@ function initScene(){
 try{initScene()}catch(e){}
 
 // ---------- 레벨별 사냥터 ----------
+// 첫 화면 아래쪽 긴 구역은 접어 두기 (폰 한 손 기준)
+(()=>{const H=document.querySelector('[data-v="home"]');if(!H)return;const keep=/진행 중 이벤트|지금 많이 보는 곳/;const bands=[...H.children].filter(c=>c.classList.contains('band')&&!keep.test((c.querySelector('h2,h3')||{}).textContent||''));if(bands.length<2)return;
+ const d=document.createElement('details');d.className='homemore';d.innerHTML='<summary><span>더 둘러보기</span><small>'+bands.map(b=>((b.querySelector('h2')||b.querySelector('h3')||{}).textContent||'').trim()).filter(Boolean).slice(0,6).join(' · ')+'</small></summary>';
+ bands[0].before(d);bands.forEach(b=>d.appendChild(b));H.querySelectorAll(':scope > .orn').forEach(o=>o.remove())})();
+// 쿠폰 마지막 확인 시각 (아침 업데이트 때 LASTCHK 를 바꾼다)
+const LASTCHK='2026-11-27T20:45:00+09:00';
+document.querySelectorAll('.lastchk').forEach(e=>{const t=new Date(Date.parse(LASTCHK)+9*36e5),n=new Date(Date.now()+9*36e5),kd=x=>Math.floor(x/864e5),dd=kd(n)-kd(t),h=t.getUTCHours(),m=t.getUTCMinutes();e.textContent=(dd===0?'오늘':dd===1?'어제':(t.getUTCMonth()+1)+'월 '+t.getUTCDate()+'일')+' '+(h<12?'오전 ':'오후 ')+((h%12)||12)+'시'+(m?' '+m+'분':'')});
 // 남은 기간 자동 계산 (한국 날짜 기준)
 document.querySelectorAll('.dleft').forEach(e=>{const kd=t=>Math.floor((t+9*36e5)/864e5),d=kd(Date.parse(e.dataset.end+'T00:00:00+09:00'))-kd(Date.now());e.textContent=d<0?'(끝남)':d===0?'(오늘 새벽 마감)':'(남은 기간 '+d+'일)';if(d<=2)e.style.color='#f3a26a'});
 // ---------- 데이터 큐브 공통 (지도 · 아카이브 · 첫 화면) ----------
