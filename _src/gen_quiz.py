@@ -111,7 +111,13 @@ for q in H['q']:
     if q[0] not in RJ['r']: continue
     need, place = hint(q[4][0])
     exp = sum(s[4][0] for s in q[4])
-    RJ['r'][q[0]]['h'].append([q[1], q[2], q[3], len(q[4]), need, place, exp])
+    coin = sum(s[4][2] for s in q[4]); gold = sum(s[4][1] for s in q[4])
+    gifts = []
+    for st in q[4]:
+        for g in st[4][4]:
+            g2 = re.sub(r' \d+$', '', g)
+            if not re.search(r'펫 먹이|도감 상자', g2) and g2 not in gifts: gifts.append(g2)
+    RJ['r'][q[0]]['h'].append([q[1], q[2], q[3], len(q[4]), need, place, exp, gold, coin, gifts[:4]])
 gplace = {}
 for g in hx:
     if g[1] in RJ['r'] and g[3]:

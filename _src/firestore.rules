@@ -164,6 +164,22 @@ service cloud.firestore {
         && request.resource.data.size() <= 70;
     }
 
+    // 체류 시간: dw/{날짜} 에 시간대별 보고 있던 초(tHH)와 방문 수(sHH)만 더함 (개인 정보 없음, 오늘 문서만)
+    match /dw/{day} {
+      allow read: if true;
+      allow create: if day == string(int(math.floor((request.time.toMillis() + 32400000) / 86400000)))
+        && request.resource.data.size() == 1
+        && request.resource.data.keys()[0].matches('^[st][0-9]{2}$')
+        && request.resource.data[request.resource.data.keys()[0]] >= 1
+        && request.resource.data[request.resource.data.keys()[0]] <= 1800;
+      allow update: if day == string(int(math.floor((request.time.toMillis() + 32400000) / 86400000)))
+        && request.resource.data.diff(resource.data).affectedKeys().size() == 1
+        && request.resource.data.diff(resource.data).affectedKeys().toList()[0].matches('^[st][0-9]{2}$')
+        && request.resource.data[request.resource.data.diff(resource.data).affectedKeys().toList()[0]] - resource.data.get(request.resource.data.diff(resource.data).affectedKeys().toList()[0], 0) >= 1
+        && request.resource.data[request.resource.data.diff(resource.data).affectedKeys().toList()[0]] - resource.data.get(request.resource.data.diff(resource.data).affectedKeys().toList()[0], 0) <= 1800
+        && request.resource.data.size() <= 48;
+    }
+
     // 지금 보는 사람: on/{세션} 에 서버 시각만 기록 (개인 정보 없음)
     match /on/{sid} {
       allow read: if true;
