@@ -31,13 +31,14 @@ const PAGES={
  news:{t:'공식 소식 · 버그',d:'점검 정리 · 공지 요약 · 확인 중인 현상 · 피하는 법',i:'i-chat',b:'hot'},
  trade:{t:'거래 · 단가 계산기',d:'판매 수령액 · 묶음 단가 · 다이아 환산',i:'i-coin',b:'new'},
  sim:{t:'강화 · 소환 시뮬레이터',d:'11연 · 110연 뽑기 · 레전드리 합성 · 강화 계산기',i:'i-anvil',b:'hot'},
- hunt:{t:'레벨별 사냥터',d:'Lv.1~85 사냥터 61곳 · 몬스터 · 내 레벨 추천',i:'i-raid',b:'hot'},
+ hunt:{t:'레벨별 사냥터 · 경험치',d:'Lv.1~85 사냥터 61곳 · 시간당 경험치 계산기 · 내 레벨 추천',i:'i-raid',b:'hot'},
  map:{t:'탐사 지도',d:'지역 14곳 위치 · 데이터 큐브 · 명소',i:'i-map',b:'new'},
  codex:{t:'아이템 도감',d:'아이템 1,800종+ 획득처 · 드롭 · 사용처 · 수집',i:'i-guide',b:'new'},
  hidden:{t:'히든 퀘스트 156개',d:'지역 · 공통 히든 퀘스트 시작 조건 · 위치 · 보상 · 내 진행 체크',i:'i-map',b:'new'},
  drops:{t:'드롭 찾기 · 보스 · 사냥터',d:'보스 35 · 사냥터 95곳 드롭 · 아이템으로 거꾸로 찾기',i:'i-raid',b:'new'},
  collect:{t:'수집 1,091개 · 플래너',d:'수집 전체 · 능력치로 찾기 · 내 효과 합계',i:'i-check',b:'new'},
  growth:{t:'성장 계산기 · 성장 도감',d:'오버기어드 · 스킬 강화 · 잠재력 · 무기 개조 · 갓 핸드 · 펫 · 차원 카드',i:'i-calc',b:'new'},
+ mining:{t:'채광 · 광물 지도',d:'광물 29종 위치 · 나오는 재료 · 시간당 채광',i:'i-ore',b:'new'},
  archive:{t:'탐사 · 아카이브',d:'데이터 큐브 · 히든 퀘스트 · 지역 달성도 체크리스트',i:'i-map',b:'new'},
  prob:{t:'확률 총정리',d:'강화 · 축복 · 오버기어드 · 소환 · 잠재력 공식 확률',i:'i-anvil',b:'hot'},
  craft:{t:'제작 도감',d:'레시피 231종 · 재료 · 성공률 · 골드',i:'i-anvil',b:'new'},
@@ -54,7 +55,7 @@ const PAGES={
 (()=>{try{let pv=sessionStorage.getItem('tn_prev');if(pv===null){pv=localStorage.getItem('tn_vd')||'';sessionStorage.setItem('tn_prev',pv)}window.__PREV=pv}catch(e){window.__PREV=''}})();
 (()=>{const P=window.PDATE;if(!P)return;const td=new Date(Date.now()+9*3600e3).toISOString().slice(0,10);for(const k in PAGES){if(PAGES[k].b==='new')delete PAGES[k].b;if(P[k]===td&&!PAGES[k].b)PAGES[k].b='new'}})();
 window.PAGES=PAGES;
-const GROUPS=[{n:'도구',e:'TOOLS',k:['sim','quiz','godhand','enhance','calc','gear','growth','trade','timer','homework','backup']},{n:'가이드',e:'GUIDES',k:['prob','hunt','drops','collect','weapons','starter','map','codex','archive','hidden','craft','titles','achieve','pets','outfit','systems']},{n:'정보',e:'INFO',k:['coupons','streamers','news','videos','official','roadmap','bm','about']}];
+const GROUPS=[{n:'도구',e:'TOOLS',k:['sim','quiz','godhand','enhance','calc','gear','growth','trade','timer','homework','backup']},{n:'가이드',e:'GUIDES',k:['prob','hunt','drops','mining','collect','weapons','starter','map','codex','archive','hidden','craft','titles','achieve','pets','outfit','systems']},{n:'정보',e:'INFO',k:['coupons','streamers','news','videos','official','roadmap','bm','about']}];
 const link=k=>`<a href="/${k}/" data-k="${k}">${med(PAGES[k].i,'sm')}<span>${PAGES[k].t}<small>${PAGES[k].d}</small></span></a>`;
 $('#menu').innerHTML=GROUPS.map((g,gi)=>`<div class="dd" data-g="${gi}"><button type="button" aria-haspopup="true">${g.n}</button><div class="ddm">${g.k.map(link).join('')}</div></div>`).join('');
 $('#drawer').innerHTML=GROUPS.map(g=>`<h4>${g.e}</h4>${g.k.map(link).join('')}`).join('');
@@ -81,6 +82,8 @@ $('#homeGuides').innerHTML=['systems','weapons','bm','coupons'].map(tile).join('
  const d=pv.slice(5).replace('-','/');box.innerHTML=`<div class="since"><b>다시 오셨네요 👋</b> 지난 방문(${d}) 이후 바뀐 곳 <span class="mute">${ks.length}곳</span><div class="sl">${ks.slice(0,10).map(k=>`<a href="/${k}/">${esc(PAGES[k].t)}</a>`).join('')}</div></div>`})();
 // ---------- 오늘 업데이트 ----------
 const CHG=[
+ ['2026-11-27','사냥터 시간당 경험치 계산기 · 데이터 큐브 70곳 사냥터 안 위치','hunt'],
+ ['2026-11-27','채광 — 광물 29종 위치 · 재료로 찾기 · 시간당 계산기','mining'],
  ['2026-11-27','아이템 도감 1,800종+ — 드롭 · 보상 · 수집 사용처까지','codex'],
  ['2026-11-27','칭호 72종 전부 · 펫 46종 이름 (지상 · 비행까지)','titles'],
  ['2026-11-27','성장 계산기 — 오버기어드 · 스킬 강화 · 잠재력 · 무기 개조 · 갓 핸드 · 펫','growth'],
@@ -1376,10 +1379,56 @@ try{initScene()}catch(e){}
  const load=()=>{if(D||loading)return;loading=true;fetch('/data/growth.json').then(r=>r.json()).then(d=>{D=d;draw()}).catch(()=>{loading=false;V.innerHTML='<p class="mute small">자료를 못 불러왔어요. 새로고침해 주세요.</p>'})};
  if(/\/growth/.test(location.pathname)||location.hash==='#growth'||!('IntersectionObserver' in window))load();else{const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io.disconnect();load()}},{rootMargin:'1500px'});io.observe(V)}
 })();
+// ---------- 채광 ----------
+(()=>{const LI=document.getElementById('mnList');if(!LI)return;
+ const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const ls=(k,v)=>{try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||'null');localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}};
+ const Q=document.getElementById('mnQ'),QL=document.getElementById('mnQL'),HT=document.getElementById('mnHit'),SI=document.getElementById('mnSite'),MV=document.getElementById('mnMove'),PP=document.getElementById('mnPpl'),OUT=document.getElementById('mnOut'),NT=document.getElementById('mnNote'),RG=document.getElementById('mnReg');
+ let D=null,loading=false;const S=Object.assign({reg:'전체',site:0,mv:10,pp:1},ls('tn_mine')||{});const put=()=>ls('tn_mine',S);
+ const GC={'노멀':'g-n','레어':'g-r','에픽':'g-e','유니크':'g-u','레전드리':'g-l'};
+ const tm=s=>s>=60?(s%60?Math.floor(s/60)+'분 '+s%60+'초':s/60+'분'):s+'초';const n=x=>Math.round(x).toLocaleString();
+ const oreRow=(id,o)=>`<b class="drg ${GC[o[1]]||'g-n'}">●</b><b>${esc(o[0])}</b> <span class="hqt">${esc(o[1])}</span> <span class="hqt">캐는 시간 ${tm(o[3])}</span>`;
+ function siteLabel(s){const o=D.ores[s[2]]||['?'];return `${s[1]} · ${s[0]==='필드'?'':s[0]+' · '}${o[0]}`}
+ function list(){const regs=['전체',...new Set(D.sites.map(s=>s[1]))];RG.innerHTML=regs.map(r=>`<button type="button" data-r="${esc(r)}"${S.reg===r?' class="on"':''}>${esc(r)}</button>`).join('');
+  const by={};D.sites.forEach((s,i)=>{if(S.reg!=='전체'&&s[1]!==S.reg)return;(by[s[1]]=by[s[1]]||[]).push([s,i])});
+  LI.innerHTML=Object.entries(by).map(([r,ss])=>`<div class="mnr"><h4>📍 ${esc(r)} <small class="mute">광물 ${ss.length}종</small></h4><div class="scroll"><table class="ptbl grtbl"><thead><tr><th>광물</th><th>어디</th><th class="n">개수</th><th class="n">동시에 최대</th><th class="n">다시 생김</th><th>나오는 것</th></tr></thead><tbody>${ss.map(([s,i])=>{const o=D.ores[s[2]]||['?','',0,0,[],[]];return `<tr><td>${oreRow(s[2],o)}</td><td>${esc(s[0])}</td><td class="n">${s[3]??'—'}</td><td class="n">${s[4]??'—'}</td><td class="n">${s[5].map(tm).join(' · ')||'—'}</td><td class="small">${o[4].length?esc(o[4].slice(0,8).join(' · '))+(o[4].length>8?` 외 ${o[4].length-8}종`:''):'<span class="mute">돌(재료 없음)</span>'}${o[5].length?`<br><span class="mute">차원 추가: ${esc(o[5].join(' · '))}</span>`:''}</td></tr>`}).join('')}</tbody></table></div></div>`).join('')}
+ function calc(){const s=D.sites[S.site]||D.sites[0];const o=D.ores[s[2]];const per=3600/(o[3]+(+S.mv||0));const lim=s[4]||s[3]||0,rs=s[5][0]||0;const sup=rs?lim*3600/rs/Math.max(1,+S.pp||1):Infinity;const got=Math.min(per,sup);
+  OUT.innerHTML=`<div><small>혼자 쉬지 않고 캐면</small><b>${n(per)}번/시간</b></div><div><small>광물이 다시 생기는 속도로는</small><b>${sup===Infinity?'제한 없음':n(sup)+'번/시간'}</b></div><div><small>실제로는 이 정도</small><b>${n(got)}번/시간</b></div>`;
+  NT.innerHTML=`${esc(o[0])}: 한 번 캐는 데 ${tm(o[3])} + 이동 ${S.mv||0}초. ${rs?`이 지역엔 동시에 ${lim}개까지 떠 있고 ${tm(rs)}마다 다시 생겨요${(+S.pp||1)>1?` (같이 캐는 ${S.pp}명이 나눠 가짐)`:''}.`:''} ${got<per?'<b>광물이 부족해서</b> 다른 지역과 번갈아 도는 게 좋아요.':'<b>이동 시간</b>을 줄이는 게 핵심이에요.'}`}
+ function find(){const w=(Q.value||'').trim();if(!w){HT.innerHTML='';return}const ks=Object.keys(D.mats).filter(k=>k.includes(w));if(!ks.length){HT.innerHTML='<span class="mute">광물에서는 안 나오는 재료예요 → <a href="/codex/">아이템 도감</a>에서 찾아보세요.</span>';return}
+  HT.innerHTML=ks.slice(0,4).map(k=>{const os=D.mats[k];const regs=[...new Set(D.sites.filter(s=>os.includes(String(s[2]))).map(s=>s[1]+(s[0]!=='필드'?'('+s[0]+')':'')))];return `<p style="margin:4px 0"><b>${esc(k)}</b> — 광물 ${os.length}종: ${esc(os.map(i=>(D.ores[i]||['?'])[0]).filter((v,i,a)=>a.indexOf(v)===i).slice(0,8).join(' · '))}<br><span class="mute">캘 수 있는 곳: ${esc(regs.join(' · ')||'—')}</span></p>`}).join('')}
+ function boot(d){D=d;SI.innerHTML=D.sites.map((s,i)=>`<option value="${i}">${esc(siteLabel(s))}</option>`).join('');SI.value=S.site;MV.value=S.mv;PP.value=S.pp;QL.innerHTML=Object.keys(D.mats).sort().map(k=>`<option value="${esc(k)}">`).join('');list();calc();find()}
+ RG.onclick=e=>{const b=e.target.closest('button');if(!b)return;S.reg=b.dataset.r;put();list()};
+ SI.onchange=()=>{S.site=+SI.value;put();calc()};MV.oninput=()=>{S.mv=MV.value;put();calc()};PP.oninput=()=>{S.pp=PP.value;put();calc()};Q.oninput=find;
+ const load=()=>{if(D||loading)return;loading=true;fetch('/data/mining.json').then(r=>r.json()).then(boot).catch(()=>{loading=false;LI.innerHTML='<p class="mute small">자료를 못 불러왔어요. 새로고침해 주세요.</p>'})};
+ if(/\/mining/.test(location.pathname)||location.hash==='#mining'||!('IntersectionObserver' in window))load();else{const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io.disconnect();load()}},{rootMargin:'1500px'});io.observe(LI)}
+})();
+// ---------- 사냥터 경험치 계산기 ----------
+(()=>{const G=document.getElementById('hxG');if(!G)return;
+ const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const ls=(k,v)=>{try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||'null');localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}};
+ const K=document.getElementById('hxK'),B=document.getElementById('hxB'),OUT=document.getElementById('hxOut'),MON=document.getElementById('hxMon'),RK=document.getElementById('hxRank'),RH=document.getElementById('hxRankH');
+ let D=null,loading=false;const S=Object.assign({g:0,k:12,b:0},ls('tn_hx')||{});const put=()=>ls('tn_hx',S);const n=x=>Math.round(x).toLocaleString();
+ const avg=g=>{const ms=g[3].filter(m=>m[3]==='Normal');const a=(ms.length?ms:g[3]);return a.reduce((t,m)=>t+m[2],0)/a.length};const lvr=g=>{const l=g[3].map(m=>m[1]);return [Math.min(...l),Math.max(...l)]};
+ function calc(){const g=D.g[S.g]||D.g[0];const a=avg(g),h=a*(+S.k||0)*60*(1+(+S.b||0)/100),r=lvr(g);
+  OUT.innerHTML=`<div><small>한 마리 평균</small><b>${n(a)}</b></div><div><small>1시간</small><b>${n(h)}</b></div><div><small>하루 8시간 자동사냥</small><b>${n(h*8)}</b></div>`;
+  MON.innerHTML=`<b>${esc(g[0])}</b> <span class="mute">${esc(g[1])} · ${g[2]==='dungeon'?'던전':'필드'} · Lv.${r[0]}${r[1]>r[0]?'~'+r[1]:''}</span><br>`+g[3].map(m=>`${esc(m[0])} <span class="mute">Lv.${m[1]}${m[3]!=='Normal'?' · '+(m[3]==='Elite'?'엘리트':'보스'):''}</span> <b>${n(m[2])}</b>`).join(' · ')+` · <a href="/drops/">이 사냥터 전리품 →</a>`}
+ function rank(){let lv=0;try{lv=+localStorage.getItem('dn-hulv')||0}catch(e){}const I=document.getElementById('huLv');if(I&&+I.value)lv=+I.value;
+  if(!lv){RH.textContent='한 마리 경험치가 많은 사냥터 (위에서 「내 레벨」을 넣으면 맞춤 순위)';}else RH.textContent=`Lv.${lv} 추천 — 내 레벨 -6 ~ +2 사냥터 중 한 마리 경험치 순`;
+  const L=D.g.map((g,i)=>[g,i,avg(g),lvr(g)]).filter(x=>!lv||(x[3][0]>=lv-6&&x[3][0]<=lv+2)).sort((a,b)=>b[2]-a[2]).slice(0,8);
+  RK.innerHTML=L.length?`<div class="scroll"><table class="ptbl grtbl"><thead><tr><th>#</th><th>사냥터</th><th>레벨</th><th class="n">한 마리</th><th class="n">1시간 (${S.k}마리/분)</th></tr></thead><tbody>${L.map((x,j)=>`<tr><td>${j+1}</td><td><button type="button" class="hqp" data-i="${x[1]}">${esc(x[0][0])}</button> <span class="mute small">${esc(x[0][1])}</span></td><td>Lv.${x[3][0]}${x[3][1]>x[3][0]?'~'+x[3][1]:''}</td><td class="n">${n(x[2])}</td><td class="n">${n(x[2]*(+S.k||0)*60*(1+(+S.b||0)/100))}</td></tr>`).join('')}</tbody></table></div>`:'<p class="small mute">이 레벨 근처 사냥터가 없어요.</p>'}
+ function all(){calc();rank()}
+ function boot(d){D=d;G.innerHTML=D.g.map((g,i)=>`<option value="${i}">${esc(g[1])} · ${esc(g[0])} (Lv.${lvr(g)[0]})</option>`).join('');G.value=S.g;K.value=S.k;B.value=S.b;all()}
+ G.onchange=()=>{S.g=+G.value;put();calc()};K.oninput=()=>{S.k=K.value;put();all()};B.oninput=()=>{S.b=B.value;put();all()};
+ RK.addEventListener('click',e=>{const b=e.target.closest('button[data-i]');if(!b)return;S.g=+b.dataset.i;G.value=S.g;put();calc();G.scrollIntoView({behavior:'smooth',block:'center'})});
+ const hl=document.getElementById('huLv');if(hl)hl.addEventListener('input',()=>{if(D)rank()});
+ const load=()=>{if(D||loading)return;loading=true;fetch('/data/huntxp.json').then(r=>r.json()).then(boot).catch(()=>{loading=false;OUT.innerHTML='<p class="mute small">자료를 못 불러왔어요.</p>'})};
+ if(/\/hunt/.test(location.pathname)||location.hash==='#hunt'||!('IntersectionObserver' in window))load();else{const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io.disconnect();load()}},{rootMargin:'1500px'});io.observe(G)}
+})();
 // ---------- 탐사 지도 ----------
 (function(){const S=document.getElementById('mpSvg');if(!S)return;
  const R=[['바이란',132,151],['노튼',404,84],['킨바이',778,132],['윈스톤',516,221],['라인하르트',276,276],['엑카루',780,343],['알테스',264,432],['벨두인',519,415],['레이단',732,494],['수아즈 협곡',1138,456],['코크로 섬',634,626],['크라임 숲',970,619],['레베카',1260,607],['지브라',1354,770]];
- const CUBE={'바이란':['바이란 평원','바이란 북쪽 숲','바이란 폐광','순찰대 고원 (2개)'],'노튼':['얼음 가시 숲','망자의 설원','북쪽 설원','북쪽 절벽 해안','서릿빛 오크 부락'],'윈스톤':['윈스톤 묘지','윈스톤 호수','오크 습격지','회색 숲 (2개)'],'킨바이':['폐허가 된 마을','야탄 제단','야탄의 눈 (2개)','케산 협곡'],'엑카루':['머맨 점령지','휩쓸린 폐허','붉은 바위 고원 (2개)','잊혀진 뱀파이어 유적'],'레이단':['레이단 밀밭','레이단 벌목지','옐로우 미스릴 광산','신비의 숲 (2개)'],'라인하르트':['순찰대 고원 남부 (2개)','무바이드 유적 발굴지','은총의 땅','독안개 사원'],'수아즈 협곡':['사하란 국경 초소','수아즈 격전지','수아즈 협곡','영광의 길','뒤틀린 땅'],'레베카':['비밀의 숲','여신의 정원','순례자의 고개','바람향기 고원 (2개)'],'코크로 섬':['코크로 섬 1구역 (2개)','코크로 섬 2구역 (2개)','코크로 섬 3구역'],'크라임 숲':['크라임 숲','적기사 주둔지','어스름 전장','붉은 송곳니 동굴','어스름 오크 부락'],'알테스':['레이단 협곡','메마른 사막 (2개)','사막 말벌 군락','빼앗긴 오아시스'],'벨두인':['서부 사막','거대 구덩이','사막 유적지','모래 폭포 지대','동부 사막'],'지브라':['기사의 안식처','혼돈의 둥지','가리온의 상흔','비탄의 대지','지브라 백작성']};
+ const CUBE={"바이란":["<b>바이란 평원</b> — 가운데에서 남동쪽 · 바이란 마을 쪽","<b>바이란 북쪽 숲</b> — 가운데에서 북쪽 · 바이란 폐광 거점 쪽","<b>바이란 폐광</b> — 가운데에서 북서쪽 · 바이란 폐광 거점 쪽","<b>순찰대 고원</b> — 가운데에서 서쪽 · 바이란 마을 근처","<b>순찰대 고원</b> — 가운데에서 북서쪽 · 바이란 마을 쪽"],"노튼":["<b>북쪽 절벽 해안</b> — 사냥터 한가운데 · 북쪽 설원 근처","<b>북쪽 설원</b> — 사냥터 한가운데 · 망자의 설원 거점 근처","<b>망자의 설원</b> — 가운데에서 북서쪽 · 망자의 설원 거점 근처","<b>얼음 가시 숲</b> — 가운데에서 북서쪽 · 망자의 설원 쪽","<b>서릿빛 오크 부락</b> — 북동쪽 끝자락 · 서릿빛 오크 부락 거점 쪽"],"윈스톤":["<b>오크 습격지</b> — 가운데에서 북쪽 · 오크 습격지 거점 근처","<b>윈스톤 호수</b> — 동쪽 끝자락 · 오크 습격지 쪽","<b>윈스톤 묘지</b> — 가운데에서 남쪽 · 킨바이 접경 거점 쪽","<b>회색 숲</b> — 북쪽 끝자락 · 윈스톤 호수 쪽","<b>회색 숲</b> — 남동쪽 끝자락 · 윈스톤 묘지 거점 근처"],"킨바이":["<b>폐허가 된 마을</b> — 사냥터 한가운데 · 폐허가 된 마을 거점 쪽","<b>야탄 제단</b> — 남동쪽 끝자락 · 야탄 신전 거점 근처","<b>야탄의 눈</b> — 남동쪽 끝자락 · 야탄 제단 근처","<b>야탄의 눈</b> — 가운데에서 서쪽 · 야탄 제단 쪽","<b>케산 협곡</b> — 사냥터 한가운데 · 케산 협곡 거점 쪽"],"엑카루":["<b>머맨 점령지</b> — 가운데에서 북서쪽 · 머맨 점령지 거점 쪽","<b>휩쓸린 폐허</b> — 사냥터 한가운데 · 머맨 점령지 거점 쪽","<b>붉은 바위 고원</b> — 북동쪽 끝자락 · 붉은 바위 고원 거점 쪽","<b>붉은 바위 고원</b> — 가운데에서 남동쪽 · 붉은 바위 고원 거점 근처","<b>잊혀진 뱀파이어 유적</b> — 남동쪽 끝자락"],"레이단":["<b>신비의 숲</b> — 북쪽 끝자락 · 레이단 밀밭 거점 쪽","<b>신비의 숲</b> — 가운데에서 남서쪽 · 신비의 숲 거점 쪽","<b>레이단 밀밭</b> — 가운데에서 북쪽 · 레이단 밀밭 거점 쪽","<b>레이단 벌목지</b> — 가운데에서 북쪽 · 레이단 벌목지 거점 근처","<b>옐로우 미스릴 광산</b> — 서쪽 끝자락 · 신비의 숲 거점 근처"],"라인하르트":["<b>무바이드 유적 발굴지</b> — 가운데에서 남동쪽 · 무바이드 유적지 거점 근처","<b>독안개 사원</b> — 가운데에서 동쪽","<b>은총의 땅</b> — 가운데에서 북동쪽 · 남부 순찰대 고원 거점 쪽","<b>순찰대 고원 남부</b> — 북쪽 끝자락 · 남부 순찰대 고원 거점 쪽","<b>순찰대 고원 남부</b> — 가운데에서 북서쪽 · 남부 순찰대 고원 거점 근처"],"수아즈 협곡":["<b>사하란 국경 초소</b> — 북쪽 끝자락 · 사하란 국경 초소 거점 쪽","<b>수아즈 격전지</b> — 가운데에서 남쪽 · 사하란 국경 초소 거점 근처","<b>수아즈 협곡</b> — 북동쪽 끝자락 · 수아즈 협곡 거점 쪽","<b>영광의 길</b> — 남쪽 끝자락 · 비밀의 숲 쪽","<b>뒤틀린 땅</b> — 가운데에서 남동쪽 · 뒤틀린 땅 거점 쪽"],"레베카":["<b>비밀의 숲</b> — 사냥터 한가운데 · 비밀의 숲 거점 쪽","<b>여신의 정원</b> — 남쪽 끝자락","<b>순례자의 고개</b> — 사냥터 한가운데","<b>바람향기 고원</b> — 가운데에서 남동쪽 · 바람향기 고원 거점 근처","<b>바람향기 고원</b> — 서쪽 끝자락 · 바람향기 고원 거점 쪽"],"코크로 섬":["<b>코크로 섬 1구역</b> — 가운데에서 북쪽 · 코크로 섬 2구역 쪽","<b>코크로 섬 1구역</b> — 서쪽 끝자락 · 코크로 섬 2구역 쪽","<b>코크로 섬 2구역</b> — 사냥터 한가운데 · 코크로 섬 1구역 쪽","<b>코크로 섬 2구역</b> — 북서쪽 끝자락 · 코크로 섬 1구역 쪽","<b>코크로 섬 3구역</b> — 남동쪽 끝자락"],"크라임 숲":["<b>크라임 숲</b> — 남동쪽 끝자락 · 크라임 숲 거점 근처","<b>적기사 주둔지</b> — 사냥터 한가운데 · 적기사 주둔지 거점 쪽","<b>어스름 전장</b> — 동쪽 끝자락 · 어스름 전장 거점 근처","<b>붉은 송곳니 동굴</b> — 남서쪽 끝자락","<b>어스름 오크 부락</b> — 가운데에서 북동쪽 · 어스름 오크 부락 거점 쪽"],"알테스":["<b>레이단 협곡</b> — 가운데에서 서쪽","<b>사막 말벌 군락</b> — 가운데에서 북동쪽 · 메마른 사막 거점 쪽","<b>메마른 사막</b> — 서쪽 끝자락 · 메마른 사막 거점 근처","<b>메마른 사막</b> — 가운데에서 북동쪽 · 메마른 사막 거점 쪽","<b>빼앗긴 오아시스</b> — 가운데에서 동쪽"],"벨두인":["<b>서부 사막</b> — 가운데에서 남서쪽 · 서부 사막 거점 근처","<b>거대 구덩이</b> — 서쪽 끝자락 · 거대 구덩이 거점 쪽","<b>사막 유적지</b> — 북쪽 끝자락 · 벨두인 마을 쪽","<b>모래 폭포 지대</b> — 북동쪽 끝자락 · 동부 사막 거점 쪽","<b>동부 사막</b> — 가운데에서 북동쪽 · 동부 사막 거점 쪽"],"지브라":["<b>기사의 안식처</b> — 가운데에서 남동쪽 · 혼돈의 둥지 거점 쪽","<b>혼돈의 둥지</b> — 남쪽 끝자락 · 지브라 백작성 거점 근처","<b>가리온의 상흔</b> — 북쪽 끝자락","<b>비탄의 대지</b> — 가운데에서 서쪽 · 비탄의 대지 거점 근처","<b>지브라 백작성</b> — 남쪽 끝자락"]};
  const MON={'노튼':[16,['가시 숲 설원 호랑이','가시 숲 프로즌 플라워','가시 숲 오크 일꾼','망자의 설원 좀비','망자의 설원 정령','망자의 설원 거미','설원 예티']],'윈스톤':[15,['맹독 가시 플룸버','묘지 망령','묘지 유령','묘지 수호자','호수 회색 늑대','호수 오우거','호수 늑대 인간']]};
  const QST={'노튼':['2-3. 설원으로','2-16. 성물'],'윈스톤':['3-16. 숲을 보지 못하고']};
  const HQ={'엑카루':['[성장] 엑카루의 에너지 → 불안정한 엑카루 1 → 2 → 3 … (단계마다 엑카루 몬스터 1,000마리, 2단계 보상 경험치 약 7.2% · 2.5만 골드 · 상자 25개)','[사냥] 휩쓸린 폐허','[사냥] 머맨 점령지','[사냥] 붉은 바위 고원','[사냥] 잊혀진 뱀파이어 유적지']};
