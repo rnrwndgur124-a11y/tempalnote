@@ -35,6 +35,7 @@ const PAGES={
  map:{t:'탐사 지도',d:'지역 14곳 위치 · 데이터 큐브 · 명소',i:'i-map',b:'new'},
  codex:{t:'아이템 도감',d:'재료 획득처 · 사용처 · 펫 주얼 360종',i:'i-guide',b:'new'},
  hidden:{t:'히든 퀘스트 156개',d:'지역 · 공통 히든 퀘스트 시작 조건 · 위치 · 보상 · 내 진행 체크',i:'i-map',b:'new'},
+ drops:{t:'드롭 찾기 · 보스 · 사냥터',d:'보스 35 · 사냥터 95곳 드롭 · 아이템으로 거꾸로 찾기',i:'i-raid',b:'new'},
  archive:{t:'탐사 · 아카이브',d:'데이터 큐브 · 히든 퀘스트 · 지역 달성도 체크리스트',i:'i-map',b:'new'},
  prob:{t:'확률 총정리',d:'강화 · 축복 · 오버기어드 · 소환 · 잠재력 공식 확률',i:'i-anvil',b:'hot'},
  craft:{t:'제작 도감',d:'레시피 231종 · 재료 · 성공률 · 골드',i:'i-anvil',b:'new'},
@@ -51,7 +52,7 @@ const PAGES={
 (()=>{try{let pv=sessionStorage.getItem('tn_prev');if(pv===null){pv=localStorage.getItem('tn_vd')||'';sessionStorage.setItem('tn_prev',pv)}window.__PREV=pv}catch(e){window.__PREV=''}})();
 (()=>{const P=window.PDATE;if(!P)return;const td=new Date(Date.now()+9*3600e3).toISOString().slice(0,10);for(const k in PAGES){if(PAGES[k].b==='new')delete PAGES[k].b;if(P[k]===td&&!PAGES[k].b)PAGES[k].b='new'}})();
 window.PAGES=PAGES;
-const GROUPS=[{n:'도구',e:'TOOLS',k:['sim','quiz','godhand','enhance','calc','gear','trade','timer','homework','backup']},{n:'가이드',e:'GUIDES',k:['prob','hunt','weapons','starter','map','codex','archive','hidden','craft','titles','achieve','pets','outfit','systems']},{n:'정보',e:'INFO',k:['coupons','streamers','news','videos','official','roadmap','bm','about']}];
+const GROUPS=[{n:'도구',e:'TOOLS',k:['sim','quiz','godhand','enhance','calc','gear','trade','timer','homework','backup']},{n:'가이드',e:'GUIDES',k:['prob','hunt','drops','weapons','starter','map','codex','archive','hidden','craft','titles','achieve','pets','outfit','systems']},{n:'정보',e:'INFO',k:['coupons','streamers','news','videos','official','roadmap','bm','about']}];
 const link=k=>`<a href="/${k}/" data-k="${k}">${med(PAGES[k].i,'sm')}<span>${PAGES[k].t}<small>${PAGES[k].d}</small></span></a>`;
 $('#menu').innerHTML=GROUPS.map((g,gi)=>`<div class="dd" data-g="${gi}"><button type="button" aria-haspopup="true">${g.n}</button><div class="ddm">${g.k.map(link).join('')}</div></div>`).join('');
 $('#drawer').innerHTML=GROUPS.map(g=>`<h4>${g.e}</h4>${g.k.map(link).join('')}`).join('');
@@ -78,6 +79,7 @@ $('#homeGuides').innerHTML=['systems','weapons','bm','coupons'].map(tile).join('
  const d=pv.slice(5).replace('-','/');box.innerHTML=`<div class="since"><b>다시 오셨네요 👋</b> 지난 방문(${d}) 이후 바뀐 곳 <span class="mute">${ks.length}곳</span><div class="sl">${ks.slice(0,10).map(k=>`<a href="/${k}/">${esc(PAGES[k].t)}</a>`).join('')}</div></div>`})();
 // ---------- 오늘 업데이트 ----------
 const CHG=[
+ ['2026-11-27','보스 35 · 사냥터 95곳 드롭 — 아이템으로 거꾸로 찾기','drops'],
  ['2026-11-27','히든 퀘스트 156개 — 시작 조건 · 위치 · 보상 · 내 진행 체크','hidden'],
  ['2026-11-27','데이터 큐브 70곳 — 14개 지역 전부','archive'],
  ['2026-11-27','사냥터 61곳 Lv.1~85 · 레베카 · 크라임 숲 · 지브라','hunt'],
@@ -1209,6 +1211,50 @@ try{initScene()}catch(e){}
  function boot(d){H=d;MI.value=S.main||'';LV.value=S.lv||'';ML.innerHTML=Object.entries(d.main).filter(([k])=>k!=='0-0').map(([k,v])=>`<option value="${k}">${esc(v)}</option>`).join('');draw()}
  const load=()=>{if(H||loading)return;loading=true;fetch('/data/hidden.json').then(r=>r.json()).then(boot).catch(()=>{loading=false;L.innerHTML='<p class="mute small">목록을 못 불러왔어요. 새로고침해 주세요.</p>'})};
  if(/\/hidden/.test(location.pathname)||location.hash==='#hidden'||!('IntersectionObserver' in window))load();else{const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io.disconnect();load()}},{rootMargin:'1500px'});io.observe(L)}
+})();
+// ---------- 드롭 찾기 ----------
+(()=>{const V=document.getElementById('drView');if(!V)return;
+ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const ls=(k,v)=>{try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||'null');localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}};
+ const LI=document.getElementById('drList'),TB=document.getElementById('drTab'),SB=document.getElementById('drSub'),Q=document.getElementById('drQ'),HT=document.getElementById('drHit');
+ let D=null,loading=false;const S=Object.assign({t:'b',bc:'전체',gr:'전체',b:0,g:0},ls('tn_drop')||{});const put=()=>ls('tn_drop',S);
+ const GC={'노멀':'g-n','레어':'g-r','에픽':'g-e','유니크':'g-u','레전드리':'g-l'};
+ const EQ=/^(대검|활|바이블|지팡이|완갑|아대|투구|갑옷|각반|장갑|신발|망토|목걸이|귀걸이|반지|허리띠|성검|방패|성배|나침반)$/;
+ const grp=t=>/강화 재료|연금|감정|잠재력/.test(t)?0:/제작 재료|^재료$|도안/.test(t)?1:t==='몬스터 도감 재료'?2:EQ.test(t)?3:/스킬북/.test(t)?4:5;
+ const GN=['강화 · 연금 · 스킬 재료','제작 재료 · 도안','몬스터 도감 재료','장비','스킬북','그 밖의 것'];
+ const chip=i=>{const x=D.items[i];return `<span title="${esc(x[1]+' · '+x[2])}"><b class="drg ${GC[x[1]]||'g-n'}">●</b>${esc(x[0])}</span>`};
+ function groups(ids){const G=[[],[],[],[],[],[]];ids.forEach(i=>G[grp(D.items[i][2])].push(i));
+  return G.map((g,k)=>g.length?(k===3&&g.length>8?`<details class="mdx"><summary><b>${GN[k]} ${g.length}종</b> <span class="small mute">눌러서 펼치기</span></summary><div class="drc" style="margin-top:6px">${g.map(chip).join('')}</div></details>`:`<h4>${GN[k]} <small class="mute">${g.length}</small></h4><div class="drc">${g.map(chip).join('')}</div>`):'').join('')}
+ function showB(i){const b=D.bosses[i];if(!b)return;S.b=i;put();
+  V.innerHTML=`<h3 style="margin:0 0 4px">${esc(b[0])} <small class="mute">${b[2]?'Lv.'+b[2]:''}</small></h3><p class="small mute" style="margin:0 0 10px">${esc(b[1])}${b[3]?' · 「'+esc(b[3])+'」':''}${b[4]||b[5]?' · '+esc([b[4],b[5]].filter(Boolean).join(' › ')):''} · 나올 수 있는 아이템 ${b[6].length}종</p>${groups(b[6])}${b[7].length?`<h4 style="margin-top:14px">🌀 차원에서 추가로</h4><div class="drc">${b[7].map(chip).join('')}</div>`:''}`;
+  [...LI.querySelectorAll('button')].forEach(x=>x.classList.toggle('on',+x.dataset.i===i))}
+ function showG(i){const g=D.grounds[i];if(!g)return;S.g=i;put();const ms=g[3];
+  const com=ms.length?ms.map(m=>m[2]).reduce((a,b)=>a.filter(x=>b.includes(x))):[];const comD=ms.length?ms.map(m=>m[3]).reduce((a,b)=>a.filter(x=>b.includes(x))):[];
+  const lv=ms.map(m=>m[1]).filter(Boolean);
+  V.innerHTML=`<h3 style="margin:0 0 4px">${esc(g[0])} <small class="mute">${lv.length?'Lv.'+Math.min(...lv)+(Math.max(...lv)>Math.min(...lv)?'~'+Math.max(...lv):''):''}</small></h3><p class="small mute" style="margin:0 0 10px">${esc(g[1])} · ${g[2]==='dungeon'?'던전':'필드'} · 몬스터 ${ms.length}종</p>`+
+   (com.length?`<h4 style="margin-top:0">🎒 여기 몬스터 전부에서 나오는 것 <small class="mute">${com.length}</small></h4>${groups(com)}`:'')+
+   (comD.length?`<h4>🌀 차원에서 추가로</h4><div class="drc">${comD.map(chip).join('')}</div>`:'')+
+   `<h4 style="margin-top:14px">🐾 몬스터마다 따로 나오는 것</h4>`+ms.map(m=>{const ex=m[2].filter(x=>!com.includes(x)),exD=m[3].filter(x=>!comD.includes(x));return `<div class="drm"><b>${esc(m[0])}</b> <small class="mute">Lv.${m[1]||'?'}</small>${ex.length||exD.length?`<div class="drc" style="margin-top:5px">${ex.map(chip).join('')}${exD.map(i=>chip(i).replace('<span ','<span style="border-style:dashed" ')).join('')}</div>`:' <span class="small mute">— 공통 전리품만</span>'}</div>`}).join('');
+  [...LI.querySelectorAll('button')].forEach(x=>x.classList.toggle('on',+x.dataset.i===i))}
+ function list(){if(S.t==='b'){const cats=['전체',...new Set(D.bosses.map(b=>b[1]))];SB.innerHTML=cats.map(c=>`<button type="button" data-c="${esc(c)}"${S.bc===c?' class="on"':''}>${esc(c)}</button>`).join('');
+   LI.innerHTML=D.bosses.map((b,i)=>[b,i]).filter(([b])=>S.bc==='전체'||b[1]===S.bc).sort((a,b)=>(a[0][2]||0)-(b[0][2]||0)).map(([b,i])=>`<button type="button" data-i="${i}">${esc(b[0])}<small>${b[2]?'Lv.'+b[2]:''} · ${esc(b[5]||b[4]||'')}</small></button>`).join('');showB(D.bosses[S.b]&&(S.bc==='전체'||D.bosses[S.b][1]===S.bc)?S.b:+((LI.querySelector('button')||{dataset:{i:0}}).dataset.i))}
+  else{const regs=['전체',...new Set(D.grounds.map(g=>g[1]))];SB.innerHTML=regs.map(c=>`<button type="button" data-c="${esc(c)}"${S.gr===c?' class="on"':''}>${esc(c)}</button>`).join('');
+   let last='';LI.innerHTML=D.grounds.map((g,i)=>[g,i]).filter(([g])=>S.gr==='전체'||g[1]===S.gr).map(([g,i])=>{const lv=g[3].map(m=>m[1]).filter(Boolean);const h=g[1]!==last?`<div class="drh">${esc(g[1])}</div>`:'';last=g[1];return h+`<button type="button" data-i="${i}">${esc(g[0])}<small>${lv.length?'Lv.'+Math.min(...lv):''}</small></button>`}).join('');
+   showG(D.grounds[S.g]&&(S.gr==='전체'||D.grounds[S.g][1]===S.gr)?S.g:+((LI.querySelector('button')||{dataset:{i:0}}).dataset.i))}
+  [...TB.children].forEach(b=>b.classList.toggle('on',b.dataset.t===S.t))}
+ function find(){const w=(Q.value||'').trim();if(!w||!D){HT.innerHTML='';return}const ids=D.items.map((x,i)=>[x,i]).filter(([x])=>x[0].includes(w)).map(([,i])=>i);
+  if(!ids.length){HT.innerHTML='<span class="mute">그런 이름의 아이템이 목록에 없어요.</span>';return}
+  const bs=D.bosses.map((b,i)=>[b,i]).filter(([b])=>b[6].some(x=>ids.includes(x))||b[7].some(x=>ids.includes(x)));
+  const gs=D.grounds.map((g,i)=>[g,i]).filter(([g])=>g[3].some(m=>m[2].some(x=>ids.includes(x))||m[3].some(x=>ids.includes(x))));
+  const names=[...new Set(ids.map(i=>D.items[i][0]))];
+  HT.innerHTML=`<b>${esc(names.slice(0,4).join(', '))}${names.length>4?' 외 '+(names.length-4)+'개':''}</b> — 보스 ${bs.length}곳 · 사냥터 ${gs.length}곳<div class="drc" style="margin-top:6px">${bs.slice(0,30).map(([b,i])=>`<button type="button" class="hqp" data-b="${i}">👑 ${esc(b[0])}</button>`).join(' ')}${gs.slice(0,40).map(([g,i])=>`<button type="button" class="hqp" data-g="${i}">📍 ${esc(g[0])}</button>`).join(' ')}</div>`}
+ HT.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.b!=null){S.t='b';S.bc='전체';S.b=+b.dataset.b}else{S.t='g';S.gr='전체';S.g=+b.dataset.g}put();list();V.scrollIntoView({behavior:'smooth',block:'start'})};
+ TB.onclick=e=>{const b=e.target.closest('button');if(!b)return;S.t=b.dataset.t;put();list()};
+ SB.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(S.t==='b')S.bc=b.dataset.c;else S.gr=b.dataset.c;put();list()};
+ LI.onclick=e=>{const b=e.target.closest('button[data-i]');if(!b)return;S.t==='b'?showB(+b.dataset.i):showG(+b.dataset.i);if(innerWidth<760)V.scrollIntoView({behavior:'smooth',block:'start'})};
+ Q.oninput=find;
+ const load=()=>{if(D||loading)return;loading=true;fetch('/data/drops.json').then(r=>r.json()).then(d=>{D=d;list();find()}).catch(()=>{loading=false;V.innerHTML='<p class="mute small">목록을 못 불러왔어요. 새로고침해 주세요.</p>'})};
+ if(/\/drops/.test(location.pathname)||location.hash==='#drops'||!('IntersectionObserver' in window))load();else{const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io.disconnect();load()}},{rootMargin:'1500px'});io.observe(V)}
 })();
 // ---------- 탐사 지도 ----------
 (function(){const S=document.getElementById('mpSvg');if(!S)return;
