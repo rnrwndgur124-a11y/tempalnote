@@ -71,6 +71,62 @@ for name, label, text, g in [
 ]:
     add(name, label, text, g, True)
 
+# 3-3) 우리 데이터 파일(드롭 · 몬스터 도감 성장 · 히든 퀘스트 · 수집 · 전체 아이템)에서 획득처 · 사용처 보강
+DD = os.path.join(os.path.dirname(SRC))
+def J(f):
+    try: return json.load(open(os.path.join(DD, f), encoding='utf-8'))
+    except FileNotFoundError: return None
+def short(lst, n=6):
+    lst = list(dict.fromkeys(lst)); return ' · '.join(lst[:n]) + (f' 외 {len(lst) - n}곳' if len(lst) > n else '')
+DR = J('drops.json')
+if DR:
+    IT = DR['items']; bn, bd, gn = collections.defaultdict(list), collections.defaultdict(list), collections.defaultdict(list)
+    for b in DR['bosses']:
+        for i in b[6]: bn[IT[i][0]].append(f"{b[0]} Lv.{b[2]}")
+        for i in b[7]: bd[IT[i][0]].append(b[0])
+    for g in DR['grounds']:
+        lv = min([m[1] or 99 for m in g[3]] or [0])
+        for m in g[3]:
+            for i in m[2] + m[3]: gn[IT[i][0]].append(f"{g[0]} Lv.{lv}")
+    for k, vv in bn.items(): add(k, '보스 드롭', short(vv))
+    for k, vv in bd.items(): add(k, '차원 보스 드롭', short(vv))
+    for k, vv in gn.items(): add(k, '사냥터 · 던전 드롭', short(vv))
+GW = J('growth.json')
+if GW:
+    mg = collections.defaultdict(list)
+    for m in GW['mg']:
+        for st in m[3]:
+            if st[2] and st[2] != '골드': mg[st[2]].append(f"{m[0]} {st[0]}단계 ×{st[3]}")
+    for k, vv in mg.items(): add(k, '몬스터 도감 보상', short(vv, 4))
+HQ = J('hidden.json')
+if HQ:
+    hq = collections.defaultdict(list)
+    for q in HQ['q']:
+        for st in q[4]:
+            for it in st[4][4]:
+                nm = re.sub(r' \d+$', '', re.sub(r' \(계정 1회\)$', '', it)); hq[nm].append(q[1])
+    for k, vv in hq.items(): add(k, '히든 퀘스트 보상', short(vv, 4))
+COLD = J('collect.json')
+COL = collections.defaultdict(list)
+if COLD:
+    for c in COLD['c']:
+        for sl in c[2]:
+            nm = COLD['items'][sl[0]][0]; COL[norm(nm)].append([c[0], sl[2], sl[1]])
+EQT = set('대검 활 바이블 지팡이 완갑 아대 투구 갑옷 각반 장갑 신발 망토 목걸이 귀걸이 반지 허리띠 성배 나침반 보옥 펜던트 방패 성검 곡괭이'.split())
+def kind(t):
+    if t in EQT: return '장비'
+    if t == '몬스터 도감 재료': return '도감 재료'
+    if t in ('소환권', '펫 주얼 소환권', '소환 아이템'): return '소환권'
+    if t in ('제작 재료', '재료', '수집 재료'): return '재료'
+    if t in ('펫 소환 재료', '펫 성장 재료'): return '펫 재료'
+    if '상자' in t: return '상자'
+    if t == '도안': return '제작법'
+    if '기서' in t or '스킬북' in t or t == '스킬 강화 재료': return '스킬 재료'
+    if t in ('연금 재료', '감정 재료'): return '연금 재료'
+    if '강화' in t: return '강화 재료'
+    return '소모품'
+ALL = [[n, g if g not in ('특별',) else '', kind(t), t] for n, g, t in (J('items_all.json') or [])]
+
 # 4) 펫 주얼 (소환권 5종 확률)
 TK = ['펫 주얼 1회 소환권(귀속)', '펫 주얼 11회 소환권(귀속)', '미지의 펫 주얼 1회 소환권(귀속)', '미지의 펫 주얼 11회 소환권(귀속)', '고급 펫 주얼 1회 소환권(귀속)']
 pj = collections.OrderedDict()
@@ -80,6 +136,6 @@ for _, _, t, g, name, p in v['펫 주얼 소환']['rows']:
 PJ = [[n, g, ps] for (n, g), ps in pj.items()]
 
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
-json.dump({'v': '11.26', 'src': src, 'pj': PJ, 'pjt': ['일반 1회', '일반 11회', '미지의 1회', '미지의 11회', '고급 1회']},
+json.dump({'v': '11.27', 'src': src, 'pj': PJ, 'all': ALL, 'col': COL, 'pjt': ['일반 1회', '일반 11회', '미지의 1회', '미지의 11회', '고급 1회']},
           open(OUT, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
-print(f'codex: 획득처 {len(src)}종 · 펫 주얼 {len(PJ)}종 → {OUT} ({os.path.getsize(OUT)//1024}KB)')
+print(f'codex: 획득처 {len(src)}종 · 전체 {len(ALL)}종 · 수집 사용 {len(COL)}종 · 펫 주얼 {len(PJ)}종 → {OUT} ({os.path.getsize(OUT)//1024}KB)')
