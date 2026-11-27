@@ -3692,8 +3692,8 @@ const cmSvg=n=>{const m=CMAP[n];if(!m)return '';const e=x=>String(x).replace(/[&
  const W=[['wgs','대검','근접 · 탱커 · 광역'],['wbow','활','원거리 · 기동'],['wstf','지팡이','마법 · 광역 딜'],['wbib','바이블','회복 · 지원']];
  const CL=(typeof CLS!=='undefined'?CLS:[]).filter(c=>c.tier==='유니크'||c.tier==='레전드리').map(c=>['c'+c.id.replace(/\D/g,''),c.n,c.tier+' · '+c.w]);
  let S=ls('tn_vote')||{};if(S.w!==WK)S={w:WK};let R={},peek={};
- const get=()=>fetch(FS+'/vote/'+WK+'?key='+KEY).then(r=>r.ok?r.json():{}).then(j=>{const f=j.fields||{};R={};for(const k in f)R[k]=+(f[k].integerValue||0)}).catch(()=>{});
- const vote=k=>fetch(FS+':commit?key='+KEY,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({writes:[{transform:{document:DOC+'/vote/'+WK,fieldTransforms:[{fieldPath:k,increment:{integerValue:'1'}}]}}]})}).then(r=>r.ok);
+ const get=()=>fetch(FS+'/vote/'+WK+'/o?pageSize=100&key='+KEY).then(r=>r.ok?r.json():{}).then(j=>{R={};(j.documents||[]).forEach(d=>{R[d.name.split('/').pop()]=+(((d.fields||{}).n||{}).integerValue||0)})}).catch(()=>{});
+ const vote=k=>fetch(FS+':commit?key='+KEY,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({writes:[{transform:{document:DOC+'/vote/'+WK+'/o/'+k,fieldTransforms:[{fieldPath:'n',increment:{integerValue:'1'}}]}}]})}).then(r=>r.ok);
  function box(el,id,title,ops){const mine=S[id];const tot=ops.reduce((a,o)=>a+(R[o[0]]||0),0);
   if(mine||peek[id]){const rows=ops.map(o=>[o,R[o[0]]||0]).sort((a,b)=>b[1]-a[1]).filter((x,i)=>x[1]>0||x[0][0]===mine||i<6);
    el.innerHTML=`<div class="ch"><span class="med sm"><svg><use href="#i-crown"/></svg></span><h3>${title} <small class="mute" style="font-weight:500">이번 주 ${tot.toLocaleString()}표</small></h3></div><ul class="vtr">${rows.map(([o,c])=>{const p=tot?Math.round(c/tot*1000)/10:0;return `<li><div class="t"><b class="${o[0]===mine?'me':''}">${esc(o[1])}</b><span>${p}% · ${c}표</span></div><div class="bar"><i style="width:${p}%"></i></div></li>`}).join('')}</ul>${mine?'':`<button type="button" class="btn sm" data-back="${id}">투표하러 가기</button>`}`;
@@ -3886,11 +3886,11 @@ if(el('frView')){fr();grid()}})();
   var vis=0,vSince=document.hidden?0:Date.now(),sent=0,dwS=false;
   function dwHour(){return ('0'+new Date(Date.now()+9*36e5).getUTCHours()).slice(-2)}
   function dwFlush(){if(vSince){vis+=Date.now()-vSince;vSince=0}var sec=Math.min(1800,Math.round((vis-sent)/1000));if(sec<3)return;sent+=sec*1000;var h=dwHour();
-    commit([{transform:{document:DOC+'/dw/'+kday(),fieldTransforms:[{fieldPath:'t'+h,increment:{integerValue:String(sec)}}]}}]);
-    if(!dwS){dwS=true;commit([{transform:{document:DOC+'/dw/'+kday(),fieldTransforms:[{fieldPath:'s'+h,increment:{integerValue:'1'}}]}}])}}
-  function dwGet(o){return fetch(FS+'/dw/'+kday(o)+'?key='+KEY).then(function(r){return r.ok?r.json():{}}).then(function(j){var f=j.fields||{},m={};for(var k in f)m[k]=+(f[k].integerValue||0);return m}).catch(function(){return {}})}
+    commit([{transform:{document:DOC+'/dw/'+kday()+'/h/'+h,fieldTransforms:[{fieldPath:'t',increment:{integerValue:String(sec)}}]}}]);
+    if(!dwS){dwS=true;setTimeout(function(){commit([{transform:{document:DOC+'/dw/'+kday()+'/h/'+h,fieldTransforms:[{fieldPath:'s',increment:{integerValue:'1'}}]}}])},300)}}
+  function dwGet(o){return fetch(FS+'/dw/'+kday(o)+'/h?pageSize=30&key='+KEY).then(function(r){return r.ok?r.json():{}}).then(function(j){var m={};(j.documents||[]).forEach(function(d){var h=d.name.split('/').pop(),f=d.fields||{};m['t'+h]=+((f.t||{}).integerValue||0);m['s'+h]=+((f.s||{}).integerValue||0)});return m}).catch(function(){return {}})}
   window.__dwGet=dwGet;
-  function dwTxt(m){var T=0,S=0;for(var k in m){if(k[0]==='t')T+=m[k];else if(k[0]==='s')S+=m[k]}return S?{avg:T/S,n:S}:null}
+  function dwTxt(m){var T=0,S=0;for(var k in m){if(+k.slice(1)>23)continue;if(k[0]==='t')T+=m[k];else if(k[0]==='s')S+=m[k]}return S?{avg:T/S,n:S}:null}
   function mmss(x){x=Math.round(x);return Math.floor(x/60)+'분 '+(x%60)+'초'}
   async function draw(){
     var el=document.getElementById('ownerStat');

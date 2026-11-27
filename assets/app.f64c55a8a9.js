@@ -1663,8 +1663,8 @@ const cmSvg=n=>{const m=CMAP[n];if(!m)return '';const e=x=>String(x).replace(/[&
  const W=[['wgs','대검','근접 · 탱커 · 광역'],['wbow','활','원거리 · 기동'],['wstf','지팡이','마법 · 광역 딜'],['wbib','바이블','회복 · 지원']];
  const CL=(typeof CLS!=='undefined'?CLS:[]).filter(c=>c.tier==='유니크'||c.tier==='레전드리').map(c=>['c'+c.id.replace(/\D/g,''),c.n,c.tier+' · '+c.w]);
  let S=ls('tn_vote')||{};if(S.w!==WK)S={w:WK};let R={},peek={};
- const get=()=>fetch(FS+'/vote/'+WK+'?key='+KEY).then(r=>r.ok?r.json():{}).then(j=>{const f=j.fields||{};R={};for(const k in f)R[k]=+(f[k].integerValue||0)}).catch(()=>{});
- const vote=k=>fetch(FS+':commit?key='+KEY,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({writes:[{transform:{document:DOC+'/vote/'+WK,fieldTransforms:[{fieldPath:k,increment:{integerValue:'1'}}]}}]})}).then(r=>r.ok);
+ const get=()=>fetch(FS+'/vote/'+WK+'/o?pageSize=100&key='+KEY).then(r=>r.ok?r.json():{}).then(j=>{R={};(j.documents||[]).forEach(d=>{R[d.name.split('/').pop()]=+(((d.fields||{}).n||{}).integerValue||0)})}).catch(()=>{});
+ const vote=k=>fetch(FS+':commit?key='+KEY,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({writes:[{transform:{document:DOC+'/vote/'+WK+'/o/'+k,fieldTransforms:[{fieldPath:'n',increment:{integerValue:'1'}}]}}]})}).then(r=>r.ok);
  function box(el,id,title,ops){const mine=S[id];const tot=ops.reduce((a,o)=>a+(R[o[0]]||0),0);
   if(mine||peek[id]){const rows=ops.map(o=>[o,R[o[0]]||0]).sort((a,b)=>b[1]-a[1]).filter((x,i)=>x[1]>0||x[0][0]===mine||i<6);
    el.innerHTML=`<div class="ch"><span class="med sm"><svg><use href="#i-crown"/></svg></span><h3>${title} <small class="mute" style="font-weight:500">이번 주 ${tot.toLocaleString()}표</small></h3></div><ul class="vtr">${rows.map(([o,c])=>{const p=tot?Math.round(c/tot*1000)/10:0;return `<li><div class="t"><b class="${o[0]===mine?'me':''}">${esc(o[1])}</b><span>${p}% · ${c}표</span></div><div class="bar"><i style="width:${p}%"></i></div></li>`}).join('')}</ul>${mine?'':`<button type="button" class="btn sm" data-back="${id}">투표하러 가기</button>`}`;

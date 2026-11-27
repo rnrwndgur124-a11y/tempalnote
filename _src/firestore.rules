@@ -149,35 +149,31 @@ service cloud.firestore {
         && request.resource.data.size() <= 120;
     }
 
-    // 주간 투표: vote/w{주번호} 에 항목별 숫자만 +1 (개인 정보 없음, 이번 주 문서만)
+    // 주간 투표: vote/w{주번호}/o/{항목} 의 n 만 +1 (개인 정보 없음, 이번 주만)
     function voteWeek() { return 'w' + string(int(math.floor((request.time.toMillis() + 32400000 + 259200000) / 604800000))); }
-    match /vote/{wk} {
+    match /vote/{wk}/o/{k} {
       allow read: if true;
-      allow create: if wk == voteWeek()
-        && request.resource.data.size() == 1
-        && request.resource.data.keys()[0].matches('^[a-z0-9]{2,8}$')
-        && request.resource.data[request.resource.data.keys()[0]] == 1;
+      allow create: if wk == voteWeek() && k.matches('^[a-z0-9]{2,8}$')
+        && request.resource.data.keys().hasOnly(['n']) && request.resource.data.n == 1;
       allow update: if wk == voteWeek()
-        && request.resource.data.diff(resource.data).affectedKeys().size() == 1
-        && request.resource.data.diff(resource.data).affectedKeys().toList()[0].matches('^[a-z0-9]{2,8}$')
-        && request.resource.data[request.resource.data.diff(resource.data).affectedKeys().toList()[0]] == resource.data.get(request.resource.data.diff(resource.data).affectedKeys().toList()[0], 0) + 1
-        && request.resource.data.size() <= 70;
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['n'])
+        && request.resource.data.n == resource.data.n + 1;
     }
 
-    // 체류 시간: dw/{날짜} 에 시간대별 보고 있던 초(tHH)와 방문 수(sHH)만 더함 (개인 정보 없음, 오늘 문서만)
-    match /dw/{day} {
+    // 체류 시간: dw/{날짜}/h/{시} 문서에 보고 있던 초(t)와 방문 수(s)만 더함 (개인 정보 없음, 오늘 문서만)
+    function today() { return string(int(math.floor((request.time.toMillis() + 32400000) / 86400000))); }
+    match /dw/{day}/h/{hh} {
       allow read: if true;
-      allow create: if day == string(int(math.floor((request.time.toMillis() + 32400000) / 86400000)))
-        && request.resource.data.size() == 1
-        && request.resource.data.keys()[0].matches('^[st][0-9]{2}$')
-        && request.resource.data[request.resource.data.keys()[0]] >= 1
-        && request.resource.data[request.resource.data.keys()[0]] <= 1800;
-      allow update: if day == string(int(math.floor((request.time.toMillis() + 32400000) / 86400000)))
-        && request.resource.data.diff(resource.data).affectedKeys().size() == 1
-        && request.resource.data.diff(resource.data).affectedKeys().toList()[0].matches('^[st][0-9]{2}$')
-        && request.resource.data[request.resource.data.diff(resource.data).affectedKeys().toList()[0]] - resource.data.get(request.resource.data.diff(resource.data).affectedKeys().toList()[0], 0) >= 1
-        && request.resource.data[request.resource.data.diff(resource.data).affectedKeys().toList()[0]] - resource.data.get(request.resource.data.diff(resource.data).affectedKeys().toList()[0], 0) <= 1800
-        && request.resource.data.size() <= 48;
+      allow create: if day == today() && hh.matches('^[0-2][0-9]$')
+        && request.resource.data.keys().hasOnly(['s', 't'])
+        && request.resource.data.get('t', 0) is int && request.resource.data.get('t', 0) >= 0 && request.resource.data.get('t', 0) <= 1800
+        && request.resource.data.get('s', 0) is int && request.resource.data.get('s', 0) >= 0 && request.resource.data.get('s', 0) <= 1;
+      allow update: if day == today()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['s', 't'])
+        && request.resource.data.get('t', 0) - resource.data.get('t', 0) >= 0
+        && request.resource.data.get('t', 0) - resource.data.get('t', 0) <= 1800
+        && request.resource.data.get('s', 0) - resource.data.get('s', 0) >= 0
+        && request.resource.data.get('s', 0) - resource.data.get('s', 0) <= 1;
     }
 
     // 지금 보는 사람: on/{세션} 에 서버 시각만 기록 (개인 정보 없음)
