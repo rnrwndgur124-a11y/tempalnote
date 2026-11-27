@@ -5,7 +5,7 @@ set -e
 exec 9>/tmp/tempal_deploy.lock
 flock -w 600 9 || { echo '배포 중단: 다른 배포가 아직 진행 중'; exit 1; }
 # 금지어(다른 사이트 이름): 원본·커밋 메시지·완성 파일에 있으면 올리지 않는다. 글자는 바이트 코드로만 적는다.
-BAN="$(printf '\xea\xb9\xa8\xeb\xb9\x84')\|$(printf '\x6b\x6b\x61\x65\x62\x69')"
+BAN="$(printf '\xea\xb9\xa8\xeb\xb9\x84')\|$(printf '\x6b\x6b\x61\x65\x62\x69')\|$(printf '\x74\x65\x6d\x70\x70\x61\x6c\x6e\x6f\x74\x65')\|$(printf '\x70\x61\x67\x6d\x61\x67')\|$(printf '\xed\x85\x9c\xeb\xb9\xa8\xeb\x85\xb8\xed\x8a\xb8')\|$(printf '\xed\x8c\x8c\xea\xb7\xb8\xeb\xa7\x88\xec\xa7\x80\xec\xa7\x80')"
 if printf '%s' "$1" | grep -qi "$BAN" || grep -qi "$BAN" /home/claude/tempal/index.html; then echo "배포 중단: 다른 사이트 이름이 들어 있어요"; exit 1; fi
 cd /home/claude/site && git stash -q -u 2>/dev/null || true; git pull -q --rebase; git stash pop -q 2>/dev/null || true
 cp /home/claude/tempal/data/ads.txt /home/claude/site/ads.txt && python3 /home/claude/tempal/build_site.py /home/claude/site && python3 /home/claude/tempal/gen_og.py && python3 /home/claude/tempal/gen_codex.py /home/claude/site && python3 /home/claude/tempal/gen_alchemy.py /home/claude/site && python3 /home/claude/tempal/gen_search.py /home/claude/site && python3 /home/claude/tempal/prerender.py /home/claude/site | tail -1 && python3 /home/claude/tempal/extract_assets.py /home/claude/site
