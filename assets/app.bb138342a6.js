@@ -36,6 +36,7 @@ const PAGES={
  codex:{t:'아이템 도감',d:'재료 획득처 · 사용처 · 펫 주얼 360종',i:'i-guide',b:'new'},
  hidden:{t:'히든 퀘스트 156개',d:'지역 · 공통 히든 퀘스트 시작 조건 · 위치 · 보상 · 내 진행 체크',i:'i-map',b:'new'},
  drops:{t:'드롭 찾기 · 보스 · 사냥터',d:'보스 35 · 사냥터 95곳 드롭 · 아이템으로 거꾸로 찾기',i:'i-raid',b:'new'},
+ collect:{t:'수집 1,091개 · 플래너',d:'수집 전체 · 능력치로 찾기 · 내 효과 합계',i:'i-check',b:'new'},
  archive:{t:'탐사 · 아카이브',d:'데이터 큐브 · 히든 퀘스트 · 지역 달성도 체크리스트',i:'i-map',b:'new'},
  prob:{t:'확률 총정리',d:'강화 · 축복 · 오버기어드 · 소환 · 잠재력 공식 확률',i:'i-anvil',b:'hot'},
  craft:{t:'제작 도감',d:'레시피 231종 · 재료 · 성공률 · 골드',i:'i-anvil',b:'new'},
@@ -52,7 +53,7 @@ const PAGES={
 (()=>{try{let pv=sessionStorage.getItem('tn_prev');if(pv===null){pv=localStorage.getItem('tn_vd')||'';sessionStorage.setItem('tn_prev',pv)}window.__PREV=pv}catch(e){window.__PREV=''}})();
 (()=>{const P=window.PDATE;if(!P)return;const td=new Date(Date.now()+9*3600e3).toISOString().slice(0,10);for(const k in PAGES){if(PAGES[k].b==='new')delete PAGES[k].b;if(P[k]===td&&!PAGES[k].b)PAGES[k].b='new'}})();
 window.PAGES=PAGES;
-const GROUPS=[{n:'도구',e:'TOOLS',k:['sim','quiz','godhand','enhance','calc','gear','trade','timer','homework','backup']},{n:'가이드',e:'GUIDES',k:['prob','hunt','drops','weapons','starter','map','codex','archive','hidden','craft','titles','achieve','pets','outfit','systems']},{n:'정보',e:'INFO',k:['coupons','streamers','news','videos','official','roadmap','bm','about']}];
+const GROUPS=[{n:'도구',e:'TOOLS',k:['sim','quiz','godhand','enhance','calc','gear','trade','timer','homework','backup']},{n:'가이드',e:'GUIDES',k:['prob','hunt','drops','collect','weapons','starter','map','codex','archive','hidden','craft','titles','achieve','pets','outfit','systems']},{n:'정보',e:'INFO',k:['coupons','streamers','news','videos','official','roadmap','bm','about']}];
 const link=k=>`<a href="/${k}/" data-k="${k}">${med(PAGES[k].i,'sm')}<span>${PAGES[k].t}<small>${PAGES[k].d}</small></span></a>`;
 $('#menu').innerHTML=GROUPS.map((g,gi)=>`<div class="dd" data-g="${gi}"><button type="button" aria-haspopup="true">${g.n}</button><div class="ddm">${g.k.map(link).join('')}</div></div>`).join('');
 $('#drawer').innerHTML=GROUPS.map(g=>`<h4>${g.e}</h4>${g.k.map(link).join('')}`).join('');
@@ -79,6 +80,7 @@ $('#homeGuides').innerHTML=['systems','weapons','bm','coupons'].map(tile).join('
  const d=pv.slice(5).replace('-','/');box.innerHTML=`<div class="since"><b>다시 오셨네요 👋</b> 지난 방문(${d}) 이후 바뀐 곳 <span class="mute">${ks.length}곳</span><div class="sl">${ks.slice(0,10).map(k=>`<a href="/${k}/">${esc(PAGES[k].t)}</a>`).join('')}</div></div>`})();
 // ---------- 오늘 업데이트 ----------
 const CHG=[
+ ['2026-11-27','수집 1,091개 전체 · 능력치로 찾기 · 내 효과 합계','collect'],
  ['2026-11-27','보스 35 · 사냥터 95곳 드롭 — 아이템으로 거꾸로 찾기','drops'],
  ['2026-11-27','히든 퀘스트 156개 — 시작 조건 · 위치 · 보상 · 내 진행 체크','hidden'],
  ['2026-11-27','데이터 큐브 70곳 — 14개 지역 전부','archive'],
@@ -1255,6 +1257,46 @@ try{initScene()}catch(e){}
  Q.oninput=find;
  const load=()=>{if(D||loading)return;loading=true;fetch('/data/drops.json').then(r=>r.json()).then(d=>{D=d;list();find()}).catch(()=>{loading=false;V.innerHTML='<p class="mute small">목록을 못 불러왔어요. 새로고침해 주세요.</p>'})};
  if(/\/drops/.test(location.pathname)||location.hash==='#drops'||!('IntersectionObserver' in window))load();else{const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io.disconnect();load()}},{rootMargin:'1500px'});io.observe(V)}
+})();
+// ---------- 수집 플래너 ----------
+(()=>{const L=document.getElementById('clList');if(!L)return;
+ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const ls=(k,v)=>{try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||'null');localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}};
+ const Q=document.getElementById('clQ'),ST=document.getElementById('clStat'),EN=document.getElementById('clEnh'),OP=document.getElementById('clOpt'),SM=document.getElementById('clSum'),MI=document.getElementById('clMine'),MO=document.getElementById('clMore');
+ let D=null,loading=false,lim=40;const S=Object.assign({done:{},stat:'',sort:'base',todo:0,enh:'all'},ls('tn_col')||{});const put=()=>ls('tn_col',S);
+ const GC={'노멀':'g-n','레어':'g-r','에픽':'g-e','유니크':'g-u','레전드리':'g-l'};
+ const val=(si,v)=>{const s=D.stats[si];return s[1]?(Math.round(v)/100).toFixed(2).replace(/\.?0+$/,'')+'%':'+'+v.toLocaleString()};
+ const mx=c=>Math.max(...c[2].map(x=>x[2]));
+ const EK=[['all','강화 상관없이'],['0','강화 없음'],['5','+5'],['6','+6'],['7','+7'],['8','+8 이상']];
+ const enhOk=c=>{if(S.enh==='all')return true;const m=mx(c);return S.enh==='8'?m>=8:m===+S.enh};
+ const txt=c=>(c[0]+' '+c[2].map(x=>D.items[x[0]][0]).join(' ')+' '+c[3].map(r=>D.stats[r[1]][0]).join(' ')).toLowerCase();
+ const gain=(c,si)=>c[3].filter(r=>r[1]===si).reduce((a,r)=>a+r[2],0);
+ function row(c){const st=S.done[c[0]]||0,sel=S.stat===''?-1:+S.stat;
+  return `<div class="clr s${st}" data-n="${esc(c[0])}"><div class="clh"><b>${esc(c[0])}</b>${c[1]?`<span class="hqt">기간 ${esc(c[1])}</span>`:''}<span class="hqt">장비 ${c[2].length}칸${mx(c)?' · 최대 +'+mx(c):''}</span><button type="button" class="clst" aria-label="${esc(c[0])} 등록 상태 바꾸기">${['등록 전','절반','완료'][st]}</button></div>`+
+  `<div class="cli">${c[2].map(x=>{const it=D.items[x[0]];return `<button type="button" data-q="${esc(it[0])}" title="어디서 나오는지 보기"><b class="drg ${GC[it[1]]||'g-n'}">●</b>${x[2]?'+'+x[2]+' ':''}${esc(it[0])}${x[1]>1?' ×'+x[1].toLocaleString():''}</button>`}).join('')}</div>`+
+  `<div class="cle">${c[3].map(r=>`<span${r[1]===sel?' class="hl"':''}><b>${r[0]}개</b> · ${esc(D.stats[r[1]][0])} ${val(r[1],r[2])}</span>`).join(' &nbsp; ')}</div></div>`}
+ function mine(){const T={};D.c.forEach(c=>{const st=S.done[c[0]]||0;c[3].slice(0,st).forEach(r=>{T[r[1]]=(T[r[1]]||0)+r[2]})});const ks=Object.keys(T);
+  if(!ks.length){MI.style.display='none';return}MI.style.display='';
+  MI.innerHTML=`<div class="ch" style="margin-bottom:6px"><span class="med sm"><svg><use href="#i-check"/></svg></span><h3>지금 켜진 수집 효과 합계 <small class="mute" style="font-weight:500">${ks.length}종</small></h3></div><div class="clmine">${ks.sort((a,b)=>D.stats[a][2]-D.stats[b][2]).map(k=>`<span>${esc(D.stats[k][0])} <b>${val(+k,T[k])}</b></span>`).join('')}</div>`}
+ function draw(keep){if(!D)return;if(!keep)lim=40;const w=(Q.value||'').trim().toLowerCase(),si=S.stat===''?-1:+S.stat;
+  let A=D.c.filter(c=>(!w||txt(c).includes(w))&&(si<0||c[3].some(r=>r[1]===si))&&enhOk(c)&&(!S.todo||(S.done[c[0]]||0)<2));
+  if(S.sort==='few')A=A.slice().sort((a,b)=>a[2].length-b[2].length||mx(a)-mx(b));
+  else if(S.sort==='big'&&si>=0)A=A.slice().sort((a,b)=>gain(b,si)-gain(a,si)||a[2].length-b[2].length);
+  L.innerHTML=A.length?A.slice(0,lim).map(row).join(''):'<p class="mute">조건에 맞는 수집이 없어요.</p>';
+  MO.style.display=A.length>lim?'':'none';MO.textContent=`더 보기 (남은 ${(A.length-lim).toLocaleString()}개)`;
+  const dn=D.c.filter(c=>S.done[c[0]]===2).length,hf=D.c.filter(c=>S.done[c[0]]===1).length;
+  SM.innerHTML=`${A.length.toLocaleString()}개 보는 중 · 1,091개 중 완료 <b>${dn}</b> · 절반 ${hf}`+(si>=0?` · 「${esc(D.stats[si][0])}」 전부 모으면 <b>${val(si,A.reduce((a,c)=>a+gain(c,si),0))}</b>`:'')+(S.sort==='big'&&si<0?' · <b>효과 큰 순</b>은 능력치를 먼저 고르세요':'');
+  [...OP.children].forEach(b=>b.classList.toggle('on',b.dataset.s?b.dataset.s===S.sort:!!S[b.dataset.f]));[...EN.children].forEach(b=>b.classList.toggle('on',b.dataset.e===S.enh));mine()}
+ L.addEventListener('click',e=>{const b=e.target.closest('.clst');if(b){const r=b.closest('.clr'),n=r.dataset.n,s=((S.done[n]||0)+1)%3;if(s)S.done[n]=s;else delete S.done[n];put();r.className='clr s'+s;b.textContent=['등록 전','절반','완료'][s];mine();const dn=D.c.filter(c=>S.done[c[0]]===2).length;SM.innerHTML=SM.innerHTML.replace(/완료 <b>\d+<\/b> · 절반 \d+/,`완료 <b>${dn}</b> · 절반 ${D.c.filter(c=>S.done[c[0]]===1).length}`);return}
+  const q=e.target.closest('.cli button');if(q){const dq=document.getElementById('drQ');if(dq){dq.value=q.dataset.q;dq.dispatchEvent(new Event('input'))}location.hash='#drops'}});
+ OP.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.s)S.sort=b.dataset.s;else S[b.dataset.f]=S[b.dataset.f]?0:1;put();draw()};
+ EN.onclick=e=>{const b=e.target.closest('button');if(!b)return;S.enh=b.dataset.e;put();draw()};
+ ST.onchange=()=>{S.stat=ST.value;if(S.stat!==''&&S.sort==='base')S.sort='big';put();draw()};Q.oninput=()=>draw();MO.onclick=()=>{lim+=60;draw(1)};
+ function boot(d){D=d;const cnt={};d.c.forEach(c=>new Set(c[3].map(r=>r[1])).forEach(k=>cnt[k]=(cnt[k]||0)+1));
+  ST.innerHTML='<option value="">전체 능력치</option>'+d.stats.map((s,i)=>[s,i]).filter(([,i])=>cnt[i]).sort((a,b)=>a[0][2]-b[0][2]).map(([s,i])=>`<option value="${i}">${esc(s[0])} (${cnt[i]})</option>`).join('');ST.value=S.stat;
+  EN.innerHTML=EK.map(([k,t])=>`<button type="button" data-e="${k}">${t}</button>`).join('');draw()}
+ const load=()=>{if(D||loading)return;loading=true;fetch('/data/collect.json').then(r=>r.json()).then(boot).catch(()=>{loading=false;L.innerHTML='<p class="mute small">목록을 못 불러왔어요. 새로고침해 주세요.</p>'})};
+ if(/\/collect/.test(location.pathname)||location.hash==='#collect'||!('IntersectionObserver' in window))load();else{const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io.disconnect();load()}},{rootMargin:'1500px'});io.observe(L)}
 })();
 // ---------- 탐사 지도 ----------
 (function(){const S=document.getElementById('mpSvg');if(!S)return;
