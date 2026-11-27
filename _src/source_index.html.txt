@@ -3409,19 +3409,21 @@ try{initScene()}catch(e){}
  document.querySelectorAll('section.view[data-v]').forEach(sec=>{const k=sec.dataset.v,L=(REL[k]||[]).filter(x=>PAGES[x]);if(!L.length)return;const w=sec.querySelector('.wrap');if(!w||w.querySelector('.relnext'))return;
   const d=document.createElement('div');d.className='relnext';d.innerHTML='<h3>이어서 보면 좋은 것</h3><div class="relg">'+L.map(x=>'<a href="#'+x+'"><b>'+PAGES[x].t+'</b><small>'+PAGES[x].d+'</small></a>').join('')+'</div>';w.appendChild(d)})})();
 // ---------- 우편 수령 체크 ----------
-(()=>{const T=document.querySelector('#mailnow tbody');if(!T)return;
- const gj=k=>{try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}},sj=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+(()=>{const gj=k=>{try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}},sj=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+ const T=document.querySelector('#mailnow tbody');
+ if(!T){const I=gj('tn_mailinfo'),G=gj('tn_mail')||{},kd=t=>Math.floor((t+9*36e5)/864e5),n=Date.now();if(!I)return;const left=I.filter(r=>!G[r.k]&&(!r.e||r.e>n)).sort((a,b)=>(a.e||9e15)-(b.e||9e15));if(!left.length)return;
+  setTimeout(()=>{const box=document.getElementById('myBox');if(!box)return;const d=left[0].e?kd(left[0].e)-kd(n):null;const a=document.createElement('a');a.className='mlmy';a.href='#coupons';a.innerHTML=`📬 안 받은 우편 <b>${left.length}</b>${d==null?'':' · '+(d<=0?'오늘 마감':d===1?'내일 마감':'D-'+d)}`;box.prepend(a);box.hidden=false},400);return}
  const D=gj('tn_mail')||{};const now=()=>Date.now();
  const due=t=>{const m=t.match(/(\d{1,2})월\s*(\d{1,2})일[^0-9]{0,12}?(밤|새벽|오전|오후)?\s*(\d{1,2}):(\d{2})/);if(!m)return null;let h=+m[4];if((m[3]==='밤'||m[3]==='오후')&&h<12)h+=12;const mo=+m[1],y=mo<10?2027:2026;return new Date(`${y}-${String(mo).padStart(2,'0')}-${String(m[2]).padStart(2,'0')}T${String(h).padStart(2,'0')}:${m[5]}:00+09:00`).getTime()};
  const rows=[...T.querySelectorAll('tr')].map(tr=>{const k=(tr.querySelector('b')||tr.cells[0]).textContent.trim(),e=due(tr.cells[1]?tr.cells[1].textContent:'');return {tr,k,e}});
- const dd=e=>{const d=Math.ceil((e-now())/864e5);return e<now()?'지남':d<=0?'오늘 마감':d===1?'내일 마감':'D-'+d};
+ const kd=t=>Math.floor((t+9*36e5)/864e5);const dd=e=>{const d=kd(e)-kd(now());return e<now()?'지남':d<=0?'오늘 마감':d===1?'내일 마감':'D-'+d};
  function draw(){let left=[];rows.forEach(r=>{let b=r.tr.querySelector('.mlck');if(!b){b=document.createElement('button');b.type='button';b.className='mlck';r.tr.cells[0].prepend(b);b.onclick=()=>{D[r.k]=D[r.k]?0:1;sj('tn_mail',D);draw()}}
    const got=!!D[r.k],past=r.e&&r.e<now();b.textContent=got?'✓ 받음':'받기 전';b.classList.toggle('on',got);r.tr.style.opacity=got||past?.55:1;
    let t=r.tr.querySelector('.mldd');if(r.e){if(!t){t=document.createElement('span');t.className='hqt mldd';r.tr.cells[1].prepend(t)}t.textContent=dd(r.e);t.classList.toggle('op',!past&&(r.e-now())<2*864e5)}
    if(!got&&!past)left.push(r)});
-  left.sort((a,b)=>(a.e||9e15)-(b.e||9e15));const S=document.getElementById('mlSum');
+  sj('tn_mailinfo',rows.map(r=>({k:r.k,e:r.e})));  left.sort((a,b)=>(a.e||9e15)-(b.e||9e15));const S=document.getElementById('mlSum');
   S.innerHTML=left.length?`📬 <b>안 받은 우편 ${left.length}개</b> · 가장 빠른 마감: <b>${left[0].k}</b> (${left[0].e?dd(left[0].e):'기한 확인'}) — 받았으면 「받기 전」을 눌러 표시해 두세요`:'✅ 지금 받을 우편을 다 받았어요';
-  const box=document.getElementById('myBox');if(box){let a=box.querySelector('.mlmy');if(left.length){if(!a){a=document.createElement('a');a.className='mlmy';a.href='#coupons';box.prepend(a)}a.innerHTML=`📬 안 받은 우편 <b>${left.length}</b>${left[0].e?' · '+dd(left[0].e):''}`;box.hidden=false}else if(a)a.remove()}}
+  setTimeout(()=>{const box=document.getElementById('myBox');if(box){let a=box.querySelector('.mlmy');if(left.length){if(!a){a=document.createElement('a');a.className='mlmy';a.href='#coupons';box.prepend(a)}a.innerHTML=`📬 안 받은 우편 <b>${left.length}</b>${left[0].e?' · '+dd(left[0].e):''}`;box.hidden=false}else if(a)a.remove()}},400)}
  draw();setInterval(draw,6e4)})();
 // ---------- 탐사 지도 ----------
 (function(){const S=document.getElementById('mpSvg');if(!S)return;
