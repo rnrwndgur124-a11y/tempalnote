@@ -55,6 +55,23 @@ if m:
         note = re.sub(r'<[^>]+>', '', h[3] or '')
         items.append({'k': 'hunt', 'p': '레벨별 사냥터', 't': '사냥터 · ' + h[1], 'x': (f'Lv.{lv} · ' if lv else '') + h[2] + (' · ' + note if note else '')})
 
+# 히든 퀘스트 · 보스 드롭도 색인 (우리 데이터 파일에서)
+D = os.path.join(os.path.dirname(SRC), 'data')
+try:
+    H = json.load(open(os.path.join(D, 'hidden.json'), encoding='utf-8'))
+    for q in H['q']:
+        st = q[4]
+        x = ' · '.join(s[0] for s in st) + ' · ' + ' · '.join(filter(None, [(s[3][0] + ' ' + s[3][1]).strip() for s in st]))
+        items.append({'k': 'hidden', 'p': '히든 퀘스트 156개', 't': '히든 퀘스트 · ' + q[1], 'x': (q[0] + ' · ' + (('메인 ' + q[2] + ' 뒤 · ') if q[2] else '') + x)[:600]})
+except FileNotFoundError:
+    pass
+try:
+    DR = json.load(open(os.path.join(D, 'drops.json'), encoding='utf-8'))
+    for b in DR['bosses']:
+        names = [DR['items'][i][0] for i in b[6] if DR['items'][i][2] not in ('대검', '활', '바이블', '지팡이')]
+        items.append({'k': 'drops', 'p': '드롭 찾기', 't': '보스 드롭 · ' + b[0], 'x': (f"Lv.{b[2]} · {b[1]} · {b[5]} · " + ' · '.join(names))[:600]})
+except FileNotFoundError:
+    pass
 os.makedirs(os.path.join(OUT, 'data'), exist_ok=True)
 p = os.path.join(OUT, 'data', 'search.json')
 json.dump(items, open(p, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
