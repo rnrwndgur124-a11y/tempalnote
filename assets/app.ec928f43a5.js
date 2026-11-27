@@ -34,6 +34,7 @@ const PAGES={
  hunt:{t:'레벨별 사냥터',d:'Lv.1~85 사냥터 61곳 · 몬스터 · 내 레벨 추천',i:'i-raid',b:'hot'},
  map:{t:'탐사 지도',d:'지역 14곳 위치 · 데이터 큐브 · 명소',i:'i-map',b:'new'},
  codex:{t:'아이템 도감',d:'재료 획득처 · 사용처 · 펫 주얼 360종',i:'i-guide',b:'new'},
+ hidden:{t:'히든 퀘스트 156개',d:'지역 · 공통 히든 퀘스트 시작 조건 · 위치 · 보상 · 내 진행 체크',i:'i-map',b:'new'},
  archive:{t:'탐사 · 아카이브',d:'데이터 큐브 · 히든 퀘스트 · 지역 달성도 체크리스트',i:'i-map',b:'new'},
  prob:{t:'확률 총정리',d:'강화 · 축복 · 오버기어드 · 소환 · 잠재력 공식 확률',i:'i-anvil',b:'hot'},
  craft:{t:'제작 도감',d:'레시피 231종 · 재료 · 성공률 · 골드',i:'i-anvil',b:'new'},
@@ -50,7 +51,7 @@ const PAGES={
 (()=>{try{let pv=sessionStorage.getItem('tn_prev');if(pv===null){pv=localStorage.getItem('tn_vd')||'';sessionStorage.setItem('tn_prev',pv)}window.__PREV=pv}catch(e){window.__PREV=''}})();
 (()=>{const P=window.PDATE;if(!P)return;const td=new Date(Date.now()+9*3600e3).toISOString().slice(0,10);for(const k in PAGES){if(PAGES[k].b==='new')delete PAGES[k].b;if(P[k]===td&&!PAGES[k].b)PAGES[k].b='new'}})();
 window.PAGES=PAGES;
-const GROUPS=[{n:'도구',e:'TOOLS',k:['sim','quiz','godhand','enhance','calc','gear','trade','timer','homework','backup']},{n:'가이드',e:'GUIDES',k:['prob','hunt','weapons','starter','map','codex','archive','craft','titles','achieve','pets','outfit','systems']},{n:'정보',e:'INFO',k:['coupons','streamers','news','videos','official','roadmap','bm','about']}];
+const GROUPS=[{n:'도구',e:'TOOLS',k:['sim','quiz','godhand','enhance','calc','gear','trade','timer','homework','backup']},{n:'가이드',e:'GUIDES',k:['prob','hunt','weapons','starter','map','codex','archive','hidden','craft','titles','achieve','pets','outfit','systems']},{n:'정보',e:'INFO',k:['coupons','streamers','news','videos','official','roadmap','bm','about']}];
 const link=k=>`<a href="/${k}/" data-k="${k}">${med(PAGES[k].i,'sm')}<span>${PAGES[k].t}<small>${PAGES[k].d}</small></span></a>`;
 $('#menu').innerHTML=GROUPS.map((g,gi)=>`<div class="dd" data-g="${gi}"><button type="button" aria-haspopup="true">${g.n}</button><div class="ddm">${g.k.map(link).join('')}</div></div>`).join('');
 $('#drawer').innerHTML=GROUPS.map(g=>`<h4>${g.e}</h4>${g.k.map(link).join('')}`).join('');
@@ -60,7 +61,7 @@ document.addEventListener('click',e=>{if(!e.target.closest('.dd'))document.query
 $('#burger').onclick=()=>{const o=$('#drawer').classList.toggle('open');$('#burger').setAttribute('aria-expanded',o)};
 
 const tile=k=>{const p=PAGES[k];return `<a class="tile" href="/${k}/">${p.b?`<span class="bd ${p.b}">${p.b==='new'?'NEW':'HOT'}</span>`:''}${med(p.i)}<span><h3>${p.t}</h3><p>${p.d}</p></span></a>`};
-const FEAT=[['gear','연금 옵션 · 장비 비교','원하는 옵션 평균 몇 번? 공식 확률 1,701줄','ui/feat-prob.webp','new','NEW'],['outfit','코디 · 펫 미리보기','스킨 갈아입히기 · 펫 · 탈것 48종 돌려보기','ui/feat-outfit.webp','new','NEW'],['sim','강화 · 뽑기 시뮬레이터','+12 강화 도전 · 11연 · 110연 뽑기 · 레전드리 합성','ui/feat-sim.webp','hot','HOT'],['prob','강화 확률 총정리','+6 60% → +12 1% · 축복 · 파괴 · 소환 확률','ui/feat-prob.webp','hot','HOT'],['hunt','레벨별 사냥터','Lv.1 → 85 사냥터 61곳 · 지역 14곳 도감','map/north.webp','hot','HOT'],['coupons','쿠폰 · 이벤트','결제 할인 7종 · 외부 이벤트 · 출석부','ui/attend.webp','hot','HOT'],['streamers','서버 목록 · 방송인','서버 20개 · 똘끼 · 뜨뜨뜨뜨 · 우레 등 34명','ui/feat-streamers.webp','hot','HOT'],['news','공식 소식 · 버그','27일 점검 정리 · 확인 중인 현상 10건','ui/attend.webp','hot','HOT'],['weapons','클래스 도감','55종 외형 · 스킬 87개 · 스킬 창 원본','ui/feat-cls.webp','hot','인기'],['godhand','갓 핸드','메모리 27종 수치 · 짝 분석','ui/ghsum.webp','hot','인기'],['map','탐사 지도','지역 14곳 · 데이터 큐브 · 명소 · 내 진행도','ui/feat-map.webp','new','NEW'],['codex','아이템 도감','재료 획득처 · 사용처 · 펫 주얼 360종','ui/feat-codex.webp','new','NEW'],['archive','탐사 · 아카이브','데이터 큐브 · 히든 퀘스트 · 지역 12곳 체크','ui/feat-archive.webp','new','NEW'],['trade','거래 · 단가 계산기','수령액 · 묶음 단가 · 다이아 환산','ui/exchange.webp','new','NEW'],['craft','제작 도감','레시피 231종 · 재료 · 성공률 · 골드','ui/craft.webp','new','NEW'],['titles','칭호 도감','53종 장착 · 보유 효과','ui/titles.webp','new','NEW'],['systems','시스템 가이드','월드맵 기억 · 분해 · 절전 · 채팅 등 52종','ui/growth.webp','new','NEW'],['pets','펫 도감','동행 · 비행 펫 28종','ui/feat-pet.webp','new','NEW'],['weapons','무기 개조 도감','개조 무기 30종 이미지','ui/feat-wpn.webp','new','NEW'],['timer','보스 타이머','처치 기록 · 1분 전 알림 · 일정표','ui/quest.webp','new','NEW'],['bm','상점 정리','다이아 단가 · 골드 소환권 · 가호 10단계','ui/dia.webp','',''],['videos','추천 영상','조회수 1만+ 템빨 영상 15편','ui/art.webp','','']];
+const FEAT=[['hidden','히든 퀘스트 156개','언제 열리고 어디서 시작? 내 진행으로 걸러 보기','ui/feat-archive.webp','new','NEW'],['gear','연금 옵션 · 장비 비교','원하는 옵션 평균 몇 번? 공식 확률 1,701줄','ui/feat-prob.webp','new','NEW'],['outfit','코디 · 펫 미리보기','스킨 갈아입히기 · 펫 · 탈것 48종 돌려보기','ui/feat-outfit.webp','new','NEW'],['sim','강화 · 뽑기 시뮬레이터','+12 강화 도전 · 11연 · 110연 뽑기 · 레전드리 합성','ui/feat-sim.webp','hot','HOT'],['prob','강화 확률 총정리','+6 60% → +12 1% · 축복 · 파괴 · 소환 확률','ui/feat-prob.webp','hot','HOT'],['hunt','레벨별 사냥터','Lv.1 → 85 사냥터 61곳 · 지역 14곳 도감','map/north.webp','hot','HOT'],['coupons','쿠폰 · 이벤트','결제 할인 7종 · 외부 이벤트 · 출석부','ui/attend.webp','hot','HOT'],['streamers','서버 목록 · 방송인','서버 20개 · 똘끼 · 뜨뜨뜨뜨 · 우레 등 34명','ui/feat-streamers.webp','hot','HOT'],['news','공식 소식 · 버그','27일 점검 정리 · 확인 중인 현상 10건','ui/attend.webp','hot','HOT'],['weapons','클래스 도감','55종 외형 · 스킬 87개 · 스킬 창 원본','ui/feat-cls.webp','hot','인기'],['godhand','갓 핸드','메모리 27종 수치 · 짝 분석','ui/ghsum.webp','hot','인기'],['map','탐사 지도','지역 14곳 · 데이터 큐브 · 명소 · 내 진행도','ui/feat-map.webp','new','NEW'],['codex','아이템 도감','재료 획득처 · 사용처 · 펫 주얼 360종','ui/feat-codex.webp','new','NEW'],['archive','탐사 · 아카이브','데이터 큐브 · 히든 퀘스트 · 지역 12곳 체크','ui/feat-archive.webp','new','NEW'],['trade','거래 · 단가 계산기','수령액 · 묶음 단가 · 다이아 환산','ui/exchange.webp','new','NEW'],['craft','제작 도감','레시피 231종 · 재료 · 성공률 · 골드','ui/craft.webp','new','NEW'],['titles','칭호 도감','53종 장착 · 보유 효과','ui/titles.webp','new','NEW'],['systems','시스템 가이드','월드맵 기억 · 분해 · 절전 · 채팅 등 52종','ui/growth.webp','new','NEW'],['pets','펫 도감','동행 · 비행 펫 28종','ui/feat-pet.webp','new','NEW'],['weapons','무기 개조 도감','개조 무기 30종 이미지','ui/feat-wpn.webp','new','NEW'],['timer','보스 타이머','처치 기록 · 1분 전 알림 · 일정표','ui/quest.webp','new','NEW'],['bm','상점 정리','다이아 단가 · 골드 소환권 · 가호 10단계','ui/dia.webp','',''],['videos','추천 영상','조회수 1만+ 템빨 영상 15편','ui/art.webp','','']];
 const featDraw=V=>{const L=FEAT.map((f,i)=>[f,i]);if(V)L.sort((a,b)=>((a[0][4]==='hot'?0:1)-(b[0][4]==='hot'?0:1))||((V[b[0][0]]||0)-(V[a[0][0]]||0))||(a[1]-b[1]));$('#homeFeat').innerHTML=L.map(([f])=>`<a class="fc" href="#${f[0]}"><div class="ft" style="background-image:url(${IB}${f[3]})">${f[5]?`<span class="fb ${f[4]}">${f[5]}</span>`:''}</div><h3>${f[1]}</h3><p>${f[2]}</p></a>`).join('')};featDraw();
 setTimeout(()=>{if(!window.__pvGet||!document.getElementById('homeFeat'))return;Promise.all([__pvGet(0),__pvGet(1)]).then(([a,b])=>{const V={};for(const k in a)if(k[0]!=='x')V[k]=(V[k]||0)+a[k];for(const k in b)if(k[0]!=='x')V[k]=(V[k]||0)+b[k];let T=0;for(const k in V)T+=V[k];if(T>=300)featDraw(V)})},1200);
 const EVS=[['클래스 · 갓 핸드 · 장비 성장 핫딜 (3일 한정)','2026-11-30','#bm','11월 30일(월) 밤 11시 58분까지','2026-11-30T23:58:00+09:00'],['「그리드의」 클래스 · 갓 핸드 핫딜','2026-12-02','#bm','12월 2일(수) 새벽 4시 59분까지','2026-12-02T04:59:00+09:00'],['점검 재화(코인 환급 · 거래소 정산) 우편','2026-12-03','#coupons','12월 3일(목) 밤 11시 59분까지 캐릭터 우편함','2026-12-03T23:59:00+09:00'],['최초의 초월자 기념 접속 선물 (계정당 1회)','2026-12-01','#coupons','12월 1일(화) 밤 11시 59분까지 접속','2026-12-01T23:59:00+09:00'],['구글 플레이 게임즈 PC 결제 30% 할인','2026-11-30','#coupons','11월 30일(월) 밤 11시 59분까지','2026-11-30T23:59:00+09:00'],['템빨고사 댓글 이벤트 · 플레이 포인트 9배','2026-12-02','#coupons','12월 2일(수) 밤 11시 59분까지','2026-12-02T23:59:00+09:00'],['템빨 정주행 챌린지 (웹툰 연계)','2026-12-11','#coupons','12월 11일(금) 밤 11시 59분까지','2026-12-11T23:59:00+09:00'],['SOOP 드롭스 (주마다 쿠폰 3개)','2026-12-31','#coupons','12월 31일(목) 밤 11시 59분까지','2026-12-31T23:59:00+09:00'],['오버토크 라이브 방송 (유튜브 · SOOP)','2026-12-01','#official','12월 1일(화) 밤 9시 방송','2026-12-01T21:00:00+09:00'],['선점 캐릭터 생성 마감','2026-12-10','#starter','12월 10일(목)까지 생성','2026-12-10T23:59:00+09:00'],['구글 플레이 포인트 초보자 패키지','2026-12-31','#bm','12월 31일(목) 밤 11시 59분까지','2026-12-31T23:59:00+09:00'],['런칭 기념 14일 출석부','2026-12-16','#coupons'],['장비 강화 지원 미션','2026-12-09','#coupons'],['런칭 소환 · 성물 패키지','2026-12-09','#bm'],['첫걸음 응원 패키지 ₩9,900','2026-12-09','#bm'],['프리미엄 시즌 패스','2027-01-01','#bm'],['새로운 전설의 시작! 8주 미션','2027-01-21','#coupons']];
@@ -77,6 +78,7 @@ $('#homeGuides').innerHTML=['systems','weapons','bm','coupons'].map(tile).join('
  const d=pv.slice(5).replace('-','/');box.innerHTML=`<div class="since"><b>다시 오셨네요 👋</b> 지난 방문(${d}) 이후 바뀐 곳 <span class="mute">${ks.length}곳</span><div class="sl">${ks.slice(0,10).map(k=>`<a href="/${k}/">${esc(PAGES[k].t)}</a>`).join('')}</div></div>`})();
 // ---------- 오늘 업데이트 ----------
 const CHG=[
+ ['2026-11-27','히든 퀘스트 156개 — 시작 조건 · 위치 · 보상 · 내 진행 체크','hidden'],
  ['2026-11-27','데이터 큐브 70곳 — 14개 지역 전부','archive'],
  ['2026-11-27','사냥터 61곳 Lv.1~85 · 레베카 · 크라임 숲 · 지브라','hunt'],
  ['2026-11-27','코어 점수 보상 70단계 · 다음 보상 계산기','gear'],
@@ -1152,6 +1154,62 @@ try{initScene()}catch(e){}
  bs.forEach(b=>{const n=STRM.filter(r=>r[0]===b.dataset.sv).length;if(n)b.innerHTML=b.dataset.sv+' <b>'+n+'</b>';else b.title='아직 확인된 방송인 없음'});
  document.getElementById('servers').addEventListener('click',e=>{const b=e.target.closest('.svb button');if(!b)return;const c=document.querySelector('#stChips button[data-v="'+b.dataset.sv+'"]');
   bs.forEach(x=>x.classList.toggle('on',x===b));if(c){c.click();document.getElementById('stList').scrollIntoView({behavior:'smooth',block:'start'})}else{const L=document.getElementById('stList');L.innerHTML='<div class="card"><h3>'+b.dataset.sv+' 서버</h3><p class="small mute" style="margin:0">아직 확인된 방송인이 없어요. 이 서버에서 하는 방송인을 알면 <a href="/contact/">제보</a>해 주세요.</p></div>';[...document.querySelectorAll('#stChips button')].forEach(x=>x.classList.remove('on'));L.scrollIntoView({behavior:'smooth',block:'start'})}})})();
+// ---------- 히든 퀘스트 ----------
+(()=>{const L=document.getElementById('hqList');if(!L)return;
+ const RG=document.getElementById('hqReg'),OP=document.getElementById('hqOpt'),SM=document.getElementById('hqSum'),MI=document.getElementById('hqMain'),LV=document.getElementById('hqLv'),Q=document.getElementById('hqQ'),ML=document.getElementById('hqMainL');
+ let H=null,loading=false;
+ const ls=(k,v)=>{try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||'null');localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}};
+ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const S=Object.assign({done:{},main:'',lv:'',reg:'전체',sort:'open',todo:0,now:0},ls('tn_hq')||{});
+ const put=()=>ls('tn_hq',S);
+ const mk=s=>{const m=String(s||'').match(/(\d+)\s*[-.\s]\s*(\d+)/);return m?[+m[1],+m[2]]:null};
+ const ge=(a,b)=>a[0]>b[0]||(a[0]===b[0]&&a[1]>=b[1]);
+ const cmpM=(a,b)=>{const x=mk(a)||[0,0],y=mk(b)||[0,0];return x[0]-y[0]||x[1]-y[1]};
+ const man=n=>n>=1e4?(n>=1e6?Math.round(n/1e4).toLocaleString():Math.round(n/1e3)/10)+'만':n.toLocaleString();
+ const HOW=['자동 시작','퀘스트 창에서 시작','단서 기록'];
+ const key=q=>q[0]+'|'+q[1];
+ const tot=q=>q[4].reduce((a,s)=>{a[0]+=s[4][0];a[1]+=s[4][1];a[2]+=s[4][2];a[3]+=s[4][3];a[4]=a[4].concat(s[4][4]);return a},[0,0,0,0,[]]);
+ const gifts=q=>[...new Set(tot(q)[4].filter(x=>!/펫 먹이|도감 상자/.test(x)).map(x=>x.replace(/ \d+$/,'')))];
+ const isOpen=q=>{const m=mk(S.main),r=mk(q[2]),lv=+S.lv||0;return (!r||!!(m&&ge(m,r)))&&(!q[3]||lv>=q[3])};
+ const txt=q=>(q[0]+' '+q[1]+' '+q[4].map(s=>s[0]+' '+s[2].map(n=>n.slice(1).join(' ')).join(' ')+' '+s[3][0]+' '+s[3][1]+' '+s[3][2].join(' ')+' '+s[4][4].join(' ')).join(' ')).toLowerCase();
+ function needs(ns){const out=[],K={};
+  ns.forEach(n=>{if(n[0]==='k'){const k=n[1]+'|'+n[3];if(K[k]){K[k].push(n[2]);return}K[k]=[n[2]];out.push(['k',n[1],K[k],n[3]])}else out.push(n)});
+  return out.map(n=>{switch(n[0]){
+   case 'm':return n[1]==='0-0'?'':`<span>📘 메인 <b>${n[1]}</b> ${esc(H.main[n[1]]||'')} 끝</span>`;
+   case 'p':return `<span>↪ <button type="button" class="hqp" data-q="${esc(n[1])}">${esc(n[1])}</button> 끝</span>`;
+   case 'l':return `<span>⬆ <b>Lv.${n[1]}</b></span>`;
+   case 'k':return `<span>⚔ ${esc(n[1])} 몬스터 <b>${n[2].map(x=>x.toLocaleString()).join(' → ')}</b>마리${n[3]?` (「${esc(n[3])}」 칭호 있을 때)`:''}</span>`;
+   case 'g':return `<span>🎯 ${esc(n[1])}</span>`;
+   case 'c':return `<span>🔍 단서 「${esc(n[1])}」${n[2]?' — '+esc(n[2]):''}</span>`;
+   default:return `<span>${esc(n[1])}</span>`}}).filter(Boolean).join(' · ')||'<span class="mute">조건 없음</span>'}
+ function rw(r){const a=[];if(r[0])a.push(`EXP <b>${man(r[0])}</b>`);if(r[1])a.push('골드 '+r[1].toLocaleString());if(r[2])a.push('템빨 코인 '+r[2].toLocaleString());if(r[3])a.push('탐험의 증표 '+r[3]);r[4].forEach(x=>a.push('🎁 '+esc(x)));return a.join(' · ')||'<span class="mute">보상 표시 없음</span>'}
+ function where(w){const cz=w[2].filter(x=>x&&!w[0].split(' · ').includes(x));
+  return (w[0]||w[1]?`📍 ${w[0]?'<b>'+esc(w[0])+'</b>':''}${w[0]&&w[1]?' — ':''}${esc(w[1]||'')}`:'📍 <span class="mute">정해진 장소 없음 (어디서든)</span>')+(cz.length?` <span class="mute">· 단서 찾는 곳: ${esc(cz.join(' · '))}</span>`:'')}
+ function label(q){const r=q[2]&&q[2]!=='0-0'?`메인 ${q[2]} 뒤`:'처음부터';const lv=q[3]?` · Lv.${q[3]}`:'';
+  if(S.main||S.lv)return isOpen(q)?'<span class="hqt op">지금 가능</span>':`<span class="hqt lk">${r}${lv}</span>`;return `<span class="hqt">${r}${lv}</span>`}
+ function card(q){const k=key(q),t=tot(q),g=gifts(q),d=!!S.done[k];
+  return `<details class="hqg${d?' done':''}" data-k="${esc(k)}"><summary><button type="button" class="hqck" aria-label="${esc(q[1])} 깬 것으로 표시" aria-pressed="${d}">✓</button><b>${esc(q[1])}</b><span class="hqt rg">${esc(q[0])}</span>${q[4].length>1?`<span class="hqt">${q[4].length}단계</span>`:''}${label(q)}<span class="hqx">EXP ${man(t[0])}${t[2]?' · 코인 '+t[2].toLocaleString():''}${g.length?' · 🎁 '+esc(g.slice(0,2).join(', '))+(g.length>2?' 외':''):''}</span></summary><ol class="hqs">${q[4].map((s,i)=>`<li><div class="hqh">${q[4].length>1?(i+1)+'. ':''}${esc(s[0])} <span class="hqt">${HOW[s[1]]||''}</span></div><div class="hqn">열리는 조건: ${needs(s[2])}</div><div class="hqw">${where(s[3])}</div><div class="hqr">보상: ${rw(s[4])}</div></li>`).join('')}</ol></details>`}
+ function chips(){const c={},dn={};H.q.forEach(q=>{c[q[0]]=(c[q[0]]||0)+1;if(S.done[key(q)])dn[q[0]]=(dn[q[0]]||0)+1});const all=Object.values(dn).reduce((a,b)=>a+b,0);
+  RG.innerHTML=[['전체',H.q.length,all]].concat(H.regions.filter(r=>c[r]).map(r=>[r,c[r],dn[r]||0])).map(([r,n,d])=>`<button type="button" data-r="${esc(r)}"${S.reg===r?' class="on"':''}>${esc(r)} <small>${d?d+'/':''}${n}</small></button>`).join('')}
+ function sum(n){const dn=H.q.filter(q=>S.done[key(q)]).length;let s=`${n}개 보는 중 · 156개 중 <b>${dn}개</b> 깼어요`;
+  if(S.main||S.lv){const o=H.q.filter(isOpen);s+=` · ${S.main?'메인 '+esc(S.main):''}${S.main&&S.lv?' · ':''}${S.lv?'Lv.'+esc(S.lv):''} 기준 지금 가능 <b>${o.length}개</b> (안 깬 것 ${o.filter(q=>!S.done[key(q)]).length}개)`}
+  else if(S.now)s+=' · <b>내 메인 퀘스트</b>를 넣으면 지금 가능한 것만 걸러져요';SM.innerHTML=s}
+ function draw(){if(!H)return;const w=(Q.value||'').trim().toLowerCase();
+  let L2=H.q.filter(q=>(S.reg==='전체'||q[0]===S.reg)&&(!w||txt(q).includes(w))&&(!S.todo||!S.done[key(q)])&&(!S.now||!(S.main||S.lv)||isOpen(q)));
+  if(S.sort==='exp')L2=L2.slice().sort((a,b)=>tot(b)[0]-tot(a)[0]);
+  else if(S.sort==='gift')L2=L2.filter(q=>gifts(q).length).sort((a,b)=>gifts(b).length-gifts(a).length||tot(b)[0]-tot(a)[0]);
+  else if(S.reg==='전체')L2=L2.slice().sort((a,b)=>cmpM(a[2],b[2])||(a[3]-b[3]));
+  L.innerHTML=L2.length?L2.map(card).join(''):'<p class="mute">조건에 맞는 히든 퀘스트가 없어요. 찾기 · 걸러 보기를 바꿔 보세요.</p>';
+  chips();sum(L2.length);[...OP.children].forEach(b=>b.classList.toggle('on',b.dataset.s?b.dataset.s===S.sort:!!S[b.dataset.f]))}
+ L.addEventListener('click',e=>{const c=e.target.closest('.hqck');if(c){e.preventDefault();e.stopPropagation();const d=c.closest('.hqg'),k=d.dataset.k;if(S.done[k])delete S.done[k];else S.done[k]=1;put();d.classList.toggle('done',!!S.done[k]);c.setAttribute('aria-pressed',!!S.done[k]);if(S.todo)draw();else{chips();sum(L.querySelectorAll('.hqg').length)}return}
+  const p=e.target.closest('.hqp');if(p){const t=p.dataset.q;Q.value=t;S.reg='전체';draw();const hit=[...L.querySelectorAll('.hqg')].find(x=>x.textContent.includes(t));if(hit){hit.open=true;hit.scrollIntoView({behavior:'smooth',block:'start'})}}});
+ RG.onclick=e=>{const b=e.target.closest('button');if(!b)return;S.reg=b.dataset.r;put();draw()};
+ OP.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.s)S.sort=b.dataset.s;else S[b.dataset.f]=S[b.dataset.f]?0:1;put();draw()};
+ MI.oninput=()=>{S.main=MI.value.trim();put();draw()};LV.oninput=()=>{S.lv=LV.value;put();draw()};Q.oninput=draw;
+ function boot(d){H=d;MI.value=S.main||'';LV.value=S.lv||'';ML.innerHTML=Object.entries(d.main).filter(([k])=>k!=='0-0').map(([k,v])=>`<option value="${k}">${esc(v)}</option>`).join('');draw()}
+ const load=()=>{if(H||loading)return;loading=true;fetch('/data/hidden.json').then(r=>r.json()).then(boot).catch(()=>{loading=false;L.innerHTML='<p class="mute small">목록을 못 불러왔어요. 새로고침해 주세요.</p>'})};
+ if(/\/hidden/.test(location.pathname)||location.hash==='#hidden'||!('IntersectionObserver' in window))load();else{const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io.disconnect();load()}},{rootMargin:'1500px'});io.observe(L)}
+})();
 // ---------- 탐사 지도 ----------
 (function(){const S=document.getElementById('mpSvg');if(!S)return;
  const R=[['바이란',132,151],['노튼',404,84],['킨바이',778,132],['윈스톤',516,221],['라인하르트',276,276],['엑카루',780,343],['알테스',264,432],['벨두인',519,415],['레이단',732,494],['수아즈 협곡',1138,456],['코크로 섬',634,626],['크라임 숲',970,619],['레베카',1260,607],['지브라',1354,770]];

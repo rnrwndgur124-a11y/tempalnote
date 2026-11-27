@@ -199,6 +199,16 @@ label{font-weight:700;font-size:13.5px;display:block;margin-bottom:6px;color:#c9
 .gcx{min-height:36px;padding:0;border-radius:8px;background:#ffffff08;border:1px solid var(--line2);color:#c9d3e3;font-size:18px}
 .gcup{color:#7de0a8;font-weight:800}.gcdn{color:#ffb070;font-weight:800}
 .svb button b{color:var(--gold2);margin-left:4px}.svb button.on b{color:#1b1206}
+.hqbar{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px}.hqbar label{display:block;font-size:12px;color:var(--mute,#9aa6b8);margin-bottom:3px}.hqbar input{width:120px}.hqgrow{flex:1;min-width:200px}.hqgrow input{width:100%}
+.hqchips{margin-top:8px;gap:6px}.hqchips button{min-height:32px;padding:3px 12px;font-size:13px}
+.hqg{border:1px solid var(--line2);border-radius:12px;margin:0 0 8px;background:#ffffff04;overflow:hidden;min-width:0}.hqs{overflow-wrap:anywhere}.hqg>summary{cursor:pointer;list-style:none;padding:10px 12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}.hqg>summary::-webkit-details-marker{display:none}
+.hqg.done{opacity:.62}.hqg.done>summary b{text-decoration:line-through}
+.hqck{flex:none;width:28px;height:28px;min-height:28px;padding:0;border-radius:8px;border:1px solid var(--line2);background:#ffffff08;color:#c9d3e3;font-weight:800;box-shadow:none}.hqg.done .hqck{background:linear-gradient(#f6e2a8,#c99a4e);color:#1b1206;border-color:#f6e6bd}
+.hqt{font-size:12px;padding:1px 8px;border-radius:99px;border:1px solid var(--line2);color:#c9d3e3;white-space:nowrap}.hqt.op{border-color:#4fbf8a;color:#7fe0b0}.hqt.lk{color:#8d97a8}.hqt.rg{color:var(--gold)}
+.hqx{margin-left:auto;font-size:12px;color:#c9d3e3;white-space:nowrap}
+.hqs{list-style:none;margin:0;padding:0 12px 10px}.hqs>li{border-top:1px solid #ffffff10;padding:9px 0}.hqs .hqh{font-weight:700}.hqs .hqn,.hqs .hqw,.hqs .hqr{font-size:13px;margin-top:4px;line-height:1.6}.hqn span{white-space:normal}
+.hqp{background:none;border:0;box-shadow:none;padding:0;min-height:0;color:var(--gold);text-decoration:underline;font:inherit;cursor:pointer}
+.hqr b{color:var(--gold)}
 @media(max-width:640px){.al2{grid-template-columns:1fr}.als{grid-template-columns:1fr 1fr}.als b{grid-column:1/-1}.als .alp{grid-column:1/-1;text-align:left}.gcrow{grid-template-columns:minmax(0,1fr) 58px 58px 34px}}
 .mdx{border-top:1px solid #ffffff10;padding:8px 0}.mdx summary{cursor:pointer;list-style-position:inside}.mdx summary b{color:var(--gold)}
 .sk details summary{cursor:pointer;color:var(--gold);font-size:13px;font-weight:700;margin-top:4px}

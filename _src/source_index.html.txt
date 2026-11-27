@@ -215,6 +215,16 @@ label{font-weight:700;font-size:13.5px;display:block;margin-bottom:6px;color:#c9
 .gcx{min-height:36px;padding:0;border-radius:8px;background:#ffffff08;border:1px solid var(--line2);color:#c9d3e3;font-size:18px}
 .gcup{color:#7de0a8;font-weight:800}.gcdn{color:#ffb070;font-weight:800}
 .svb button b{color:var(--gold2);margin-left:4px}.svb button.on b{color:#1b1206}
+.hqbar{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px}.hqbar label{display:block;font-size:12px;color:var(--mute,#9aa6b8);margin-bottom:3px}.hqbar input{width:120px}.hqgrow{flex:1;min-width:200px}.hqgrow input{width:100%}
+.hqchips{margin-top:8px;gap:6px}.hqchips button{min-height:32px;padding:3px 12px;font-size:13px}
+.hqg{border:1px solid var(--line2);border-radius:12px;margin:0 0 8px;background:#ffffff04;overflow:hidden;min-width:0}.hqs{overflow-wrap:anywhere}.hqg>summary{cursor:pointer;list-style:none;padding:10px 12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}.hqg>summary::-webkit-details-marker{display:none}
+.hqg.done{opacity:.62}.hqg.done>summary b{text-decoration:line-through}
+.hqck{flex:none;width:28px;height:28px;min-height:28px;padding:0;border-radius:8px;border:1px solid var(--line2);background:#ffffff08;color:#c9d3e3;font-weight:800;box-shadow:none}.hqg.done .hqck{background:linear-gradient(#f6e2a8,#c99a4e);color:#1b1206;border-color:#f6e6bd}
+.hqt{font-size:12px;padding:1px 8px;border-radius:99px;border:1px solid var(--line2);color:#c9d3e3;white-space:nowrap}.hqt.op{border-color:#4fbf8a;color:#7fe0b0}.hqt.lk{color:#8d97a8}.hqt.rg{color:var(--gold)}
+.hqx{margin-left:auto;font-size:12px;color:#c9d3e3;white-space:nowrap}
+.hqs{list-style:none;margin:0;padding:0 12px 10px}.hqs>li{border-top:1px solid #ffffff10;padding:9px 0}.hqs .hqh{font-weight:700}.hqs .hqn,.hqs .hqw,.hqs .hqr{font-size:13px;margin-top:4px;line-height:1.6}.hqn span{white-space:normal}
+.hqp{background:none;border:0;box-shadow:none;padding:0;min-height:0;color:var(--gold);text-decoration:underline;font:inherit;cursor:pointer}
+.hqr b{color:var(--gold)}
 @media(max-width:640px){.al2{grid-template-columns:1fr}.als{grid-template-columns:1fr 1fr}.als b{grid-column:1/-1}.als .alp{grid-column:1/-1;text-align:left}.gcrow{grid-template-columns:minmax(0,1fr) 58px 58px 34px}}
 .mdx{border-top:1px solid #ffffff10;padding:8px 0}.mdx summary{cursor:pointer;list-style-position:inside}.mdx summary b{color:var(--gold)}
 .sk details summary{cursor:pointer;color:var(--gold);font-size:13px;font-weight:700;margin-top:4px}
@@ -704,7 +714,7 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
     <ul class="facts" style="margin-bottom:0">
       <li><b>M</b> 키(또는 미니맵)로 월드맵 → 확대할수록 마을 NPC · 사냥터 전리품과 몬스터 · 거점 · <b>필드 보스 위치</b>가 보여요 → 사냥터 레벨은 <a href="#hunt">레벨별 사냥터</a></li>
       <li><b>거점</b>은 골드를 내고 바로 이동, 텔레포트 뒤에는 목적지까지 자동 이동</li>
-      <li><b>아카이브</b>에서 지역 → 데이터 큐브를 누르면 대략 어디쯤인지 지도에 나와요 → <a href="#archive">데이터 큐브 · 히든 퀘스트 정리</a></li>
+      <li><b>아카이브</b>에서 지역 → 데이터 큐브를 누르면 대략 어디쯤인지 지도에 나와요 → <a href="#archive">데이터 큐브 정리</a> · <a href="#hidden">히든 퀘스트 156개</a></li>
       <li>지역 정보는 게임 아카이브 화면(지역 → 메인 퀘스트 · 몬스터 도감 · 수집 · 데이터 큐브)에서 확인한 것만 적어요</li>
     </ul></div>
   <p class="small mute" style="margin-top:12px">계속 채우는 중이에요. 방송 · 영상 · 게임 화면으로 확인한 것만 올려요. 위치를 찾으면 <a href="#contact">문의하기</a>로 제보해 주세요.</p>
@@ -741,6 +751,7 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
       <li>지역 달성도는 <b>메인 퀘스트 · 몬스터 도감 · 수집 · 데이터 큐브</b> 네 가지 진행도로 계산돼요.</li>
       <li>몬스터 도감은 그 몬스터의 <b>도감 1단계</b>를 달성했는지만 봐요. 1단계만 채워도 달성도에 들어가요.</li>
       <li>목표 달성률에 닿으면 보상 칸이 켜지고, 받을 게 여러 개면 <b>한 번에</b> 받아져요. 가방 칸이 모자라면 못 받으니 미리 비워 두세요.</li>
+      <li>지역 · 공통 히든 퀘스트 <b>156개</b>의 시작 조건 · 위치 · 보상과 내 진행 체크는 → <a href="#hidden">히든 퀘스트 156개</a></li>
       <li><b>히든 퀘스트는 달성률(%)에 안 들어가요.</b> 대신 S · SS · SSS 등급 지역 히든 퀘스트를 누적으로 몇 개 깼는지에 따라 단계 보상이 따로 있어요. 퀘스트 창 [히든] → <b>공통</b> 탭에도 지역과 상관없는 히든 퀘스트가 있어요: [성장] 일단 눌러보기(무기 스킬 강화 10 · 50 · 100회 시도) · 이 맛에 강화한다 · 풀옵션 완성 · 두둑해진 주머니, [각성] 첫 번째 · 두 번째 각성, [차원] 남겨진 불씨 · 다시 만난 세계, [성장] <b>장인의 여정</b>(메인 [3-18. 죽음의 기운] 완료 후 에픽 등급 제작 3회 → 10회 · 보상 1만 골드 · 템빨 코인 100) · 어느새 이만큼 · 오늘 손이 좋다 · 이번엔 금이다 (11/27 방송 화면, 히든 퀘스트는 <b>동시에 15개까지</b> 진행), 그리고 SS 등급 <b>[클래스] 여신의 성물</b> — 힌트 5개: 오버기어드 코어 2,600 · 캐릭터 Lv.75 · 오버기어드 강화 레벨 합 200 · <b>에픽 클래스 12개 이상 보유</b> · 유니크 무기 +6 이상 보유 (11/26 방송 화면). 아카이브 지도 아래 「히든 퀘스트 달성도 n/43」 — <b>1 · 3 · 6 · 10 · 15개</b>에 보상(1,500 → 2,000 → 2,500 → 3,000 → 4,000개) (11/26 방송 화면).</li>
       <li>퀘스트 창 <b>[히든] 탭</b>에서 지역을 고르면 그 지역 히든 퀘스트가 모여 있어요. 사냥터마다 <b>[사냥] 사냥터 이름</b> 퀘스트가 하나씩 있고, [성장] 퀘스트는 이어서 열려요(예: 엑카루의 에너지 → 불안정한 엑카루 → 불안정한 엑카루 2). 동시에 <b>15개</b>까지 진행</li>
     </ul></div>
@@ -1228,6 +1239,7 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
   <p class="small mute" style="margin-top:12px">아이콘 왼쪽 아래 별 색이 등급 표시예요 (금색 · 파란색 · 동색). 꽃잎 토끼는 사전등록 보상 펫. 이미지를 누르면 크게 보여요.</p>
   <div class="card" style="margin-top:18px;border-color:var(--gold)"><div class="ch"><span class="med sm"><svg><use href="#i-gift"/></svg></span><h3>펫 얻는 법 · 펫 주얼</h3></div>
     <ul class="facts" style="margin-bottom:0">
+      <li><b>히든 퀘스트로 받는 펫</b>(계정당 한 번): 양탄자 · 님부스 — 윈스톤 「체다카 길드장」 / 헤라클레스 — 「이세계 여행」 / 병정 개미 — 「강화 명소」 / 사막 전갈 — 「신비한 계단」 / 세이렌 대게 — 레이단 「어둠을 걷는 자들」 / 노에 · 마수 멤피스 · 지옥 날개 멤피스 — 공통 「동행 · 지상 · 비행 최고의 펫」. 조건은 → <a href="#hidden">히든 퀘스트 156개</a></li>
       <li>펫은 <b>지상 · 비행 · 동행</b> 세 종류이고, 장착 효과 + 등급별 보유 효과가 따로 있어요 — 예: 에픽 동행 펫 <b>서릿빛 오크</b> 명중 15 · 최대 HP 30 · 무기 최대 공격력 3, 보유 효과 [레어] 명중 3 · [에픽] 피해 감소 무시 12 (획득처: 펫 소환권, 11/26 방송 화면).</li>
       <li><b>탐험의 증표</b>로 펫을 사요 — 데이터 큐브를 열면 나와요. <b>딱정벌레</b>(방어력) · <b>하늘 거북</b>(PvP 방어력 6) · <b>스톤 골렘</b>(동행, PvP 피해 감소 3) → <a href="#archive">데이터 큐브 위치</a></li>
       <li>펫 메뉴 탭은 <b>메인 · 관리 · 주얼 장착 · 주얼 합성 · 도감</b></li>
@@ -1279,6 +1291,32 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
     <div id="cmOut" style="margin-top:12px"></div>
     <p class="small mute" style="margin:8px 0 0">평타(일반)와 스킬 옵션은 따로 합쳐서 보여줘요. 단위가 다른 능력치끼리는 더하지 않아요. 입력값은 이 브라우저에만 저장돼요.</p></div>
   <div class="card faq" style="margin-top:18px"><h2>자주 묻는 질문</h2><h3>원하는 옵션 한 줄은 평균 몇 번이면 떠요?</h3><p>유니크 무기 일반 연금 슬롯1에서 「공격력」 종류만 노리면 4가지 값 합쳐 약 11%라 평균 9번, 「공격력 5」 하나만 노리면 약 2.8%라 평균 36번이에요. 슬롯 두 개를 동시에 맞추려면 두 확률을 곱해서 훨씬 오래 걸려요.</p><h3>축복받은 연금 촉매제는 언제 써요?</h3><p>값은 무조건 최대치라서, 옵션 종류가 몇 개 안 되는 슬롯(축복 표는 슬롯당 7~12종)에서 원하는 종류를 노릴 때 좋아요.</p><h3>확률은 어디서 가져왔어요?</h3><p>넥슨 확률형 아이템 공개 페이지의 「장비 연금」 표 9개(무기 · 보조무기 · 방어구 · 목걸이 및 반지 · 귀걸이 및 허리띠 · 성검 · 방패 · 성배 · 나침반)를 그대로 옮겼어요.</p></div>
+</div></div></section>
+<section class="view" data-v="hidden"><div class="band pagetop"><div class="wrap" style="max-width:920px">
+  <div class="pk">HIDDEN QUESTS</div>
+  <div class="ph"><span class="med lg"><svg><use href="#i-map"/></svg></span><h1 class="gt">히든 퀘스트 156개</h1></div>
+  <p class="lead">지역 · 공통 히든 퀘스트 <b>156개(214단계)</b>를 <b>언제 열리는지 · 어디서 시작하는지 · 뭘 주는지</b> 기준으로 다시 정리했어요. <b>내 메인 퀘스트 진행</b>을 넣으면 지금 할 수 있는 것만 골라 주고, 깬 퀘스트는 ✓ 눌러 두면 다음에 와도 그대로 남아 있어요.</p>
+  <div class="card" style="margin-bottom:14px;border-color:var(--gold)">
+    <div class="hqbar">
+      <div><label for="hqMain">내 메인 퀘스트</label><input id="hqMain" list="hqMainL" placeholder="예: 3-15" autocomplete="off"><datalist id="hqMainL"></datalist></div>
+      <div><label for="hqLv">내 레벨</label><input id="hqLv" type="number" min="1" max="99" inputmode="numeric" placeholder="예: 45"></div>
+      <div class="hqgrow"><label for="hqQ">찾기</label><input id="hqQ" type="search" placeholder="퀘스트 · NPC · 사냥터 · 보상 이름 (예: 지슈카, 양탄자)"></div>
+    </div>
+    <div class="chips hqchips" id="hqReg"></div>
+    <div class="chips hqchips" id="hqOpt"><button type="button" class="on" data-s="open">열리는 순</button><button type="button" data-s="exp">경험치 많은 순</button><button type="button" data-s="gift">펫 · 특별 보상</button><button type="button" data-f="todo">안 깬 것만</button><button type="button" data-f="now">지금 열린 것만</button></div>
+    <p class="small mute" id="hqSum" style="margin:8px 0 0"></p>
+  </div>
+  <div id="hqList"></div>
+  <div class="card" style="margin-top:16px"><div class="ch"><span class="med sm"><svg><use href="#i-guide"/></svg></span><h3>표 보는 법 · 알아 두면 편한 것</h3></div>
+    <ul class="facts">
+      <li><b>자동 시작</b> = 조건을 다 채우면 퀘스트가 저절로 생겨요. <b>퀘스트 창 시작</b> = 조건을 채운 뒤 퀘스트 창 [히든]에서 직접 눌러야 해요. <b>단서 기록</b> = 다음 퀘스트로 이어지는 조건만 먼저 기록돼요.</li>
+      <li><b>메인 ○-○ 뒤</b>는 그 메인 퀘스트를 끝내야 열린다는 뜻이에요. 앞 단계 히든 퀘스트를 따라가서 가장 늦은 메인 퀘스트를 적었어요.</li>
+      <li>🔍 <b>단서</b>는 그 장소에서 사람 · 물건을 찾아 상호작용하면 채워져요. ⚔ <b>사냥</b>은 파티원이 잡은 몬스터도 같이 세져요.</li>
+      <li>다른 히든 퀘스트가 조건이면 이름을 눌러 보세요. 그 퀘스트로 바로 찾아가요.</li>
+      <li>히든 퀘스트는 지역 달성률(%)에는 안 들어가요. 대신 누적 완료 개수 보상이 따로 있어요 → <a href="#archive">탐사 · 아카이브</a></li>
+      <li>사냥터 레벨은 <a href="#hunt">레벨별 사냥터</a>, 데이터 큐브는 <a href="#archive">아카이브</a>에서 같이 보세요.</li>
+    </ul></div>
+  <p class="small mute">게임 퀘스트 정보와 플레이 화면을 맞춰 보고 우리 말로 정리했어요 (11월 27일 기준). 업데이트로 바뀔 수 있어요 — 다른 점을 찾으면 <a href="#contact">제보</a>해 주세요.</p>
 </div></div></section>
 <section class="view" data-v="outfit"><div class="band pagetop"><div class="wrap">
   <div class="pk">FITTING ROOM</div>
@@ -1839,6 +1877,7 @@ const PAGES={
  hunt:{t:'레벨별 사냥터',d:'Lv.1~85 사냥터 61곳 · 몬스터 · 내 레벨 추천',i:'i-raid',b:'hot'},
  map:{t:'탐사 지도',d:'지역 14곳 위치 · 데이터 큐브 · 명소',i:'i-map',b:'new'},
  codex:{t:'아이템 도감',d:'재료 획득처 · 사용처 · 펫 주얼 360종',i:'i-guide',b:'new'},
+ hidden:{t:'히든 퀘스트 156개',d:'지역 · 공통 히든 퀘스트 시작 조건 · 위치 · 보상 · 내 진행 체크',i:'i-map',b:'new'},
  archive:{t:'탐사 · 아카이브',d:'데이터 큐브 · 히든 퀘스트 · 지역 달성도 체크리스트',i:'i-map',b:'new'},
  prob:{t:'확률 총정리',d:'강화 · 축복 · 오버기어드 · 소환 · 잠재력 공식 확률',i:'i-anvil',b:'hot'},
  craft:{t:'제작 도감',d:'레시피 231종 · 재료 · 성공률 · 골드',i:'i-anvil',b:'new'},
@@ -1855,7 +1894,7 @@ const PAGES={
 (()=>{try{let pv=sessionStorage.getItem('tn_prev');if(pv===null){pv=localStorage.getItem('tn_vd')||'';sessionStorage.setItem('tn_prev',pv)}window.__PREV=pv}catch(e){window.__PREV=''}})();
 (()=>{const P=window.PDATE;if(!P)return;const td=new Date(Date.now()+9*3600e3).toISOString().slice(0,10);for(const k in PAGES){if(PAGES[k].b==='new')delete PAGES[k].b;if(P[k]===td&&!PAGES[k].b)PAGES[k].b='new'}})();
 window.PAGES=PAGES;
-const GROUPS=[{n:'도구',e:'TOOLS',k:['sim','quiz','godhand','enhance','calc','gear','trade','timer','homework','backup']},{n:'가이드',e:'GUIDES',k:['prob','hunt','weapons','starter','map','codex','archive','craft','titles','achieve','pets','outfit','systems']},{n:'정보',e:'INFO',k:['coupons','streamers','news','videos','official','roadmap','bm','about']}];
+const GROUPS=[{n:'도구',e:'TOOLS',k:['sim','quiz','godhand','enhance','calc','gear','trade','timer','homework','backup']},{n:'가이드',e:'GUIDES',k:['prob','hunt','weapons','starter','map','codex','archive','hidden','craft','titles','achieve','pets','outfit','systems']},{n:'정보',e:'INFO',k:['coupons','streamers','news','videos','official','roadmap','bm','about']}];
 const link=k=>`<a href="#${k}" data-k="${k}">${med(PAGES[k].i,'sm')}<span>${PAGES[k].t}<small>${PAGES[k].d}</small></span></a>`;
 $('#menu').innerHTML=GROUPS.map((g,gi)=>`<div class="dd" data-g="${gi}"><button type="button" aria-haspopup="true">${g.n}</button><div class="ddm">${g.k.map(link).join('')}</div></div>`).join('');
 $('#drawer').innerHTML=GROUPS.map(g=>`<h4>${g.e}</h4>${g.k.map(link).join('')}`).join('');
@@ -1865,7 +1904,7 @@ document.addEventListener('click',e=>{if(!e.target.closest('.dd'))document.query
 $('#burger').onclick=()=>{const o=$('#drawer').classList.toggle('open');$('#burger').setAttribute('aria-expanded',o)};
 
 const tile=k=>{const p=PAGES[k];return `<a class="tile" href="#${k}">${p.b?`<span class="bd ${p.b}">${p.b==='new'?'NEW':'HOT'}</span>`:''}${med(p.i)}<span><h3>${p.t}</h3><p>${p.d}</p></span></a>`};
-const FEAT=[['gear','연금 옵션 · 장비 비교','원하는 옵션 평균 몇 번? 공식 확률 1,701줄','ui/feat-prob.webp','new','NEW'],['outfit','코디 · 펫 미리보기','스킨 갈아입히기 · 펫 · 탈것 48종 돌려보기','ui/feat-outfit.webp','new','NEW'],['sim','강화 · 뽑기 시뮬레이터','+12 강화 도전 · 11연 · 110연 뽑기 · 레전드리 합성','ui/feat-sim.webp','hot','HOT'],['prob','강화 확률 총정리','+6 60% → +12 1% · 축복 · 파괴 · 소환 확률','ui/feat-prob.webp','hot','HOT'],['hunt','레벨별 사냥터','Lv.1 → 85 사냥터 61곳 · 지역 14곳 도감','map/north.webp','hot','HOT'],['coupons','쿠폰 · 이벤트','결제 할인 7종 · 외부 이벤트 · 출석부','ui/attend.webp','hot','HOT'],['streamers','서버 목록 · 방송인','서버 20개 · 똘끼 · 뜨뜨뜨뜨 · 우레 등 34명','ui/feat-streamers.webp','hot','HOT'],['news','공식 소식 · 버그','27일 점검 정리 · 확인 중인 현상 10건','ui/attend.webp','hot','HOT'],['weapons','클래스 도감','55종 외형 · 스킬 87개 · 스킬 창 원본','ui/feat-cls.webp','hot','인기'],['godhand','갓 핸드','메모리 27종 수치 · 짝 분석','ui/ghsum.webp','hot','인기'],['map','탐사 지도','지역 14곳 · 데이터 큐브 · 명소 · 내 진행도','ui/feat-map.webp','new','NEW'],['codex','아이템 도감','재료 획득처 · 사용처 · 펫 주얼 360종','ui/feat-codex.webp','new','NEW'],['archive','탐사 · 아카이브','데이터 큐브 · 히든 퀘스트 · 지역 12곳 체크','ui/feat-archive.webp','new','NEW'],['trade','거래 · 단가 계산기','수령액 · 묶음 단가 · 다이아 환산','ui/exchange.webp','new','NEW'],['craft','제작 도감','레시피 231종 · 재료 · 성공률 · 골드','ui/craft.webp','new','NEW'],['titles','칭호 도감','53종 장착 · 보유 효과','ui/titles.webp','new','NEW'],['systems','시스템 가이드','월드맵 기억 · 분해 · 절전 · 채팅 등 52종','ui/growth.webp','new','NEW'],['pets','펫 도감','동행 · 비행 펫 28종','ui/feat-pet.webp','new','NEW'],['weapons','무기 개조 도감','개조 무기 30종 이미지','ui/feat-wpn.webp','new','NEW'],['timer','보스 타이머','처치 기록 · 1분 전 알림 · 일정표','ui/quest.webp','new','NEW'],['bm','상점 정리','다이아 단가 · 골드 소환권 · 가호 10단계','ui/dia.webp','',''],['videos','추천 영상','조회수 1만+ 템빨 영상 15편','ui/art.webp','','']];
+const FEAT=[['hidden','히든 퀘스트 156개','언제 열리고 어디서 시작? 내 진행으로 걸러 보기','ui/feat-archive.webp','new','NEW'],['gear','연금 옵션 · 장비 비교','원하는 옵션 평균 몇 번? 공식 확률 1,701줄','ui/feat-prob.webp','new','NEW'],['outfit','코디 · 펫 미리보기','스킨 갈아입히기 · 펫 · 탈것 48종 돌려보기','ui/feat-outfit.webp','new','NEW'],['sim','강화 · 뽑기 시뮬레이터','+12 강화 도전 · 11연 · 110연 뽑기 · 레전드리 합성','ui/feat-sim.webp','hot','HOT'],['prob','강화 확률 총정리','+6 60% → +12 1% · 축복 · 파괴 · 소환 확률','ui/feat-prob.webp','hot','HOT'],['hunt','레벨별 사냥터','Lv.1 → 85 사냥터 61곳 · 지역 14곳 도감','map/north.webp','hot','HOT'],['coupons','쿠폰 · 이벤트','결제 할인 7종 · 외부 이벤트 · 출석부','ui/attend.webp','hot','HOT'],['streamers','서버 목록 · 방송인','서버 20개 · 똘끼 · 뜨뜨뜨뜨 · 우레 등 34명','ui/feat-streamers.webp','hot','HOT'],['news','공식 소식 · 버그','27일 점검 정리 · 확인 중인 현상 10건','ui/attend.webp','hot','HOT'],['weapons','클래스 도감','55종 외형 · 스킬 87개 · 스킬 창 원본','ui/feat-cls.webp','hot','인기'],['godhand','갓 핸드','메모리 27종 수치 · 짝 분석','ui/ghsum.webp','hot','인기'],['map','탐사 지도','지역 14곳 · 데이터 큐브 · 명소 · 내 진행도','ui/feat-map.webp','new','NEW'],['codex','아이템 도감','재료 획득처 · 사용처 · 펫 주얼 360종','ui/feat-codex.webp','new','NEW'],['archive','탐사 · 아카이브','데이터 큐브 · 히든 퀘스트 · 지역 12곳 체크','ui/feat-archive.webp','new','NEW'],['trade','거래 · 단가 계산기','수령액 · 묶음 단가 · 다이아 환산','ui/exchange.webp','new','NEW'],['craft','제작 도감','레시피 231종 · 재료 · 성공률 · 골드','ui/craft.webp','new','NEW'],['titles','칭호 도감','53종 장착 · 보유 효과','ui/titles.webp','new','NEW'],['systems','시스템 가이드','월드맵 기억 · 분해 · 절전 · 채팅 등 52종','ui/growth.webp','new','NEW'],['pets','펫 도감','동행 · 비행 펫 28종','ui/feat-pet.webp','new','NEW'],['weapons','무기 개조 도감','개조 무기 30종 이미지','ui/feat-wpn.webp','new','NEW'],['timer','보스 타이머','처치 기록 · 1분 전 알림 · 일정표','ui/quest.webp','new','NEW'],['bm','상점 정리','다이아 단가 · 골드 소환권 · 가호 10단계','ui/dia.webp','',''],['videos','추천 영상','조회수 1만+ 템빨 영상 15편','ui/art.webp','','']];
 const featDraw=V=>{const L=FEAT.map((f,i)=>[f,i]);if(V)L.sort((a,b)=>((a[0][4]==='hot'?0:1)-(b[0][4]==='hot'?0:1))||((V[b[0][0]]||0)-(V[a[0][0]]||0))||(a[1]-b[1]));$('#homeFeat').innerHTML=L.map(([f])=>`<a class="fc" href="#${f[0]}"><div class="ft" style="background-image:url(${IB}${f[3]})">${f[5]?`<span class="fb ${f[4]}">${f[5]}</span>`:''}</div><h3>${f[1]}</h3><p>${f[2]}</p></a>`).join('')};featDraw();
 setTimeout(()=>{if(!window.__pvGet||!document.getElementById('homeFeat'))return;Promise.all([__pvGet(0),__pvGet(1)]).then(([a,b])=>{const V={};for(const k in a)if(k[0]!=='x')V[k]=(V[k]||0)+a[k];for(const k in b)if(k[0]!=='x')V[k]=(V[k]||0)+b[k];let T=0;for(const k in V)T+=V[k];if(T>=300)featDraw(V)})},1200);
 const EVS=[['클래스 · 갓 핸드 · 장비 성장 핫딜 (3일 한정)','2026-11-30','#bm','11월 30일(월) 밤 11시 58분까지','2026-11-30T23:58:00+09:00'],['「그리드의」 클래스 · 갓 핸드 핫딜','2026-12-02','#bm','12월 2일(수) 새벽 4시 59분까지','2026-12-02T04:59:00+09:00'],['점검 재화(코인 환급 · 거래소 정산) 우편','2026-12-03','#coupons','12월 3일(목) 밤 11시 59분까지 캐릭터 우편함','2026-12-03T23:59:00+09:00'],['최초의 초월자 기념 접속 선물 (계정당 1회)','2026-12-01','#coupons','12월 1일(화) 밤 11시 59분까지 접속','2026-12-01T23:59:00+09:00'],['구글 플레이 게임즈 PC 결제 30% 할인','2026-11-30','#coupons','11월 30일(월) 밤 11시 59분까지','2026-11-30T23:59:00+09:00'],['템빨고사 댓글 이벤트 · 플레이 포인트 9배','2026-12-02','#coupons','12월 2일(수) 밤 11시 59분까지','2026-12-02T23:59:00+09:00'],['템빨 정주행 챌린지 (웹툰 연계)','2026-12-11','#coupons','12월 11일(금) 밤 11시 59분까지','2026-12-11T23:59:00+09:00'],['SOOP 드롭스 (주마다 쿠폰 3개)','2026-12-31','#coupons','12월 31일(목) 밤 11시 59분까지','2026-12-31T23:59:00+09:00'],['오버토크 라이브 방송 (유튜브 · SOOP)','2026-12-01','#official','12월 1일(화) 밤 9시 방송','2026-12-01T21:00:00+09:00'],['선점 캐릭터 생성 마감','2026-12-10','#starter','12월 10일(목)까지 생성','2026-12-10T23:59:00+09:00'],['구글 플레이 포인트 초보자 패키지','2026-12-31','#bm','12월 31일(목) 밤 11시 59분까지','2026-12-31T23:59:00+09:00'],['런칭 기념 14일 출석부','2026-12-16','#coupons'],['장비 강화 지원 미션','2026-12-09','#coupons'],['런칭 소환 · 성물 패키지','2026-12-09','#bm'],['첫걸음 응원 패키지 ₩9,900','2026-12-09','#bm'],['프리미엄 시즌 패스','2027-01-01','#bm'],['새로운 전설의 시작! 8주 미션','2027-01-21','#coupons']];
@@ -1882,6 +1921,7 @@ $('#homeGuides').innerHTML=['systems','weapons','bm','coupons'].map(tile).join('
  const d=pv.slice(5).replace('-','/');box.innerHTML=`<div class="since"><b>다시 오셨네요 👋</b> 지난 방문(${d}) 이후 바뀐 곳 <span class="mute">${ks.length}곳</span><div class="sl">${ks.slice(0,10).map(k=>`<a href="#${k}">${esc(PAGES[k].t)}</a>`).join('')}</div></div>`})();
 // ---------- 오늘 업데이트 ----------
 const CHG=[
+ ['2026-11-27','히든 퀘스트 156개 — 시작 조건 · 위치 · 보상 · 내 진행 체크','hidden'],
  ['2026-11-27','데이터 큐브 70곳 — 14개 지역 전부','archive'],
  ['2026-11-27','사냥터 61곳 Lv.1~85 · 레베카 · 크라임 숲 · 지브라','hunt'],
  ['2026-11-27','코어 점수 보상 70단계 · 다음 보상 계산기','gear'],
@@ -2957,6 +2997,62 @@ try{initScene()}catch(e){}
  bs.forEach(b=>{const n=STRM.filter(r=>r[0]===b.dataset.sv).length;if(n)b.innerHTML=b.dataset.sv+' <b>'+n+'</b>';else b.title='아직 확인된 방송인 없음'});
  document.getElementById('servers').addEventListener('click',e=>{const b=e.target.closest('.svb button');if(!b)return;const c=document.querySelector('#stChips button[data-v="'+b.dataset.sv+'"]');
   bs.forEach(x=>x.classList.toggle('on',x===b));if(c){c.click();document.getElementById('stList').scrollIntoView({behavior:'smooth',block:'start'})}else{const L=document.getElementById('stList');L.innerHTML='<div class="card"><h3>'+b.dataset.sv+' 서버</h3><p class="small mute" style="margin:0">아직 확인된 방송인이 없어요. 이 서버에서 하는 방송인을 알면 <a href="#contact">제보</a>해 주세요.</p></div>';[...document.querySelectorAll('#stChips button')].forEach(x=>x.classList.remove('on'));L.scrollIntoView({behavior:'smooth',block:'start'})}})})();
+// ---------- 히든 퀘스트 ----------
+(()=>{const L=document.getElementById('hqList');if(!L)return;
+ const RG=document.getElementById('hqReg'),OP=document.getElementById('hqOpt'),SM=document.getElementById('hqSum'),MI=document.getElementById('hqMain'),LV=document.getElementById('hqLv'),Q=document.getElementById('hqQ'),ML=document.getElementById('hqMainL');
+ let H=null,loading=false;
+ const ls=(k,v)=>{try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||'null');localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}};
+ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const S=Object.assign({done:{},main:'',lv:'',reg:'전체',sort:'open',todo:0,now:0},ls('tn_hq')||{});
+ const put=()=>ls('tn_hq',S);
+ const mk=s=>{const m=String(s||'').match(/(\d+)\s*[-.\s]\s*(\d+)/);return m?[+m[1],+m[2]]:null};
+ const ge=(a,b)=>a[0]>b[0]||(a[0]===b[0]&&a[1]>=b[1]);
+ const cmpM=(a,b)=>{const x=mk(a)||[0,0],y=mk(b)||[0,0];return x[0]-y[0]||x[1]-y[1]};
+ const man=n=>n>=1e4?(n>=1e6?Math.round(n/1e4).toLocaleString():Math.round(n/1e3)/10)+'만':n.toLocaleString();
+ const HOW=['자동 시작','퀘스트 창에서 시작','단서 기록'];
+ const key=q=>q[0]+'|'+q[1];
+ const tot=q=>q[4].reduce((a,s)=>{a[0]+=s[4][0];a[1]+=s[4][1];a[2]+=s[4][2];a[3]+=s[4][3];a[4]=a[4].concat(s[4][4]);return a},[0,0,0,0,[]]);
+ const gifts=q=>[...new Set(tot(q)[4].filter(x=>!/펫 먹이|도감 상자/.test(x)).map(x=>x.replace(/ \d+$/,'')))];
+ const isOpen=q=>{const m=mk(S.main),r=mk(q[2]),lv=+S.lv||0;return (!r||!!(m&&ge(m,r)))&&(!q[3]||lv>=q[3])};
+ const txt=q=>(q[0]+' '+q[1]+' '+q[4].map(s=>s[0]+' '+s[2].map(n=>n.slice(1).join(' ')).join(' ')+' '+s[3][0]+' '+s[3][1]+' '+s[3][2].join(' ')+' '+s[4][4].join(' ')).join(' ')).toLowerCase();
+ function needs(ns){const out=[],K={};
+  ns.forEach(n=>{if(n[0]==='k'){const k=n[1]+'|'+n[3];if(K[k]){K[k].push(n[2]);return}K[k]=[n[2]];out.push(['k',n[1],K[k],n[3]])}else out.push(n)});
+  return out.map(n=>{switch(n[0]){
+   case 'm':return n[1]==='0-0'?'':`<span>📘 메인 <b>${n[1]}</b> ${esc(H.main[n[1]]||'')} 끝</span>`;
+   case 'p':return `<span>↪ <button type="button" class="hqp" data-q="${esc(n[1])}">${esc(n[1])}</button> 끝</span>`;
+   case 'l':return `<span>⬆ <b>Lv.${n[1]}</b></span>`;
+   case 'k':return `<span>⚔ ${esc(n[1])} 몬스터 <b>${n[2].map(x=>x.toLocaleString()).join(' → ')}</b>마리${n[3]?` (「${esc(n[3])}」 칭호 있을 때)`:''}</span>`;
+   case 'g':return `<span>🎯 ${esc(n[1])}</span>`;
+   case 'c':return `<span>🔍 단서 「${esc(n[1])}」${n[2]?' — '+esc(n[2]):''}</span>`;
+   default:return `<span>${esc(n[1])}</span>`}}).filter(Boolean).join(' · ')||'<span class="mute">조건 없음</span>'}
+ function rw(r){const a=[];if(r[0])a.push(`EXP <b>${man(r[0])}</b>`);if(r[1])a.push('골드 '+r[1].toLocaleString());if(r[2])a.push('템빨 코인 '+r[2].toLocaleString());if(r[3])a.push('탐험의 증표 '+r[3]);r[4].forEach(x=>a.push('🎁 '+esc(x)));return a.join(' · ')||'<span class="mute">보상 표시 없음</span>'}
+ function where(w){const cz=w[2].filter(x=>x&&!w[0].split(' · ').includes(x));
+  return (w[0]||w[1]?`📍 ${w[0]?'<b>'+esc(w[0])+'</b>':''}${w[0]&&w[1]?' — ':''}${esc(w[1]||'')}`:'📍 <span class="mute">정해진 장소 없음 (어디서든)</span>')+(cz.length?` <span class="mute">· 단서 찾는 곳: ${esc(cz.join(' · '))}</span>`:'')}
+ function label(q){const r=q[2]&&q[2]!=='0-0'?`메인 ${q[2]} 뒤`:'처음부터';const lv=q[3]?` · Lv.${q[3]}`:'';
+  if(S.main||S.lv)return isOpen(q)?'<span class="hqt op">지금 가능</span>':`<span class="hqt lk">${r}${lv}</span>`;return `<span class="hqt">${r}${lv}</span>`}
+ function card(q){const k=key(q),t=tot(q),g=gifts(q),d=!!S.done[k];
+  return `<details class="hqg${d?' done':''}" data-k="${esc(k)}"><summary><button type="button" class="hqck" aria-label="${esc(q[1])} 깬 것으로 표시" aria-pressed="${d}">✓</button><b>${esc(q[1])}</b><span class="hqt rg">${esc(q[0])}</span>${q[4].length>1?`<span class="hqt">${q[4].length}단계</span>`:''}${label(q)}<span class="hqx">EXP ${man(t[0])}${t[2]?' · 코인 '+t[2].toLocaleString():''}${g.length?' · 🎁 '+esc(g.slice(0,2).join(', '))+(g.length>2?' 외':''):''}</span></summary><ol class="hqs">${q[4].map((s,i)=>`<li><div class="hqh">${q[4].length>1?(i+1)+'. ':''}${esc(s[0])} <span class="hqt">${HOW[s[1]]||''}</span></div><div class="hqn">열리는 조건: ${needs(s[2])}</div><div class="hqw">${where(s[3])}</div><div class="hqr">보상: ${rw(s[4])}</div></li>`).join('')}</ol></details>`}
+ function chips(){const c={},dn={};H.q.forEach(q=>{c[q[0]]=(c[q[0]]||0)+1;if(S.done[key(q)])dn[q[0]]=(dn[q[0]]||0)+1});const all=Object.values(dn).reduce((a,b)=>a+b,0);
+  RG.innerHTML=[['전체',H.q.length,all]].concat(H.regions.filter(r=>c[r]).map(r=>[r,c[r],dn[r]||0])).map(([r,n,d])=>`<button type="button" data-r="${esc(r)}"${S.reg===r?' class="on"':''}>${esc(r)} <small>${d?d+'/':''}${n}</small></button>`).join('')}
+ function sum(n){const dn=H.q.filter(q=>S.done[key(q)]).length;let s=`${n}개 보는 중 · 156개 중 <b>${dn}개</b> 깼어요`;
+  if(S.main||S.lv){const o=H.q.filter(isOpen);s+=` · ${S.main?'메인 '+esc(S.main):''}${S.main&&S.lv?' · ':''}${S.lv?'Lv.'+esc(S.lv):''} 기준 지금 가능 <b>${o.length}개</b> (안 깬 것 ${o.filter(q=>!S.done[key(q)]).length}개)`}
+  else if(S.now)s+=' · <b>내 메인 퀘스트</b>를 넣으면 지금 가능한 것만 걸러져요';SM.innerHTML=s}
+ function draw(){if(!H)return;const w=(Q.value||'').trim().toLowerCase();
+  let L2=H.q.filter(q=>(S.reg==='전체'||q[0]===S.reg)&&(!w||txt(q).includes(w))&&(!S.todo||!S.done[key(q)])&&(!S.now||!(S.main||S.lv)||isOpen(q)));
+  if(S.sort==='exp')L2=L2.slice().sort((a,b)=>tot(b)[0]-tot(a)[0]);
+  else if(S.sort==='gift')L2=L2.filter(q=>gifts(q).length).sort((a,b)=>gifts(b).length-gifts(a).length||tot(b)[0]-tot(a)[0]);
+  else if(S.reg==='전체')L2=L2.slice().sort((a,b)=>cmpM(a[2],b[2])||(a[3]-b[3]));
+  L.innerHTML=L2.length?L2.map(card).join(''):'<p class="mute">조건에 맞는 히든 퀘스트가 없어요. 찾기 · 걸러 보기를 바꿔 보세요.</p>';
+  chips();sum(L2.length);[...OP.children].forEach(b=>b.classList.toggle('on',b.dataset.s?b.dataset.s===S.sort:!!S[b.dataset.f]))}
+ L.addEventListener('click',e=>{const c=e.target.closest('.hqck');if(c){e.preventDefault();e.stopPropagation();const d=c.closest('.hqg'),k=d.dataset.k;if(S.done[k])delete S.done[k];else S.done[k]=1;put();d.classList.toggle('done',!!S.done[k]);c.setAttribute('aria-pressed',!!S.done[k]);if(S.todo)draw();else{chips();sum(L.querySelectorAll('.hqg').length)}return}
+  const p=e.target.closest('.hqp');if(p){const t=p.dataset.q;Q.value=t;S.reg='전체';draw();const hit=[...L.querySelectorAll('.hqg')].find(x=>x.textContent.includes(t));if(hit){hit.open=true;hit.scrollIntoView({behavior:'smooth',block:'start'})}}});
+ RG.onclick=e=>{const b=e.target.closest('button');if(!b)return;S.reg=b.dataset.r;put();draw()};
+ OP.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.s)S.sort=b.dataset.s;else S[b.dataset.f]=S[b.dataset.f]?0:1;put();draw()};
+ MI.oninput=()=>{S.main=MI.value.trim();put();draw()};LV.oninput=()=>{S.lv=LV.value;put();draw()};Q.oninput=draw;
+ function boot(d){H=d;MI.value=S.main||'';LV.value=S.lv||'';ML.innerHTML=Object.entries(d.main).filter(([k])=>k!=='0-0').map(([k,v])=>`<option value="${k}">${esc(v)}</option>`).join('');draw()}
+ const load=()=>{if(H||loading)return;loading=true;fetch('/data/hidden.json').then(r=>r.json()).then(boot).catch(()=>{loading=false;L.innerHTML='<p class="mute small">목록을 못 불러왔어요. 새로고침해 주세요.</p>'})};
+ if(/\/hidden/.test(location.pathname)||location.hash==='#hidden'||!('IntersectionObserver' in window))load();else{const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io.disconnect();load()}},{rootMargin:'1500px'});io.observe(L)}
+})();
 // ---------- 탐사 지도 ----------
 (function(){const S=document.getElementById('mpSvg');if(!S)return;
  const R=[['바이란',132,151],['노튼',404,84],['킨바이',778,132],['윈스톤',516,221],['라인하르트',276,276],['엑카루',780,343],['알테스',264,432],['벨두인',519,415],['레이단',732,494],['수아즈 협곡',1138,456],['코크로 섬',634,626],['크라임 숲',970,619],['레베카',1260,607],['지브라',1354,770]];
