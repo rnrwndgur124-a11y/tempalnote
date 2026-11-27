@@ -201,6 +201,7 @@ label{font-weight:700;font-size:13.5px;display:block;margin-bottom:6px;color:#c9
 .fpgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:12px}
 .fpc{display:block;text-align:left;background:#0b1525;border:1px solid var(--line2);border-radius:10px;padding:0 0 8px;color:var(--ink);font:inherit;cursor:pointer;overflow:hidden}.fpc:hover{border-color:var(--gold)}.fpc img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}.fpc b{display:block;padding:6px 8px 0;font-size:14px}.fpc span{display:block;padding:0 8px;font-size:11px;color:var(--mute)}
 #fpModal{background:#020610cc;backdrop-filter:blur(3px)}.fp-box{max-width:760px}.fp-in{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px}@media(max-width:720px){.fp-in{grid-template-columns:1fr}}
+.since.today{background:linear-gradient(90deg,#10283acc,#0b1729);border-color:#7de0a888}
 .mybox{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 4px}
 .mybox a,.mybox button{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:4px 14px;border-radius:99px;background:#ffffff08;border:1px solid var(--line2);color:#dfe6f1;font-family:inherit;font-weight:700;font-size:14px;line-height:1.2;text-decoration:none;cursor:pointer;box-shadow:none}
 .mybox b{color:var(--champ)}.mybox small{color:var(--mute);font-weight:500}
@@ -507,7 +508,7 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
       <div><small>갓 핸드 메모리</small><b>27종</b></div>
       <div><small>펫 · 개조 무기</small><b>28 · 30종</b></div>
     </div>
-    <div id="sinceBox"></div><div id="myBox" class="mybox" hidden></div>
+    <div id="sinceBox"></div><div id="todayBox"></div><div id="myBox" class="mybox" hidden></div>
     <a class="nstrip" id="nstrip" href="#coupons"><span class="nb">이벤트</span><span class="nt" id="nstripT">진행 중인 이벤트 · 쿠폰</span><span class="na">바로가기 →</span></a>
     <a class="nstrip" id="cmKing" href="#sim"><span class="nb" style="background:#FFE812;color:#111">👑 랭킹</span><span class="nt" id="cmKingT">오늘의 강화왕 — 1위 자리가 비어 있어요. 공식 확률로 도전!</span><span class="na">도전하기 →</span></a>
   </div>
@@ -1879,6 +1880,20 @@ $('#homeGuides').innerHTML=['systems','weapons','bm','coupons'].map(tile).join('
  const ks=Object.keys(P).filter(k=>k!=='home'&&PAGES[k]&&P[k]>pv&&!['privacy','terms','contact','about','backup'].includes(k));if(!ks.length)return;
  const order=['coupons','news','hunt','sim','prob','archive','starter','bm','godhand','weapons','systems','map','codex','pets','craft','trade','streamers'];ks.sort((a,b)=>((order.indexOf(a)+99)%99)-((order.indexOf(b)+99)%99));
  const d=pv.slice(5).replace('-','/');box.innerHTML=`<div class="since"><b>다시 오셨네요 👋</b> 지난 방문(${d}) 이후 바뀐 곳 <span class="mute">${ks.length}곳</span><div class="sl">${ks.slice(0,10).map(k=>`<a href="#${k}">${esc(PAGES[k].t)}</a>`).join('')}</div></div>`})();
+// ---------- 오늘 업데이트 ----------
+const CHG=[
+ ['2026-11-27','데이터 큐브 70곳 — 14개 지역 전부','archive'],
+ ['2026-11-27','사냥터 61곳 Lv.1~85 · 레베카 · 크라임 숲 · 지브라','hunt'],
+ ['2026-11-27','코어 점수 보상 70단계 · 다음 보상 계산기','gear'],
+ ['2026-11-27','보스 위치 전부 (사하란 오염된 존재 포함)','timer'],
+ ['2026-11-27','연금 옵션 확률 계산기 · 장비 비교','gear'],
+ ['2026-11-27','3일 한정 핫딜 · 「그리드의」 핫딜 정리','bm'],
+ ['2026-11-27','점검 재화 우편(12/3까지) · 거래소 새 현상','coupons'],
+ ['2026-11-27','서버 20개 · 방송인 34명 · 오늘 방송 화제','streamers'],
+];
+(()=>{const box=document.getElementById('todayBox');if(!box)return;const td=new Date(Date.now()+9*3600e3).toISOString().slice(0,10);const yd=new Date(Date.now()+9*3600e3-864e5).toISOString().slice(0,10);
+ const L=CHG.filter(c=>c[0]===td||c[0]===yd);if(!L.length)return;const isT=L.some(c=>c[0]===td);
+ box.innerHTML=`<div class="since today"><b>${isT?'🆕 오늘 업데이트':'🆕 어제 업데이트'}</b> <span class="mute small">매일 아침 공식 공지 · 방송을 보고 바로 반영해요</span><div class="sl">${L.slice(0,8).map(c=>`<a href="#${c[2]}">${esc(c[1])}</a>`).join('')}</div></div>`})();
 (()=>{const box=document.getElementById('myBox');if(!box)return;const it=[];const g=k=>{try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}};
  const hw=g('dn-hw');if(hw&&hw.items&&hw.items.length){const td=new Date(Date.now()-5*3600e3).toLocaleDateString('ko-KR');const c=hw.d===td?hw.items.filter(i=>i.c).length:0;it.push(`<a href="#homework">📋 오늘 숙제 <b>${c}/${hw.items.length}</b>${c>=hw.items.length?' 끝!':''}</a>`)}
  const bs=(g('dn-boss')||[]).filter(b=>b.at&&b.at>Date.now()).sort((a,b)=>a.at-b.at);if(bs.length){const m=Math.round((bs[0].at-Date.now())/60000);it.push(`<a href="#timer">⏱ ${esc(bs[0].n)} <b>${m<60?m+'분':Math.floor(m/60)+'시간 '+m%60+'분'}</b> 뒤</a>`)}

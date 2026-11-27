@@ -75,6 +75,20 @@ $('#homeGuides').innerHTML=['systems','weapons','bm','coupons'].map(tile).join('
  const ks=Object.keys(P).filter(k=>k!=='home'&&PAGES[k]&&P[k]>pv&&!['privacy','terms','contact','about','backup'].includes(k));if(!ks.length)return;
  const order=['coupons','news','hunt','sim','prob','archive','starter','bm','godhand','weapons','systems','map','codex','pets','craft','trade','streamers'];ks.sort((a,b)=>((order.indexOf(a)+99)%99)-((order.indexOf(b)+99)%99));
  const d=pv.slice(5).replace('-','/');box.innerHTML=`<div class="since"><b>다시 오셨네요 👋</b> 지난 방문(${d}) 이후 바뀐 곳 <span class="mute">${ks.length}곳</span><div class="sl">${ks.slice(0,10).map(k=>`<a href="/${k}/">${esc(PAGES[k].t)}</a>`).join('')}</div></div>`})();
+// ---------- 오늘 업데이트 ----------
+const CHG=[
+ ['2026-11-27','데이터 큐브 70곳 — 14개 지역 전부','archive'],
+ ['2026-11-27','사냥터 61곳 Lv.1~85 · 레베카 · 크라임 숲 · 지브라','hunt'],
+ ['2026-11-27','코어 점수 보상 70단계 · 다음 보상 계산기','gear'],
+ ['2026-11-27','보스 위치 전부 (사하란 오염된 존재 포함)','timer'],
+ ['2026-11-27','연금 옵션 확률 계산기 · 장비 비교','gear'],
+ ['2026-11-27','3일 한정 핫딜 · 「그리드의」 핫딜 정리','bm'],
+ ['2026-11-27','점검 재화 우편(12/3까지) · 거래소 새 현상','coupons'],
+ ['2026-11-27','서버 20개 · 방송인 34명 · 오늘 방송 화제','streamers'],
+];
+(()=>{const box=document.getElementById('todayBox');if(!box)return;const td=new Date(Date.now()+9*3600e3).toISOString().slice(0,10);const yd=new Date(Date.now()+9*3600e3-864e5).toISOString().slice(0,10);
+ const L=CHG.filter(c=>c[0]===td||c[0]===yd);if(!L.length)return;const isT=L.some(c=>c[0]===td);
+ box.innerHTML=`<div class="since today"><b>${isT?'🆕 오늘 업데이트':'🆕 어제 업데이트'}</b> <span class="mute small">매일 아침 공식 공지 · 방송을 보고 바로 반영해요</span><div class="sl">${L.slice(0,8).map(c=>`<a href="#${c[2]}">${esc(c[1])}</a>`).join('')}</div></div>`})();
 (()=>{const box=document.getElementById('myBox');if(!box)return;const it=[];const g=k=>{try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}};
  const hw=g('dn-hw');if(hw&&hw.items&&hw.items.length){const td=new Date(Date.now()-5*3600e3).toLocaleDateString('ko-KR');const c=hw.d===td?hw.items.filter(i=>i.c).length:0;it.push(`<a href="/homework/">📋 오늘 숙제 <b>${c}/${hw.items.length}</b>${c>=hw.items.length?' 끝!':''}</a>`)}
  const bs=(g('dn-boss')||[]).filter(b=>b.at&&b.at>Date.now()).sort((a,b)=>a.at-b.at);if(bs.length){const m=Math.round((bs[0].at-Date.now())/60000);it.push(`<a href="/timer/">⏱ ${esc(bs[0].n)} <b>${m<60?m+'분':Math.floor(m/60)+'시간 '+m%60+'분'}</b> 뒤</a>`)}
