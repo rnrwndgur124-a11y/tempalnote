@@ -957,10 +957,10 @@ let SJ=null,SJl=0;
 const sLoad=()=>{if(SJ||SJl)return;SJl=1;fetch('/data/search.json').then(r=>r.ok?r.json():[]).then(j=>{SJ=j;if($('#sov').classList.contains('open'))sRun()}).catch(()=>{SJl=0})};
 const sNorm=t=>t.toLowerCase().replace(/\s+/g,'');
 const sSnip=(x,q)=>{const n=x.toLowerCase(),qq=q.toLowerCase();let i=n.indexOf(qq);if(i<0){const w=qq.split(/\s+/)[0];i=n.indexOf(w)}if(i<0)return x.slice(0,70)+(x.length>70?'…':'');const a=Math.max(0,i-28),b=Math.min(x.length,i+qq.length+50);return (a?'…':'')+x.slice(a,b)+(b<x.length?'…':'')};
-function sRun(){const raw=$('#sq').value.trim(),q=sNorm(raw);
+function sRun(){const raw=$('#sq').value.trim(),q=sNorm(raw),toks=raw.toLowerCase().split(/\s+/).filter(Boolean).map(sNorm),all=n=>n.includes(q)||toks.every(t=>n.includes(t));
   if(!q){$('#sres').innerHTML=IDX.slice(0,6).map(r=>`<a href="/${r.k}/">${med(r.i,'sm')}<span><b>${esc(r.t)}</b><small>${esc(r.d)}</small></span></a>`).join('');return}
-  const res=IDX.filter(r=>sNorm(r.x).includes(q)).slice(0,6);
-  let cards=[];if(SJ){cards=SJ.map(c=>{const tt=sNorm(c.t),xx=sNorm(c.x);return {c,sc:tt.includes(q)?2:(xx.includes(q)?1:0)}}).filter(o=>o.sc).sort((a,b)=>b.sc-a.sc).slice(0,12).map(o=>o.c)}
+  const res=IDX.filter(r=>all(sNorm(r.x))).slice(0,6);
+  let cards=[];if(SJ){cards=SJ.map(c=>{const tt=sNorm(c.t),xx=sNorm(c.x);return {c,sc:all(tt)?2:(all(tt+xx)?1:0)}}).filter(o=>o.sc).sort((a,b)=>b.sc-a.sc).slice(0,12).map(o=>o.c)}
   const ph=(PAGES.home?'':''),ch=cards.map(c=>{const pg=c.k==='home'?'/':'/'+c.k+'/';return `<a class="sc" href="${pg}?c=${encodeURIComponent(c.t)}">${med((PAGES[c.k]&&PAGES[c.k].i)||'i-guide','sm')}<span><b>${esc(c.t)}</b><small>${esc((c.f?'자주 묻는 질문 · ':'')+((PAGES[c.k]&&PAGES[c.k].t)||c.p))} — ${esc(sSnip(c.x||c.t,raw))}</small></span></a>`}).join('');
   const top=res.map(r=>`<a href="/${r.k}/">${med(r.i,'sm')}<span><b>${esc(r.t)}</b><small>${esc(r.d)}</small></span></a>`).join('');
   $('#sres').innerHTML=(top||ch)?top+(ch?'<p class="small mute" style="margin:8px 6px 2px">페이지 안 내용</p>'+ch:(SJ?'':'<p class="small mute" style="padding:6px 10px">페이지 안 내용 불러오는 중…</p>')):(SJ?'<p class="mute" style="padding:10px">찾는 내용이 없어요. <a href="/contact/">제보</a>해 주시면 채울게요.</p>':'<p class="small mute" style="padding:10px">불러오는 중…</p>')}
@@ -1216,7 +1216,7 @@ try{initScene()}catch(e){}
  RG.onclick=e=>{const b=e.target.closest('button');if(!b)return;S.reg=b.dataset.r;put();draw()};
  OP.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.s)S.sort=b.dataset.s;else S[b.dataset.f]=S[b.dataset.f]?0:1;put();draw()};
  MI.oninput=()=>{S.main=MI.value.trim();put();draw()};LV.oninput=()=>{S.lv=LV.value;put();draw()};Q.oninput=draw;
- function boot(d){H=d;MI.value=S.main||'';LV.value=S.lv||'';ML.innerHTML=Object.entries(d.main).filter(([k])=>k!=='0-0').map(([k,v])=>`<option value="${k}">${esc(v)}</option>`).join('');draw()}
+ function boot(d){H=d;MI.value=S.main||'';LV.value=S.lv||'';try{const c=new URLSearchParams(location.search).get('c');if(c&&c.startsWith('히든 퀘스트 · ')){Q.value=c.slice(9);S.reg='전체'}}catch(_){}ML.innerHTML=Object.entries(d.main).filter(([k])=>k!=='0-0').map(([k,v])=>`<option value="${k}">${esc(v)}</option>`).join('');draw();if(Q.value){const g=L.querySelector('.hqg');if(g)g.open=true}}
  const load=()=>{if(H||loading)return;loading=true;fetch('/data/hidden.json').then(r=>r.json()).then(boot).catch(()=>{loading=false;L.innerHTML='<p class="mute small">목록을 못 불러왔어요. 새로고침해 주세요.</p>'})};
  if(/\/hidden/.test(location.pathname)||location.hash==='#hidden'||!('IntersectionObserver' in window))load();else{const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io.disconnect();load()}},{rootMargin:'1500px'});io.observe(L)}
 })();
@@ -1261,7 +1261,7 @@ try{initScene()}catch(e){}
  SB.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(S.t==='b')S.bc=b.dataset.c;else S.gr=b.dataset.c;put();list()};
  LI.onclick=e=>{const b=e.target.closest('button[data-i]');if(!b)return;S.t==='b'?showB(+b.dataset.i):showG(+b.dataset.i);if(innerWidth<760)V.scrollIntoView({behavior:'smooth',block:'start'})};
  Q.oninput=find;
- const load=()=>{if(D||loading)return;loading=true;fetch('/data/drops.json').then(r=>r.json()).then(d=>{D=d;list();find()}).catch(()=>{loading=false;V.innerHTML='<p class="mute small">목록을 못 불러왔어요. 새로고침해 주세요.</p>'})};
+ const load=()=>{if(D||loading)return;loading=true;fetch('/data/drops.json').then(r=>r.json()).then(d=>{D=d;try{const c=new URLSearchParams(location.search).get('c');if(c&&c.startsWith('보스 드롭 · ')){const i=d.bosses.findIndex(b=>b[0]===c.slice(8));if(i>=0){S.t='b';S.bc='전체';S.b=i}}}catch(_){}try{const pq=sessionStorage.getItem('tn_drq');if(pq){Q.value=pq;sessionStorage.removeItem('tn_drq')}}catch(_){}list();find()}).catch(()=>{loading=false;V.innerHTML='<p class="mute small">목록을 못 불러왔어요. 새로고침해 주세요.</p>'})};
  if(/\/drops/.test(location.pathname)||location.hash==='#drops'||!('IntersectionObserver' in window))load();else{const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io.disconnect();load()}},{rootMargin:'1500px'});io.observe(V)}
 })();
 // ---------- 수집 플래너 ----------
@@ -1294,7 +1294,7 @@ try{initScene()}catch(e){}
   SM.innerHTML=`${A.length.toLocaleString()}개 보는 중 · 1,091개 중 완료 <b>${dn}</b> · 절반 ${hf}`+(si>=0?` · 「${esc(D.stats[si][0])}」 전부 모으면 <b>${val(si,A.reduce((a,c)=>a+gain(c,si),0))}</b>`:'')+(S.sort==='big'&&si<0?' · <b>효과 큰 순</b>은 능력치를 먼저 고르세요':'');
   [...OP.children].forEach(b=>b.classList.toggle('on',b.dataset.s?b.dataset.s===S.sort:!!S[b.dataset.f]));[...EN.children].forEach(b=>b.classList.toggle('on',b.dataset.e===S.enh));mine()}
  L.addEventListener('click',e=>{const b=e.target.closest('.clst');if(b){const r=b.closest('.clr'),n=r.dataset.n,s=((S.done[n]||0)+1)%3;if(s)S.done[n]=s;else delete S.done[n];put();r.className='clr s'+s;b.textContent=['등록 전','절반','완료'][s];mine();const dn=D.c.filter(c=>S.done[c[0]]===2).length;SM.innerHTML=SM.innerHTML.replace(/완료 <b>\d+<\/b> · 절반 \d+/,`완료 <b>${dn}</b> · 절반 ${D.c.filter(c=>S.done[c[0]]===1).length}`);return}
-  const q=e.target.closest('.cli button');if(q){const dq=document.getElementById('drQ');if(dq){dq.value=q.dataset.q;dq.dispatchEvent(new Event('input'))}location.hash='#drops'}});
+  const q=e.target.closest('.cli button');if(q){try{sessionStorage.setItem('tn_drq',q.dataset.q)}catch(_){}const dq=document.getElementById('drQ');if(dq){dq.value=q.dataset.q;dq.dispatchEvent(new Event('input'))}location.hash='#drops'}});
  OP.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.s)S.sort=b.dataset.s;else S[b.dataset.f]=S[b.dataset.f]?0:1;put();draw()};
  EN.onclick=e=>{const b=e.target.closest('button');if(!b)return;S.enh=b.dataset.e;put();draw()};
  ST.onchange=()=>{S.stat=ST.value;if(S.stat!==''&&S.sort==='base')S.sort='big';put();draw()};Q.oninput=()=>draw();MO.onclick=()=>{lim+=60;draw(1)};
