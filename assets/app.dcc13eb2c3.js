@@ -110,7 +110,7 @@ const CHG=[
  const L=CHG.filter(c=>c[0]===td||c[0]===yd);if(!L.length)return;const isT=L.some(c=>c[0]===td);
  box.innerHTML=`<div class="since today"><b>${isT?'🆕 오늘 업데이트':'🆕 어제 업데이트'}</b> <span class="mute small">매일 아침 공식 공지 · 방송을 보고 바로 반영해요</span><div class="sl">${L.slice(0,8).map(c=>`<a href="#${c[2]}">${esc(c[1])}</a>`).join('')}</div></div>`})();
 (()=>{const box=document.getElementById('myBox');if(!box)return;const it=[];const g=k=>{try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}};
- const hw=g('dn-hw');if(hw&&hw.items&&hw.items.length){const td=new Date(Date.now()-5*3600e3).toLocaleDateString('ko-KR');const c=hw.d===td?hw.items.filter(i=>i.c).length:0;it.push(`<a href="/homework/">📋 오늘 숙제 <b>${c}/${hw.items.length}</b>${c>=hw.items.length?' 끝!':''}</a>`)}
+ const hw=g('dn-hw');if(hw&&hw.items&&hw.items.length){const td=new Date(Date.now()-5*3600e3).toLocaleDateString('ko-KR');const L=hw.cs&&hw.cs.length?hw.cs.flatMap(x=>x.items):hw.items;const c=hw.d===td?L.filter(i=>i.c).length:0;it.push(`<a href="/homework/">📋 오늘 숙제${hw.cs&&hw.cs.length>1?' ('+hw.cs.length+'캐릭)':''} <b>${c}/${L.length}</b>${c>=L.length?' 끝!':''}</a>`)}
  const bs=(g('dn-boss')||[]).filter(b=>b.at&&b.at>Date.now()).sort((a,b)=>a.at-b.at);if(bs.length){const m=Math.round((bs[0].at-Date.now())/60000);it.push(`<a href="/timer/">⏱ ${esc(bs[0].n)} <b>${m<60?m+'분':Math.floor(m/60)+'시간 '+m%60+'분'}</b> 뒤</a>`)}
  {const td=Math.floor((Date.now()+9*36e5)/864e5),dq=g('tn_daily'),h=dq&&dq.hist&&dq.hist[td],at=g('tn_att')||[];let st=0;{const S=new Set(at);let d=S.has(td)?td:td-1;while(S.has(d)){st++;d--}}
   it.unshift(h&&h.length>=5?`<a href="/daily/">🧠 오늘의 퀴즈 <b>${h.filter(Boolean).length}/5</b>${st>1?' · 📅 '+st+'일 연속':''}</a>`:`<a href="/daily/" class="hot">🧠 오늘의 퀴즈 <b>${h&&h.length?h.length+'/5 푸는 중':'풀기'}</b>${st>1?' · 📅 '+st+'일 연속 출석':''}</a>`)}
@@ -946,16 +946,38 @@ ghRender();
 /* 숙제 */
 const HW_DEF=['런칭 14일 출석부 받기','일일 미션','히든 퀘스트 진행','골렘의 미궁 · 야탄 신전 사냥','필드 엘리트 「오염된 존재」 잡기','인마대전 참여','안 쓰는 장비 분해해서 파브라늄 모으기','+6 이상 안 쓰는 장비 왕실 무기고 납품','오버기어드 강화','차원 리그 공헌도 쌓기','비접속 모드 켜기 (Lv.30부터 하루 12시간)'];
 const today=()=>new Date(Date.now()-5*3600e3).toLocaleDateString('ko-KR');
+const HWW_DEF=['주간 던전 (Lv.45부터)','길드 주간 기부 · 보상','차원 리그 주간 보상 받기','8주 미션 주간 목표 확인'];
 let HW=load('dn-hw',{d:today(),items:HW_DEF.map(t=>({t,c:false}))});
-const hwDay=()=>{if(HW.d!==today()){HW.d=today();HW.items.forEach(i=>i.c=false);save('dn-hw',HW);return true}};
+if(!HW.cs){HW.cs=[{n:'본캐',items:HW.items||HW_DEF.map(t=>({t,c:false})),w:HWW_DEF.map(t=>({t,c:false}))}];HW.ci=0}
+HW.cs.forEach(c=>{if(!c.w)c.w=HWW_DEF.map(t=>({t,c:false}))});if(HW.wd==null)HW.wd=1;
+const wkKey=()=>{const t=new Date(Date.now()+9*36e5-5*36e5),dow=t.getUTCDay(),back=(dow-HW.wd+7)%7;return Math.floor(t.getTime()/864e5)-back};
+const cur=()=>HW.cs[HW.ci]||HW.cs[0];
+const hwSave=()=>{HW.items=cur().items;save('dn-hw',HW)};
+const hwDay=()=>{let ch=false;if(HW.d!==today()){HW.d=today();HW.cs.forEach(c=>c.items.forEach(i=>i.c=false));ch=true}if(HW.wk!==wkKey()){HW.wk=wkKey();HW.cs.forEach(c=>c.w.forEach(i=>i.c=false));ch=true}if(ch)hwSave();return ch};
 hwDay();
-function hwRender(){const n=HW.items.length,c=HW.items.filter(i=>i.c).length;
-  $('#hwBar').style.width=(n?c/n*100:0)+'%';$('#hwCnt').textContent=`${c} / ${n} 완료`;$('#hwDate').textContent=HW.d;
-  $('#hwList').innerHTML=HW.items.map((i,k)=>`<div class="chk ${i.c?'done':''}"><input type="checkbox" id="hw${k}" data-k="${k}" ${i.c?'checked':''}><span><label for="hw${k}" style="font-weight:500;font-size:16px;margin:0;color:inherit">${esc(i.t)}</label></span><button type="button" class="ghost" data-del="${k}" aria-label="${esc(i.t)} 삭제">삭제</button></div>`).join('')||'<p class="mute">숙제가 없어요. 아래에서 추가하세요.</p>'}
-$('#hwList').addEventListener('change',e=>{const k=e.target.dataset.k;if(k==null)return;HW.items[k].c=e.target.checked;save('dn-hw',HW);hwRender();if(HW.items.every(i=>i.c))toast('오늘 숙제 끝. 수고했어요')});
-$('#hwList').addEventListener('click',e=>{const k=e.target.dataset.del;if(k==null)return;HW.items.splice(+k,1);save('dn-hw',HW);hwRender()});
-$('#hwForm').addEventListener('submit',e=>{e.preventDefault();const t=$('#hwNew').value.trim();if(!t)return;HW.items.push({t,c:false});$('#hwNew').value='';save('dn-hw',HW);hwRender()});
-$('#hwReset').onclick=()=>{HW={d:today(),items:HW_DEF.map(t=>({t,c:false}))};save('dn-hw',HW);hwRender();toast('기본 목록으로 되돌렸어요')};
+const row=(i,k,p)=>`<div class="chk ${i.c?'done':''}"><input type="checkbox" id="${p}${k}" data-${p}="${k}" ${i.c?'checked':''}><span><label for="${p}${k}" style="font-weight:500;font-size:16px;margin:0;color:inherit">${esc(i.t)}</label></span><button type="button" class="ghost" data-del${p}="${k}" aria-label="${esc(i.t)} 삭제">삭제</button></div>`;
+function hwRender(){const C=cur(),n=C.items.length,c=C.items.filter(i=>i.c).length,wn=C.w.length,wc=C.w.filter(i=>i.c).length;
+  $('#hwChars').innerHTML=HW.cs.map((x,k)=>{const d=x.items.filter(i=>i.c).length;return `<button type="button" class="${k===HW.ci?'on':''}" data-ci="${k}">${esc(x.n)} <small>${d}/${x.items.length}</small></button>`}).join('')+`<button type="button" class="add" data-add="1">＋ 캐릭터</button>`;
+  const all=HW.cs.reduce((a,x)=>a+x.items.length,0),done=HW.cs.reduce((a,x)=>a+x.items.filter(i=>i.c).length,0);
+  $('#hwSum').innerHTML=(HW.cs.length>1?`전체 캐릭터 <b>${done} / ${all}</b> 완료 · `:'')+`<a href="#" data-ren="1">「${esc(C.n)}」 이름 바꾸기</a>`+(HW.cs.length>1?` · <a href="#" data-rm="1">이 캐릭터 지우기</a>`:'');
+  $('#hwBar').style.width=(n?c/n*100:0)+'%';$('#hwCnt').textContent=`${C.n} · 오늘 ${c} / ${n} 완료`;$('#hwDate').textContent=HW.d;
+  $('#hwList').innerHTML=C.items.map((i,k)=>row(i,k,'k')).join('')||'<p class="mute">숙제가 없어요. 아래에서 추가하세요.</p>';
+  $('#hwwBar').style.width=(wn?wc/wn*100:0)+'%';$('#hwwCnt').textContent=`주간 숙제 ${wc} / ${wn}`;$('#hwwDay').value=String(HW.wd);
+  $('#hwwList').innerHTML=C.w.map((i,k)=>row(i,k,'w')).join('')||'<p class="mute">주간 숙제가 없어요.</p>'}
+$('#hwList').addEventListener('change',e=>{const k=e.target.dataset.k;if(k==null)return;cur().items[k].c=e.target.checked;hwSave();hwRender();if(cur().items.every(i=>i.c))toast(cur().n+' 오늘 숙제 끝. 수고했어요');window.tnAch&&tnAch()});
+$('#hwList').addEventListener('click',e=>{const k=e.target.dataset.delk;if(k==null)return;cur().items.splice(+k,1);hwSave();hwRender()});
+$('#hwwList').addEventListener('change',e=>{const k=e.target.dataset.w;if(k==null)return;cur().w[k].c=e.target.checked;hwSave();hwRender()});
+$('#hwwList').addEventListener('click',e=>{const k=e.target.dataset.delw;if(k==null)return;cur().w.splice(+k,1);hwSave();hwRender()});
+$('#hwForm').addEventListener('submit',e=>{e.preventDefault();const t=$('#hwNew').value.trim();if(!t)return;cur().items.push({t,c:false});$('#hwNew').value='';hwSave();hwRender()});
+$('#hwwForm').addEventListener('submit',e=>{e.preventDefault();const t=$('#hwwNew').value.trim();if(!t)return;cur().w.push({t,c:false});$('#hwwNew').value='';hwSave();hwRender()});
+$('#hwwDay').onchange=()=>{HW.wd=+$('#hwwDay').value;HW.wk=wkKey();hwSave();hwRender()};
+$('#hwChars').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.add){if(HW.cs.length>=8)return toast('캐릭터는 8개까지예요');const base=cur();HW.cs.push({n:'부캐 '+HW.cs.length,items:base.items.map(i=>({t:i.t,c:false})),w:base.w.map(i=>({t:i.t,c:false}))});HW.ci=HW.cs.length-1;hwSave();hwRender();toast('캐릭터를 추가했어요. 숙제 목록은 지금 캐릭터와 같게 시작해요');return}
+  HW.ci=+b.dataset.ci;hwSave();hwRender()});
+$('#hwSum').addEventListener('click',e=>{const a=e.target.closest('a');if(!a)return;e.preventDefault();
+  if(a.dataset.ren){const box=$('#hwSum');box.innerHTML=`<form id="hwRen" style="display:flex;gap:6px"><input id="hwRenI" maxlength="12" value="${esc(cur().n)}" aria-label="캐릭터 이름"><button>저장</button></form>`;$('#hwRenI').focus();$('#hwRen').onsubmit=ev=>{ev.preventDefault();const v=$('#hwRenI').value.trim();if(v)cur().n=v;hwSave();hwRender()}}
+  if(a.dataset.rm){const box=$('#hwSum');box.innerHTML=`「${esc(cur().n)}」 숙제를 지울까요? <button type="button" class="btn sm" id="hwRmY">지우기</button> <button type="button" class="btn sm ghost" id="hwRmN">취소</button>`;$('#hwRmN').onclick=hwRender;$('#hwRmY').onclick=()=>{HW.cs.splice(HW.ci,1);HW.ci=0;hwSave();hwRender()}}});
+$('#hwReset').onclick=()=>{cur().items=HW_DEF.map(t=>({t,c:false}));hwSave();hwRender();toast('기본 목록으로 되돌렸어요')};
 setInterval(()=>{if(hwDay())hwRender()},60000);
 hwRender();
 
@@ -1523,6 +1545,7 @@ try{initScene()}catch(e){}
   ['ml','📬','우편 챙김','쿠폰 페이지에서 우편 3개 받음 체크',()=>cnt('tn_mail',v=>Object.values(v).filter(Boolean).length)>=3],
   ['hw','📋','숙제 끝','오늘의 숙제 다 끝내기',()=>cnt('dn-hw',v=>v.items.length&&v.items.every(i=>i.c)?1:0)>=1],
   ['bk','💾','유비무환','내 기록 백업 파일 받기',()=>{try{return !!localStorage.getItem('tn_bk_done')}catch(e){return false}}]];
+ const AT=document.getElementById('dqAtt'),AC=document.getElementById('dqAch');
  const toast=t=>{const d=document.createElement('div');d.className='dqtoast';d.innerHTML=t;document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add('on'));setTimeout(()=>{d.classList.remove('on');setTimeout(()=>d.remove(),400)},4200)};
  const checkAch=()=>{const got=ls('tn_ach')||{};const nw=ACH.filter(a=>!got[a[0]]&&a[4]());if(!nw.length)return;nw.forEach(a=>got[a[0]]=TD);ls('tn_ach',got);
   const first=Object.keys(got).length===nw.length&&nw.length>1;toast(first?`🏅 업적 ${nw.length}개를 얻었어요! <a href="/daily/" style="color:var(--gold2)">보기</a>`:`🏅 새 업적 「${esc(nw[0][2])}」${nw.length>1?' 외 '+(nw.length-1)+'개':''} <a href="/daily/" style="color:var(--gold2)">보기</a>`);drawAch()};
@@ -1531,7 +1554,6 @@ try{initScene()}catch(e){}
  document.addEventListener('click',e=>{if(e.target.closest('button,a'))setTimeout(checkAch,1200)},true);
  // ---- 페이지 ----
  const C=document.getElementById('dqCard');if(!C)return;
- const AT=document.getElementById('dqAtt'),AC=document.getElementById('dqAch');
  function drawAch(){if(!AC)return;const got=ls('tn_ach')||{};const n=ACH.filter(a=>got[a[0]]).length;
   AC.innerHTML=`<div class="ch"><span class="med sm"><svg><use href="#i-crown"/></svg></span><h3>내 업적 <small class="mute" style="font-weight:500">${n} / ${ACH.length}</small></h3></div><div class="dqach">${ACH.map(a=>`<div class="${got[a[0]]?'on':''}"><span class="ic">${a[1]}</span><b>${esc(a[2])}</b>${esc(a[3])}</div>`).join('')}</div><p class="small mute" style="margin:10px 0 0">기록은 이 기기 브라우저에만 저장돼요. 기기를 바꾸면 <a href="/backup/">내 기록 백업</a>으로 옮기세요.</p>`}
  function drawAtt(){const now=new Date(Date.now()+9*36e5),y=now.getUTCFullYear(),m=now.getUTCMonth();const first=Date.UTC(y,m,1)/864e5,days=new Date(Date.UTC(y,m+1,0)).getUTCDate(),wd=new Date(Date.UTC(y,m,1)).getUTCDay();const s=new Set(A);
@@ -1627,7 +1649,12 @@ try{initScene()}catch(e){}
   el.querySelector('.vto').onclick=async e=>{const b=e.target.closest('button');if(!b)return;el.querySelectorAll('.vto button').forEach(x=>x.disabled=true);b.textContent='투표하는 중…';
    const ok=await vote(b.dataset.k);if(ok){S[id]=b.dataset.k;ls('tn_vote',S);R[b.dataset.k]=(R[b.dataset.k]||0)+1;await get();if(!R[b.dataset.k])R[b.dataset.k]=1;box(el,id,title,ops)}else{el.querySelectorAll('.vto button').forEach(x=>x.disabled=false);b.textContent='다시 눌러 주세요'}};
   el.querySelector('[data-peek]').onclick=e=>{e.preventDefault();peek[id]=1;box(el,id,title,ops)}}
- const draw=()=>{box(VA,'a','지금 쓰는 무기는?',W);if(CL.length)box(VB,'b','목표 클래스는? (유니크 · 레전드리)',CL);else VB.remove()};
+ const SV=['판미르','하스터','루나','이사벨','레가스','라우엘','그리드','아이린','루비','유라','후로이','피아로','토반','파그마','뮐러','마드라','칸','아그너스','휴렌트','바사라'].map((n,i)=>['s'+String(i+1).padStart(2,'0'),n,i<6?'크리에이터 서버':'일반 서버']);
+ const LV=[['l1','Lv.1~29','시작 구간'],['l2','Lv.30~39','길드 · 거래소'],['l3','Lv.40~44','첫 고비'],['l4','Lv.45~49','주간 던전'],['l5','Lv.50~54','필드 보스'],['l6','Lv.55 이상','고레벨']];
+ const PY=[['p0','무과금','0원'],['p1','소과금','월정액 · 패스 정도'],['p2','중과금','가끔 상품 구매'],['p3','고과금','많이 써요']];
+ const draw=()=>{box(VA,'a','지금 쓰는 무기는?',W);if(CL.length)box(VB,'b','목표 클래스는? (유니크 · 레전드리)',CL);else VB.remove();
+  const C=document.getElementById('vtC'),D=document.getElementById('vtD'),E=document.getElementById('vtE');
+  if(SV.length)box(C,'c','어느 서버에서 해요?',SV);else C.remove();box(D,'d','지금 내 레벨은?',LV);box(E,'e','과금 스타일은? (익명)',PY)};
  let done=false;const load=()=>{if(done)return;done=true;get().then(draw)};
  if(/\/vote/.test(location.pathname)||location.hash==='#vote'||!('IntersectionObserver' in window))load();else{const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io.disconnect();load()}},{rootMargin:'800px'});io.observe(VA)}
 })();

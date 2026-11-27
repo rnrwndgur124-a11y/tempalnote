@@ -161,7 +161,7 @@ service cloud.firestore {
         && request.resource.data.diff(resource.data).affectedKeys().size() == 1
         && request.resource.data.diff(resource.data).affectedKeys().toList()[0].matches('^[a-z0-9]{2,8}$')
         && request.resource.data[request.resource.data.diff(resource.data).affectedKeys().toList()[0]] == resource.data.get(request.resource.data.diff(resource.data).affectedKeys().toList()[0], 0) + 1
-        && request.resource.data.size() <= 40;
+        && request.resource.data.size() <= 70;
     }
 
     // 지금 보는 사람: on/{세션} 에 서버 시각만 기록 (개인 정보 없음)

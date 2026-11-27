@@ -92,7 +92,7 @@ async def main():
         await pg.goto(U + 'calc/'); await pg.wait_for_timeout(400)
         if await pg.input_value('#cP') != '12': fails.append('다른 페이지를 다녀오면 강화 계산기 입력이 지워짐')
         await pg.goto(U + 'homework/'); await pg.wait_for_timeout(400)
-        if not (await pg.inner_text('#hwCnt')).startswith('1 '): fails.append('다른 페이지를 다녀오면 숙제 체크가 지워짐')
+        if '오늘 1 /' not in (await pg.inner_text('#hwCnt')): fails.append('다른 페이지를 다녀오면 숙제 체크가 지워짐')
         await pg.goto(U + 'starter/'); await pg.wait_for_timeout(400)
         if not (await pg.inner_text('#ckCnt')).startswith('1 '): fails.append('다른 페이지를 다녀오면 첫 주 체크리스트가 지워짐')
         await ctx.close()
