@@ -215,7 +215,7 @@ label{font-weight:700;font-size:13.5px;display:block;margin-bottom:6px;color:#c9
 .gcrow{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr) minmax(0,1fr) 36px;gap:6px;margin-bottom:6px;align-items:center}
 .gcx{min-height:36px;padding:0;border-radius:8px;background:#ffffff08;border:1px solid var(--line2);color:#c9d3e3;font-size:18px}
 .gcup{color:#7de0a8;font-weight:800}.gcdn{color:#ffb070;font-weight:800}
-.svb button b{color:var(--gold2);margin-left:4px}.svb button.on b{color:#1b1206}
+.svb button b{color:var(--gold2);margin-left:4px}.svb button.mine{box-shadow:0 0 0 2px var(--gold) inset}.svb button.mine::before{content:'⭐ '}.svb button.on b{color:#1b1206}
 .hqbar{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px}.hqbar label{display:block;font-size:12px;color:var(--mute,#9aa6b8);margin-bottom:3px}.hqbar input{width:120px}.hqgrow{flex:1;min-width:200px}.hqgrow input{width:100%}
 .hqchips{margin-top:8px;gap:6px}.hqchips button{min-height:32px;padding:3px 12px;font-size:13px}
 .hqg{border:1px solid var(--line2);border-radius:12px;margin:0 0 8px;background:#ffffff04;overflow:hidden;min-width:0}.hqs{overflow-wrap:anywhere}.hqg>summary{cursor:pointer;list-style:none;padding:10px 12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}.hqg>summary::-webkit-details-marker{display:none}
@@ -1493,6 +1493,7 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
     <div class="chips svb" style="margin-bottom:6px"><button type="button" data-sv="판미르">판미르</button><button type="button" data-sv="하스터">하스터</button><button type="button" data-sv="루나">루나</button><button type="button" data-sv="이사벨">이사벨</button><button type="button" data-sv="레가스">레가스</button><button type="button" data-sv="라우엘">라우엘</button></div>
     <p class="small" style="margin:10px 0 6px"><b>일반 서버 14개</b></p>
     <div class="chips svb" style="margin-bottom:6px"><button type="button" data-sv="그리드">그리드</button><button type="button" data-sv="아이린">아이린</button><button type="button" data-sv="루비">루비</button><button type="button" data-sv="유라">유라</button><button type="button" data-sv="후로이">후로이</button><button type="button" data-sv="피아로">피아로</button><button type="button" data-sv="토반">토반</button><button type="button" data-sv="파그마">파그마</button><button type="button" data-sv="뮐러">뮐러</button><button type="button" data-sv="마드라">마드라</button><button type="button" data-sv="칸">칸</button><button type="button" data-sv="아그너스">아그너스</button><button type="button" data-sv="휴렌트">휴렌트</button><button type="button" data-sv="바사라">바사라</button></div>
+    <div id="svMine" class="small" style="margin:10px 0 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap"></div>
     <ul class="facts" style="margin-top:10px">
       <li>캐릭터 · 길드 · 파티는 <b>서버마다 따로</b>예요. 방송인과 같이 하려면 같은 서버에서 시작하세요</li>
       <li>일반 서버 ↔ 크리에이터 서버 사이를 <b>차원 이동</b>하면 전투 페널티가 붙을 수 있어요 (공식 안내)</li>
@@ -2058,6 +2059,7 @@ const CHG=[
 (()=>{const box=document.getElementById('myBox');if(!box)return;const it=[];const g=k=>{try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}};
  const hw=g('dn-hw');if(hw&&hw.items&&hw.items.length){const td=new Date(Date.now()-5*3600e3).toLocaleDateString('ko-KR');const c=hw.d===td?hw.items.filter(i=>i.c).length:0;it.push(`<a href="#homework">📋 오늘 숙제 <b>${c}/${hw.items.length}</b>${c>=hw.items.length?' 끝!':''}</a>`)}
  const bs=(g('dn-boss')||[]).filter(b=>b.at&&b.at>Date.now()).sort((a,b)=>a.at-b.at);if(bs.length){const m=Math.round((bs[0].at-Date.now())/60000);it.push(`<a href="#timer">⏱ ${esc(bs[0].n)} <b>${m<60?m+'분':Math.floor(m/60)+'시간 '+m%60+'분'}</b> 뒤</a>`)}
+ let sv='';try{sv=localStorage.getItem('tn_sv')||''}catch(e){}if(sv)it.unshift(`<a href="#streamers">⭐ 내 서버 <b>${esc(sv)}</b></a>`);
  const hq=g('tn_hq');if(hq&&hq.done){const n=Object.keys(hq.done).length;if(n)it.push(`<a href="#hidden">🗝 히든 퀘스트 <b>${n}/156</b></a>`)}
  const cl=g('tn_col');if(cl&&cl.done){const v=Object.values(cl.done);if(v.length)it.push(`<a href="#collect">📦 수집 완료 <b>${v.filter(x=>x===2).length}</b>${v.some(x=>x===1)?' · 절반 '+v.filter(x=>x===1).length:''}</a>`)}
  const sa=matchMedia('(display-mode: standalone)').matches||navigator.standalone;let x=null;try{x=localStorage.getItem('tn_inst_x')}catch(e){}
@@ -3124,6 +3126,19 @@ try{initScene()}catch(e){}
  bs.forEach(b=>{const n=STRM.filter(r=>r[0]===b.dataset.sv).length;if(n)b.innerHTML=b.dataset.sv+' <b>'+n+'</b>';else b.title='아직 확인된 방송인 없음'});
  document.getElementById('servers').addEventListener('click',e=>{const b=e.target.closest('.svb button');if(!b)return;const c=document.querySelector('#stChips button[data-v="'+b.dataset.sv+'"]');
   bs.forEach(x=>x.classList.toggle('on',x===b));if(c){c.click();document.getElementById('stList').scrollIntoView({behavior:'smooth',block:'start'})}else{const L=document.getElementById('stList');L.innerHTML='<div class="card"><h3>'+b.dataset.sv+' 서버</h3><p class="small mute" style="margin:0">아직 확인된 방송인이 없어요. 이 서버에서 하는 방송인을 알면 <a href="#contact">제보</a>해 주세요.</p></div>';[...document.querySelectorAll('#stChips button')].forEach(x=>x.classList.remove('on'));L.scrollIntoView({behavior:'smooth',block:'start'})}})})();
+// 내 서버 저장
+(function(){const box=document.getElementById('svMine');if(!box)return;const bs=[...document.querySelectorAll('#servers .svb button')];
+ const g=()=>{try{return localStorage.getItem('tn_sv')||''}catch(e){return ''}},st=v=>{try{v?localStorage.setItem('tn_sv',v):localStorage.removeItem('tn_sv')}catch(e){}};
+ let pick='';
+ const draw=()=>{const m=g();bs.forEach(b=>b.classList.toggle('mine',b.dataset.sv===m));
+  box.innerHTML=(m?'⭐ 내 서버 <b>'+m+'</b> ':'<span class="mute">내 서버를 정해 두면 다음에 바로 보여요</span>')+(pick&&pick!==m?' <button type="button" class="btn sm" data-a="set">⭐ '+pick+'을(를) 내 서버로</button>':'')+(m?' <button type="button" class="btn sm ghost" data-a="go">'+m+' 방송인 보기</button> <button type="button" class="btn sm ghost" data-a="del">해제</button>':'')};
+ document.getElementById('servers').addEventListener('click',e=>{const b=e.target.closest('.svb button');if(b){pick=b.dataset.sv;draw();return}
+  const a=e.target.closest('#svMine button');if(!a)return;const m=g();
+  if(a.dataset.a==='set'){st(pick);pick='';draw()}else if(a.dataset.a==='del'){st('');draw()}else if(a.dataset.a==='go'){const t=bs.find(x=>x.dataset.sv===m);t&&t.click()}});
+ draw();
+ if(!document.getElementById('servers').closest('.page.on')){}
+})();
+
 // ---------- 히든 퀘스트 ----------
 (()=>{const L=document.getElementById('hqList');if(!L)return;
  const RG=document.getElementById('hqReg'),OP=document.getElementById('hqOpt'),SM=document.getElementById('hqSum'),MI=document.getElementById('hqMain'),LV=document.getElementById('hqLv'),Q=document.getElementById('hqQ'),ML=document.getElementById('hqMainL');

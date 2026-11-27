@@ -106,6 +106,7 @@ const CHG=[
 (()=>{const box=document.getElementById('myBox');if(!box)return;const it=[];const g=k=>{try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}};
  const hw=g('dn-hw');if(hw&&hw.items&&hw.items.length){const td=new Date(Date.now()-5*3600e3).toLocaleDateString('ko-KR');const c=hw.d===td?hw.items.filter(i=>i.c).length:0;it.push(`<a href="/homework/">📋 오늘 숙제 <b>${c}/${hw.items.length}</b>${c>=hw.items.length?' 끝!':''}</a>`)}
  const bs=(g('dn-boss')||[]).filter(b=>b.at&&b.at>Date.now()).sort((a,b)=>a.at-b.at);if(bs.length){const m=Math.round((bs[0].at-Date.now())/60000);it.push(`<a href="/timer/">⏱ ${esc(bs[0].n)} <b>${m<60?m+'분':Math.floor(m/60)+'시간 '+m%60+'분'}</b> 뒤</a>`)}
+ let sv='';try{sv=localStorage.getItem('tn_sv')||''}catch(e){}if(sv)it.unshift(`<a href="/streamers/">⭐ 내 서버 <b>${esc(sv)}</b></a>`);
  const hq=g('tn_hq');if(hq&&hq.done){const n=Object.keys(hq.done).length;if(n)it.push(`<a href="/hidden/">🗝 히든 퀘스트 <b>${n}/156</b></a>`)}
  const cl=g('tn_col');if(cl&&cl.done){const v=Object.values(cl.done);if(v.length)it.push(`<a href="/collect/">📦 수집 완료 <b>${v.filter(x=>x===2).length}</b>${v.some(x=>x===1)?' · 절반 '+v.filter(x=>x===1).length:''}</a>`)}
  const sa=matchMedia('(display-mode: standalone)').matches||navigator.standalone;let x=null;try{x=localStorage.getItem('tn_inst_x')}catch(e){}
@@ -1172,6 +1173,19 @@ try{initScene()}catch(e){}
  bs.forEach(b=>{const n=STRM.filter(r=>r[0]===b.dataset.sv).length;if(n)b.innerHTML=b.dataset.sv+' <b>'+n+'</b>';else b.title='아직 확인된 방송인 없음'});
  document.getElementById('servers').addEventListener('click',e=>{const b=e.target.closest('.svb button');if(!b)return;const c=document.querySelector('#stChips button[data-v="'+b.dataset.sv+'"]');
   bs.forEach(x=>x.classList.toggle('on',x===b));if(c){c.click();document.getElementById('stList').scrollIntoView({behavior:'smooth',block:'start'})}else{const L=document.getElementById('stList');L.innerHTML='<div class="card"><h3>'+b.dataset.sv+' 서버</h3><p class="small mute" style="margin:0">아직 확인된 방송인이 없어요. 이 서버에서 하는 방송인을 알면 <a href="/contact/">제보</a>해 주세요.</p></div>';[...document.querySelectorAll('#stChips button')].forEach(x=>x.classList.remove('on'));L.scrollIntoView({behavior:'smooth',block:'start'})}})})();
+// 내 서버 저장
+(function(){const box=document.getElementById('svMine');if(!box)return;const bs=[...document.querySelectorAll('#servers .svb button')];
+ const g=()=>{try{return localStorage.getItem('tn_sv')||''}catch(e){return ''}},st=v=>{try{v?localStorage.setItem('tn_sv',v):localStorage.removeItem('tn_sv')}catch(e){}};
+ let pick='';
+ const draw=()=>{const m=g();bs.forEach(b=>b.classList.toggle('mine',b.dataset.sv===m));
+  box.innerHTML=(m?'⭐ 내 서버 <b>'+m+'</b> ':'<span class="mute">내 서버를 정해 두면 다음에 바로 보여요</span>')+(pick&&pick!==m?' <button type="button" class="btn sm" data-a="set">⭐ '+pick+'을(를) 내 서버로</button>':'')+(m?' <button type="button" class="btn sm ghost" data-a="go">'+m+' 방송인 보기</button> <button type="button" class="btn sm ghost" data-a="del">해제</button>':'')};
+ document.getElementById('servers').addEventListener('click',e=>{const b=e.target.closest('.svb button');if(b){pick=b.dataset.sv;draw();return}
+  const a=e.target.closest('#svMine button');if(!a)return;const m=g();
+  if(a.dataset.a==='set'){st(pick);pick='';draw()}else if(a.dataset.a==='del'){st('');draw()}else if(a.dataset.a==='go'){const t=bs.find(x=>x.dataset.sv===m);t&&t.click()}});
+ draw();
+ if(!document.getElementById('servers').closest('.page.on')){}
+})();
+
 // ---------- 히든 퀘스트 ----------
 (()=>{const L=document.getElementById('hqList');if(!L)return;
  const RG=document.getElementById('hqReg'),OP=document.getElementById('hqOpt'),SM=document.getElementById('hqSum'),MI=document.getElementById('hqMain'),LV=document.getElementById('hqLv'),Q=document.getElementById('hqQ'),ML=document.getElementById('hqMainL');
