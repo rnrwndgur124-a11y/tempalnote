@@ -37,6 +37,7 @@ const PAGES={
  hidden:{t:'히든 퀘스트 156개',d:'지역 · 공통 히든 퀘스트 시작 조건 · 위치 · 보상 · 내 진행 체크',i:'i-map',b:'new'},
  drops:{t:'드롭 찾기 · 보스 · 사냥터',d:'보스 35 · 사냥터 95곳 드롭 · 아이템으로 거꾸로 찾기',i:'i-raid',b:'new'},
  collect:{t:'수집 1,091개 · 플래너',d:'수집 전체 · 능력치로 찾기 · 내 효과 합계',i:'i-check',b:'new'},
+ growth:{t:'성장 계산기 · 성장 도감',d:'오버기어드 · 스킬 강화 · 잠재력 · 무기 개조 · 갓 핸드 · 펫 · 차원 카드',i:'i-calc',b:'new'},
  archive:{t:'탐사 · 아카이브',d:'데이터 큐브 · 히든 퀘스트 · 지역 달성도 체크리스트',i:'i-map',b:'new'},
  prob:{t:'확률 총정리',d:'강화 · 축복 · 오버기어드 · 소환 · 잠재력 공식 확률',i:'i-anvil',b:'hot'},
  craft:{t:'제작 도감',d:'레시피 231종 · 재료 · 성공률 · 골드',i:'i-anvil',b:'new'},
@@ -53,7 +54,7 @@ const PAGES={
 (()=>{try{let pv=sessionStorage.getItem('tn_prev');if(pv===null){pv=localStorage.getItem('tn_vd')||'';sessionStorage.setItem('tn_prev',pv)}window.__PREV=pv}catch(e){window.__PREV=''}})();
 (()=>{const P=window.PDATE;if(!P)return;const td=new Date(Date.now()+9*3600e3).toISOString().slice(0,10);for(const k in PAGES){if(PAGES[k].b==='new')delete PAGES[k].b;if(P[k]===td&&!PAGES[k].b)PAGES[k].b='new'}})();
 window.PAGES=PAGES;
-const GROUPS=[{n:'도구',e:'TOOLS',k:['sim','quiz','godhand','enhance','calc','gear','trade','timer','homework','backup']},{n:'가이드',e:'GUIDES',k:['prob','hunt','drops','collect','weapons','starter','map','codex','archive','hidden','craft','titles','achieve','pets','outfit','systems']},{n:'정보',e:'INFO',k:['coupons','streamers','news','videos','official','roadmap','bm','about']}];
+const GROUPS=[{n:'도구',e:'TOOLS',k:['sim','quiz','godhand','enhance','calc','gear','growth','trade','timer','homework','backup']},{n:'가이드',e:'GUIDES',k:['prob','hunt','drops','collect','weapons','starter','map','codex','archive','hidden','craft','titles','achieve','pets','outfit','systems']},{n:'정보',e:'INFO',k:['coupons','streamers','news','videos','official','roadmap','bm','about']}];
 const link=k=>`<a href="/${k}/" data-k="${k}">${med(PAGES[k].i,'sm')}<span>${PAGES[k].t}<small>${PAGES[k].d}</small></span></a>`;
 $('#menu').innerHTML=GROUPS.map((g,gi)=>`<div class="dd" data-g="${gi}"><button type="button" aria-haspopup="true">${g.n}</button><div class="ddm">${g.k.map(link).join('')}</div></div>`).join('');
 $('#drawer').innerHTML=GROUPS.map(g=>`<h4>${g.e}</h4>${g.k.map(link).join('')}`).join('');
@@ -80,6 +81,7 @@ $('#homeGuides').innerHTML=['systems','weapons','bm','coupons'].map(tile).join('
  const d=pv.slice(5).replace('-','/');box.innerHTML=`<div class="since"><b>다시 오셨네요 👋</b> 지난 방문(${d}) 이후 바뀐 곳 <span class="mute">${ks.length}곳</span><div class="sl">${ks.slice(0,10).map(k=>`<a href="/${k}/">${esc(PAGES[k].t)}</a>`).join('')}</div></div>`})();
 // ---------- 오늘 업데이트 ----------
 const CHG=[
+ ['2026-11-27','성장 계산기 — 오버기어드 · 스킬 강화 · 잠재력 · 무기 개조 · 갓 핸드 · 펫','growth'],
  ['2026-11-27','수집 1,091개 전체 · 능력치로 찾기 · 내 효과 합계','collect'],
  ['2026-11-27','보스 35 · 사냥터 95곳 드롭 — 아이템으로 거꾸로 찾기','drops'],
  ['2026-11-27','히든 퀘스트 156개 — 시작 조건 · 위치 · 보상 · 내 진행 체크','hidden'],
@@ -1297,6 +1299,74 @@ try{initScene()}catch(e){}
   EN.innerHTML=EK.map(([k,t])=>`<button type="button" data-e="${k}">${t}</button>`).join('');draw()}
  const load=()=>{if(D||loading)return;loading=true;fetch('/data/collect.json').then(r=>r.json()).then(boot).catch(()=>{loading=false;L.innerHTML='<p class="mute small">목록을 못 불러왔어요. 새로고침해 주세요.</p>'})};
  if(/\/collect/.test(location.pathname)||location.hash==='#collect'||!('IntersectionObserver' in window))load();else{const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io.disconnect();load()}},{rootMargin:'1500px'});io.observe(L)}
+})();
+// ---------- 성장 계산기 ----------
+(()=>{const V=document.getElementById('grView');if(!V)return;
+ const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const ls=(k,v)=>{try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||'null');localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}};
+ const TB=document.getElementById('grTab');let D=null,loading=false;const S=Object.assign({t:'og'},ls('tn_grow')||{});const put=()=>ls('tn_grow',S);
+ const n=x=>Math.round(x).toLocaleString();const f1=x=>(Math.round(x*10)/10).toLocaleString();
+ const sv=(si,v)=>{const s=D.st[si];return s[1]?(Math.round(v)/100).toFixed(2).replace(/\.?0+$/,'')+'%':(v>0?'+':'')+v.toLocaleString()};
+ const stx=a=>a.map(x=>esc(D.st[x[0]][0])+' '+sv(x[0],x[1])).join(' · ');
+ const chips=(id,arr,cur)=>`<div class="chips hqchips" id="${id}">${arr.map(([k,t])=>`<button type="button" data-k="${esc(k)}"${String(k)===String(cur)?' class="on"':''}>${esc(t)}</button>`).join('')}</div>`;
+ const tbl=(h,rows)=>`<div class="scroll"><table class="ptbl grtbl"><thead><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+ const R={};
+ // 1 오버기어드 슬롯
+ R.og=()=>{const P=D.og;S.ogp=S.ogp??0;S.ogf=S.ogf??0;S.ogt=S.ogt??10;const p=P[S.ogp]||P[0];const mx=p[3].length;
+  const from=Math.max(0,Math.min(+S.ogf,mx)),to=Math.max(from,Math.min(+S.ogt,mx));let g=0,m=0,a=0;
+  const rows=p[3].map(s=>{const avg=s[5].reduce((t,c)=>t+c[0]*c[1]/100,0),tr=s[4]/avg;if(s[0]>from&&s[0]<=to){a+=tr;g+=tr*s[1];m+=tr*s[3]}return [`Lv.${s[0]-1} → ${s[0]}`,n(s[1]),`${esc(s[2])} ${s[3]}`,n(s[4]),s[5].map(c=>`+${n(c[0])} (${f1(c[1])}%)`).join(' · '),f1(tr)+'번']});
+  return `<h3 style="margin-top:0">오버기어드 슬롯 강화 비용</h3><p class="grsub">오버기어드 강화는 실패가 없고, 시도마다 경험치를 받아요. Lv.10 · 15부터 한 번에 받는 경험치가 줄어 시도가 늘어요.${p[1]?` <b>${esc(p[0])}</b> 슬롯은 <b>${esc(p[1])} Lv.${p[2]}</b>을 찍으면 열려요.`:''}</p>`+chips('ogP',P.map((x,i)=>[i,x[0]]),S.ogp)+
+  `<div class="grrow" style="margin-top:10px"><div><label>지금 레벨</label><input id="ogF" type="number" min="0" max="${mx}" value="${from}"></div><div><label>목표 레벨</label><input id="ogT" type="number" min="0" max="${mx}" value="${to}"></div></div>`+
+  `<div class="grbig"><div><small>평균 시도</small><b>${f1(a)}번</b></div><div><small>골드</small><b>${n(g)}</b></div><div><small>${esc(p[3][0][2])}</small><b>${n(m)}개</b></div></div>`+tbl(['단계','시도당 골드','시도당 재료','필요 경험치','한 번에 받는 경험치','평균 시도'],rows)};
+ // 2 스킬 강화
+ R.sk=()=>{const W=['대검','활','바이블','지팡이'];S.skw=S.skw||'대검';const L=D.sk.map((s,i)=>[s,i]).filter(([s])=>s[1]===S.skw);if(S.ski==null||!D.sk[S.ski]||D.sk[S.ski][1]!==S.skw)S.ski=L[0][1];const s=D.sk[S.ski],r=D.skr[s[4]];
+  let C=[0],A=[0];r.s.forEach((x,i)=>{const p=x[2]/100,d=x[4]/100,k=i+1;C[k]=(x[1]+d*(C[k-1]||0))/p;A[k]=(1+d*(A[k-1]||0))/p});let cg=0,ca=0;
+  const rows=r.s.map((x,i)=>{cg+=C[i+1];ca+=A[i+1];return [`Lv.${x[0]-1} → ${x[0]}`,n(x[1]),x[2]+'%',x[3]?x[3]+'%':'—',x[4]?x[4]+'%':'—',f1(A[i+1])+'번 · '+n(C[i+1]),`<b>${f1(ca)}번 · ${n(cg)}</b>`,esc(s[6][i]||'')]});
+  return `<h3 style="margin-top:0">스킬 강화 — 효과 · 확률 · 평균 비용</h3><p class="grsub">실패하면 「유지」되거나 「1단계 하락」해요(Lv.6부터). 평균 비용은 하락까지 넣어 계산한 기대값이에요. 재료: ${esc(r.m)} (시도마다)</p>`+chips('skW',W.map(w=>[w,w]),S.skw)+chips('skI',L.map(([x,i])=>[i,`${x[0]} · ${x[2]}`]),S.ski)+
+  `<div class="grcell"><b>${esc(s[0])}</b> <span class="hqt">${esc(s[2])} · ${esc(s[3])}</span><br>${esc(s[5])}</div>`+tbl(['단계','골드','성공','유지','하락','이 단계 평균','처음부터 누적','바뀌는 효과'],rows)};
+ // 3 잠재력
+ R.pt=()=>{S.ptb=S.ptb??0;const b=D.pt[S.ptb]||D.pt[0];
+  return `<h3 style="margin-top:0">잠재력 보드 「${esc(b[0])}」 · Lv.${b[1]}부터</h3><p class="grsub">칸마다 나올 수 있는 능력치와 단계별 확률, 줄마다 붙은 결속 효과예요. 칸을 바꿀 때 드는 재료는 칸 옆에 적었어요.</p>`+chips('ptB',D.pt.map((x,i)=>[i,`${x[0]} (Lv.${x[1]})`]),S.ptb)+
+  b[2].map(l=>`<details class="mdx"${l[0]===1?' open':''}><summary><b>${l[0]}번 줄</b> <span class="small mute">Lv.${l[1]} 열림 · 칸 ${l[2].length}개${l[3].length?' · 결속 '+esc(stx([l[3][0]])):''}</span></summary>`+l[2].map((c,ci)=>{const T=c[2].reduce((t,x)=>t+x[1].reduce((u,y)=>u+y[2],0),0);return `<div class="grcell"><b>${ci+1}칸</b> <span class="grsub">${esc(c[0])} ${c[1]}개</span><br>${c[2].map(x=>`${esc(D.st[x[0]][0])}: ${x[1].map(y=>`${y[0]}단 ${sv(x[0],y[1])} <span class="grsub">${f1(y[2]/T*100)}%</span>`).join(' · ')}`).join('<br>')}</div>`}).join('')+(l[3].length?`<p class="small" style="margin:6px 0">결속 효과: ${l[3].map((x,i)=>`${i+1}단계 ${esc(D.st[x[0]][0])} ${sv(x[0],x[1])}`).join(' → ')}</p>`:'')+'</details>').join('')};
+ // 4 무기 개조
+ R.wm=()=>{S.wmi=S.wmi??0;const L=D.wm.map((w,i)=>[i,(w[0][0]||['?'])[0]+(w[0].length>1?' 외':'')]);const w=D.wm[S.wmi]||D.wm[0];
+  return `<h3 style="margin-top:0">무기 개조</h3><p class="grsub">무기마다 개조 부위가 있고, 부위마다 옵션 하나를 골라요. 옵션마다 필요한 <b>무기 강화 단계</b>가 달라요.</p>`+chips('wmI',L,S.wmi)+
+  `<div class="grcell">대상 무기: ${w[0].map(x=>`<b>${esc(x[0])}</b> <span class="grsub">${esc(x[1])} ${esc(x[2])}</span>`).join(' · ')}</div>`+w[1].map(p=>`<h4 style="margin:12px 0 4px">${esc(p[0])}</h4>`+tbl(['옵션','필요 강화','비용','효과'],p[1].map(o=>[o[0],'+'+o[1],o[3]?n(o[3])+' '+esc(o[2]):'없음',o[5].length?`<b>${esc(o[5][0])}</b><br><span class="grsub">${esc(o[5][1])}</span>`:stx(o[4])]))).join('')};
+ // 5 갓 핸드
+ R.gh=()=>{S.ghk=S.ghk||'공격형';const K=['공격형','방어형','보조형'];const G=['레전드리','유니크','에픽','레어','노멀'];const M=D.gh.filter(m=>m[1]===S.ghk).sort((a,b)=>G.indexOf(a[2])-G.indexOf(b[2])||b[3]-a[3]);
+  const comp=D.ghcompose.filter(c=>c[2]).map(c=>{const dr=D.ghdraw[D.ghcomposeDraw[c[1]+'|'+c[0]]]||[];return [c[0]==='basic'?'합성':'마일리지',esc(c[1]),`${esc(c[3])} ${c[2]}개`,dr.map(x=>`${esc(x[0])} ${x[1]}%`).join(' · ')]});
+  return `<h3 style="margin-top:0">갓 핸드 — 메모리 · 마스터리 · 합성</h3>`+tbl(['칸','종류','여는 조건'],D.ghslot.map(x=>[x[0],esc(x[1]),esc(x[2])]))+
+  `<h4 style="margin:14px 0 4px">합성 · 마일리지 결과 확률</h4>`+tbl(['방식','등급','필요','결과'],comp)+
+  `<h4 style="margin:14px 0 4px">재소환 다이아</h4>`+tbl(['등급','1회','2회','3회','4회','5회'],Object.entries(D.ghreroll).map(([g,a])=>[esc(g),...a.map(x=>n(x[1]))]))+
+  `<h4 style="margin:14px 0 4px">마스터리 (메모리 파워 합계로 단계가 열려요)</h4>`+tbl(['단계','필요 파워','전투력','고르는 옵션'],D.ghm.map(s=>[s[0],n(s[1]),n(s[2]),s[3].map(o=>`<b>${esc(o[0])}</b> ${stx(o[2])}`).join('<br>')]))+
+  `<h4 style="margin:14px 0 4px">메모리 ${D.gh.length}종 · 파워</h4>`+chips('ghK',K.map(k=>[k,k]),S.ghk)+tbl(['이름','등급','파워'],M.map(m=>[esc(m[0]),esc(m[2]),n(m[3])]))};
+ // 6 차원 카드
+ R.dc=()=>`<h3 style="margin-top:0">차원 카드 ${D.dc.length}장</h3><p class="grsub">카드를 모을수록 보유 점수가 쌓이고, 점수 구간마다 능력치 · 장착 슬롯 보상이 있어요.</p>`+tbl(['카드','등급','점수','효과','레벨별 수치'],D.dc.map(c=>[`<b>${esc(c[0])}</b>${c[4]?' <span class="hqt">시즌</span>':''}`,esc(c[1]),c[2],esc(c[5])+(c[6]?`<br><span class="grsub">${esc(c[6])}</span>`:''),c[7].map((l,i)=>l.length?`Lv.${i+1} ${stx(l)}`:'').filter(Boolean).join('<br>')||'—']))+`<h4 style="margin:14px 0 4px">보유 점수 보상</h4>`+tbl(['점수','보상'],D.dcx.map(r=>[n(r[0]),r[1].length?stx(r[1]):esc(r[2])]));
+ // 7 도안
+ R.bp=()=>`<h3 style="margin-top:0">도안 등록 보상</h3><p class="grsub">등급별로 등록한 도안 개수가 쌓이면 능력치가 켜져요.</p>`+D.bp.map(b=>`<h4 style="margin:12px 0 4px">${esc(b[0])} 도안 ${b[1].length}종</h4><p class="grsub" style="margin:0 0 4px">${esc(b[1].join(' · '))}</p>`+tbl(['등록 개수','능력치'],b[2].map(r=>[r[0]+'개',stx(r[1])]))).join('');
+ // 8 왕실 무기고
+ R.ar=()=>{const sl=Object.entries(D.ar.slots);S.ars=S.ars||'1';const r=D.ar.rules[S.ars]||{};const G=['노멀','레어','에픽','유니크'];
+  return `<h3 style="margin-top:0">왕실 무기고 납품</h3><p class="grsub">강화한 장비를 납품하면 템빨 코인을 받아요. 등급 · 강화 단계마다 성공 확률과 코인이 달라요. 실패하면 재료를 대신 줘요.</p>`+chips('arS',sl,S.ars)+
+  G.filter(g=>r[g]).map(g=>`<h4 style="margin:12px 0 4px">${g}</h4>`+tbl(['강화','납품 성공','템빨 코인','실패하면'],r[g].map(x=>['+'+x[0],x[1]+'%',n(x[2]),x[3]?`${esc(x[3])} ${x[4]}개`:'—']))).join('')+
+  `<h4 style="margin:14px 0 4px">무기고 레벨 보상</h4>`+tbl(['레벨','누적 점수','보상'],D.ar.ms.map(m=>['Lv.'+m[0],n(m[1]),m[2].map(x=>esc(x[0])+' '+n(x[1])).join(' · ')]))};
+ // 9 펫
+ R.pet=()=>{const K=['동행','지상 탈것','비행 탈것'];S.pk=S.pk||'동행';const L=D.pet.filter(p=>p[1]===S.pk).sort((a,b)=>b[2]-a[2]);
+  return `<h3 style="margin-top:0">펫 ${D.pet.length}종 — 효과 · 도감 보상</h3><p class="grsub">Lv.1과 최대 레벨 효과를 나란히 보여 줘요. 도감 보상은 그 레벨을 처음 찍을 때 받아요.</p>`+chips('pK',K.map(k=>[k,k+' '+D.pet.filter(p=>p[1]===k).length]),S.pk)+
+  tbl(['펫','단계','Lv.1 효과','최대 Lv 효과','도감 보상'],L.map(p=>{const lv=Object.keys(p[5]).map(Number).sort((a,b)=>a-b);return [`<b>${esc(p[0])}</b>${p[3]?`<br><span class="grsub">${esc(p[3])}</span>`:''}`,p[2]+'단계',stx(p[5][lv[0]]||[]),`Lv.${p[6]} ${stx(p[5][lv[lv.length-1]]||[])}`,p[7].map(r=>`Lv.${r[0]} ${esc(r[1])} ${r[2]}`).join('<br>')||'—']}))};
+ // 10 몬스터 도감 성장
+ R.mg=()=>{const q=(S.mgq||'').trim();const L=D.mg.filter(m=>!q||m[0].includes(q)||m[2].includes(q)).sort((a,b)=>(a[1]||0)-(b[1]||0));
+  return `<h3 style="margin-top:0">몬스터 도감 성장 ${D.mg.length}종</h3><p class="grsub">몬스터마다 등록 재료를 단계별로 넣으면 보상을 받아요. 몬스터 이름이나 재료로 찾아보세요.</p><input id="mgQ" type="search" value="${esc(q)}" placeholder="몬스터 · 재료 이름" style="width:100%;margin-bottom:8px">`+
+  tbl(['몬스터','재료','단계별 필요 개수 → 보상'],L.slice(0,120).map(m=>[`<b>${esc(m[0])}</b> <span class="grsub">Lv.${m[1]||'?'}</span>`,esc(m[2]),m[3].map(s=>`${s[0]}단계 ${s[1]}개 → ${esc(s[2])} ${n(s[3])}`).join('<br>')]))+(L.length>120?`<p class="small mute">${L.length-120}종 더 있어요. 이름으로 찾아보세요.</p>`:'')};
+ // 11 콘텐츠 해금
+ R.ul=()=>`<h3 style="margin-top:0">콘텐츠 해금 조건 ${D.ul.length}개</h3>`+tbl(['콘텐츠','여는 조건'],D.ul.map(u=>[`<b>${esc(u[0])}</b>`,esc(u[1])]))+`<p class="small mute">레벨 · 퀘스트별로 받는 보상은 <a href="/starter/">첫날 가이드</a>의 「언제 뭐가 열리나」 표에 있어요.</p>`;
+ function draw(){if(!D)return;if(!R[S.t])S.t='og';V.innerHTML=R[S.t]();[...TB.children].forEach(b=>b.classList.toggle('on',b.dataset.t===S.t));put()}
+ TB.onclick=e=>{const b=e.target.closest('button');if(!b)return;S.t=b.dataset.t;draw()};
+ V.addEventListener('click',e=>{const b=e.target.closest('.chips button[data-k]');if(!b)return;const id=b.parentNode.id,k=b.dataset.k;
+  ({ogP:()=>S.ogp=+k,skW:()=>{S.skw=k;S.ski=null},skI:()=>S.ski=+k,ptB:()=>S.ptb=+k,wmI:()=>S.wmi=+k,ghK:()=>S.ghk=k,arS:()=>S.ars=k,pK:()=>S.pk=k}[id]||(()=>0))();draw()});
+ V.addEventListener('input',e=>{const t=e.target;if(t.id==='ogF'||t.id==='ogT'){S[t.id==='ogF'?'ogf':'ogt']=t.value;const p=t.selectionStart;draw();const x=document.getElementById(t.id);x.focus();try{x.setSelectionRange(p,p)}catch(_){}}
+  else if(t.id==='mgQ'){S.mgq=t.value;draw();const x=document.getElementById('mgQ');x.focus();x.setSelectionRange(x.value.length,x.value.length)}});
+ const load=()=>{if(D||loading)return;loading=true;fetch('/data/growth.json').then(r=>r.json()).then(d=>{D=d;draw()}).catch(()=>{loading=false;V.innerHTML='<p class="mute small">자료를 못 불러왔어요. 새로고침해 주세요.</p>'})};
+ if(/\/growth/.test(location.pathname)||location.hash==='#growth'||!('IntersectionObserver' in window))load();else{const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io.disconnect();load()}},{rootMargin:'1500px'});io.observe(V)}
 })();
 // ---------- 탐사 지도 ----------
 (function(){const S=document.getElementById('mpSvg');if(!S)return;
