@@ -185,6 +185,10 @@ label{font-weight:700;font-size:13.5px;display:block;margin-bottom:6px;color:#c9
 .fpgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:12px}
 .fpc{display:block;text-align:left;background:#0b1525;border:1px solid var(--line2);border-radius:10px;padding:0 0 8px;color:var(--ink);font:inherit;cursor:pointer;overflow:hidden}.fpc:hover{border-color:var(--gold)}.fpc img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}.fpc b{display:block;padding:6px 8px 0;font-size:14px}.fpc span{display:block;padding:0 8px;font-size:11px;color:var(--mute)}
 #fpModal{background:#020610cc;backdrop-filter:blur(3px)}.fp-box{max-width:760px}.fp-in{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px}@media(max-width:720px){.fp-in{grid-template-columns:1fr}}
+.mybox{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 4px}
+.mybox a,.mybox button{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:4px 14px;border-radius:99px;background:#ffffff08;border:1px solid var(--line2);color:#dfe6f1;font-family:inherit;font-weight:700;font-size:14px;line-height:1.2;text-decoration:none;cursor:pointer;box-shadow:none}
+.mybox b{color:var(--champ)}.mybox small{color:var(--mute);font-weight:500}
+.mybox .myx{padding:4px 10px;min-height:38px;color:var(--mute)}
 .al2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .alslots{display:grid;gap:8px;margin-top:10px}
 .als{display:grid;grid-template-columns:64px minmax(0,1.6fr) minmax(0,1fr) 72px;gap:8px;align-items:center;background:#ffffff05;border:1px solid var(--line2);border-radius:10px;padding:8px}
