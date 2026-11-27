@@ -39,6 +39,9 @@ const PAGES={
  collect:{t:'수집 1,091개 · 플래너',d:'수집 전체 · 능력치로 찾기 · 내 효과 합계',i:'i-check',b:'new'},
  growth:{t:'성장 계산기 · 성장 도감',d:'오버기어드 · 스킬 강화 · 잠재력 · 무기 개조 · 갓 핸드 · 펫 · 차원 카드',i:'i-calc',b:'new'},
  mining:{t:'채광 · 광물 지도',d:'광물 29종 위치 · 나오는 재료 · 시간당 채광',i:'i-ore',b:'new'},
+ daily:{t:'오늘의 퀴즈 · 출석',d:'매일 5문제 · 연속 기록 · 출석 도장 · 업적',i:'i-quiz',b:'new'},
+ lvplan:{t:'레벨별 할 일',d:'내 레벨에 맞는 사냥터 · 보스 · 열리는 기능',i:'i-guide',b:'new'},
+ vote:{t:'이번 주 투표',d:'다들 뭐 키워? 무기 · 목표 클래스 투표',i:'i-crown',b:'new'},
  archive:{t:'탐사 · 아카이브',d:'데이터 큐브 · 히든 퀘스트 · 지역 달성도 체크리스트',i:'i-map',b:'new'},
  prob:{t:'확률 총정리',d:'강화 · 축복 · 오버기어드 · 소환 · 잠재력 공식 확률',i:'i-anvil',b:'hot'},
  craft:{t:'제작 도감',d:'레시피 231종 · 재료 · 성공률 · 골드',i:'i-anvil',b:'new'},
@@ -55,7 +58,7 @@ const PAGES={
 (()=>{try{let pv=sessionStorage.getItem('tn_prev');if(pv===null){pv=localStorage.getItem('tn_vd')||'';sessionStorage.setItem('tn_prev',pv)}window.__PREV=pv}catch(e){window.__PREV=''}})();
 (()=>{const P=window.PDATE;if(!P)return;const td=new Date(Date.now()+9*3600e3).toISOString().slice(0,10);for(const k in PAGES){if(PAGES[k].b==='new')delete PAGES[k].b;if(P[k]===td&&!PAGES[k].b)PAGES[k].b='new'}})();
 window.PAGES=PAGES;
-const GROUPS=[{n:'도구',e:'TOOLS',k:['sim','quiz','godhand','enhance','calc','gear','growth','trade','timer','homework','backup']},{n:'가이드',e:'GUIDES',k:['prob','hunt','drops','mining','collect','weapons','starter','map','codex','archive','hidden','craft','titles','achieve','pets','outfit','systems']},{n:'정보',e:'INFO',k:['coupons','streamers','news','videos','official','roadmap','bm','about']}];
+const GROUPS=[{n:'도구',e:'TOOLS',k:['sim','daily','quiz','godhand','enhance','calc','gear','growth','trade','timer','homework','backup']},{n:'가이드',e:'GUIDES',k:['prob','hunt','lvplan','drops','mining','collect','weapons','starter','map','codex','archive','hidden','craft','titles','achieve','pets','outfit','systems']},{n:'정보',e:'INFO',k:['coupons','streamers','vote','news','videos','official','roadmap','bm','about']}];
 const link=k=>`<a href="/${k}/" data-k="${k}">${med(PAGES[k].i,'sm')}<span>${PAGES[k].t}<small>${PAGES[k].d}</small></span></a>`;
 $('#menu').innerHTML=GROUPS.map((g,gi)=>`<div class="dd" data-g="${gi}"><button type="button" aria-haspopup="true">${g.n}</button><div class="ddm">${g.k.map(link).join('')}</div></div>`).join('');
 $('#drawer').innerHTML=GROUPS.map(g=>`<h4>${g.e}</h4>${g.k.map(link).join('')}`).join('');
@@ -82,6 +85,9 @@ $('#homeGuides').innerHTML=['systems','weapons','bm','coupons'].map(tile).join('
  const d=pv.slice(5).replace('-','/');box.innerHTML=`<div class="since"><b>다시 오셨네요 👋</b> 지난 방문(${d}) 이후 바뀐 곳 <span class="mute">${ks.length}곳</span><div class="sl">${ks.slice(0,10).map(k=>`<a href="/${k}/">${esc(PAGES[k].t)}</a>`).join('')}</div></div>`})();
 // ---------- 오늘 업데이트 ----------
 const CHG=[
+ ['2026-11-27','이번 주 투표: 무기 · 목표 클래스 인기 순위','vote'],
+ ['2026-11-27','레벨별 할 일: 레벨만 넣으면 사냥터 · 보스 · 열리는 기능','lvplan'],
+ ['2026-11-27','오늘의 템빨 퀴즈 · 출석 도장 · 업적 16개 추가','daily'],
  ['2026-11-27','탐사 지도: 지역마다 큐브 5곳 약도 · 채광 시간당 다이아 계산','map'],
  ['2026-11-27','사냥터 시간당 경험치 계산기 · 데이터 큐브 70곳 사냥터 안 위치','hunt'],
  ['2026-11-27','채광 — 광물 29종 위치 · 재료로 찾기 · 시간당 계산기','mining'],
@@ -106,6 +112,8 @@ const CHG=[
 (()=>{const box=document.getElementById('myBox');if(!box)return;const it=[];const g=k=>{try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}};
  const hw=g('dn-hw');if(hw&&hw.items&&hw.items.length){const td=new Date(Date.now()-5*3600e3).toLocaleDateString('ko-KR');const c=hw.d===td?hw.items.filter(i=>i.c).length:0;it.push(`<a href="/homework/">📋 오늘 숙제 <b>${c}/${hw.items.length}</b>${c>=hw.items.length?' 끝!':''}</a>`)}
  const bs=(g('dn-boss')||[]).filter(b=>b.at&&b.at>Date.now()).sort((a,b)=>a.at-b.at);if(bs.length){const m=Math.round((bs[0].at-Date.now())/60000);it.push(`<a href="/timer/">⏱ ${esc(bs[0].n)} <b>${m<60?m+'분':Math.floor(m/60)+'시간 '+m%60+'분'}</b> 뒤</a>`)}
+ {const td=Math.floor((Date.now()+9*36e5)/864e5),dq=g('tn_daily'),h=dq&&dq.hist&&dq.hist[td],at=g('tn_att')||[];let st=0;{const S=new Set(at);let d=S.has(td)?td:td-1;while(S.has(d)){st++;d--}}
+  it.unshift(h&&h.length>=5?`<a href="/daily/">🧠 오늘의 퀴즈 <b>${h.filter(Boolean).length}/5</b>${st>1?' · 📅 '+st+'일 연속':''}</a>`:`<a href="/daily/" class="hot">🧠 오늘의 퀴즈 <b>${h&&h.length?h.length+'/5 푸는 중':'풀기'}</b>${st>1?' · 📅 '+st+'일 연속 출석':''}</a>`)}
  let sv='';try{sv=localStorage.getItem('tn_sv')||''}catch(e){}if(sv)it.unshift(`<a href="/streamers/">⭐ 내 서버 <b>${esc(sv)}</b></a>`);
  const hq=g('tn_hq');if(hq&&hq.done){const n=Object.keys(hq.done).length;if(n)it.push(`<a href="/hidden/">🗝 히든 퀘스트 <b>${n}/156</b></a>`)}
  const cl=g('tn_col');if(cl&&cl.done){const v=Object.values(cl.done);if(v.length)it.push(`<a href="/collect/">📦 수집 완료 <b>${v.filter(x=>x===2).length}</b>${v.some(x=>x===1)?' · 절반 '+v.filter(x=>x===1).length:''}</a>`)}
@@ -757,12 +765,12 @@ document.addEventListener('click',e=>{const b=e.target.closest('.bsadd');if(!b)r
 setInterval(()=>{if(!$('[data-v="timer"]').classList.contains('on')&&!tmN)return;tmRender();if(tmN){const now=Date.now();TM.forEach(b=>{if(b.at&&!b.w&&b.at-now<60000){b.w=1;save('dn-boss',TM);try{new Notification('템빨 보스 타이머',{body:b.n+' 곧 출현 (1분 전)'})}catch(e){toast(b.n+' 1분 전!')}}})}},1000);
 tmRender();
 /* 백업 */
-const BKU=['tn_hq','tn_col','tn_core','tn_alc','tn_cmp'],bkOk=k=>k&&(k.startsWith('dn-')||BKU.includes(k));
+const BKU=['tn_hq','tn_col','tn_core','tn_alc','tn_cmp','tn_att','tn_daily','tn_ach','tn_sv','tn_mail','tn_vote'],bkOk=k=>k&&(k.startsWith('dn-')||BKU.includes(k));
 const bkKeys=()=>{const o={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(bkOk(k))o[k]=localStorage.getItem(k)}}catch(e){}return o};
 const BKN={'dn-enh':'강화 기록','dn-calc':'계산기 입력','dn-gh':'갓 핸드 프리셋','dn-hw':'오늘의 숙제','dn-boss':'보스 타이머','dn-sched':'매일 일정표','dn-arc':'탐사 체크리스트','tn_hq':'히든 퀘스트 체크','tn_col':'수집 등록 표시','tn_core':'코어 점수','tn_alc':'연금 계산기','tn_cmp':'장비 비교'};
 function bkRender(){const o=bkKeys();const ks=Object.keys(o);$('#bkList').innerHTML=ks.length?'<ul class="facts" style="margin:0">'+ks.map(k=>{let n='';try{const v=JSON.parse(o[k]);n=Array.isArray(v)?v.length+'개':(v&&v.items?v.items.length+'개':(v&&v.done?Object.keys(v.done).length+'개':''))}catch(e){}return `<li>${BKN[k]||k} <span class="mute small">${n}</span></li>`}).join('')+'</ul>':'<p class="mute" style="margin:0">아직 저장된 기록이 없어요.</p>'}
 const bkData=()=>JSON.stringify({site:'tempalnote',at:new Date().toISOString(),data:bkKeys()});
-$('#bkDl').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([bkData()],{type:'application/json'}));a.download='tempalnote-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();toast('백업 파일을 받았어요')};
+$('#bkDl').onclick=()=>{try{localStorage.setItem('tn_bk_done','1')}catch(e){}const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([bkData()],{type:'application/json'}));a.download='tempalnote-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();toast('백업 파일을 받았어요')};
 $('#bkCopy').onclick=()=>copy(btoa(unescape(encodeURIComponent(bkData()))),'백업 코드를 복사했어요');
 $('#bkFile').onchange=e=>{const f=e.target.files[0];if(!f)return;f.text().then(t=>{$('#bkTxt').value=t})};
 $('#bkRestore').onclick=()=>{let t=$('#bkTxt').value.trim();if(!t)return toast('백업 내용을 넣어 주세요');try{if(!t.startsWith('{'))t=decodeURIComponent(escape(atob(t)));const o=JSON.parse(t);if(o.site!=='tempalnote'||!o.data)throw 0;Object.entries(o.data).forEach(([k,v])=>{if(bkOk(k))localStorage.setItem(k,v)});toast('복원했어요. 새로고침합니다');setTimeout(()=>location.reload(),800)}catch(e){toast('백업 형식이 맞지 않아요')}};
@@ -1487,6 +1495,142 @@ try{initScene()}catch(e){}
   S.innerHTML=left.length?`📬 <b>안 받은 우편 ${left.length}개</b> · 가장 빠른 마감: <b>${left[0].k}</b> (${left[0].e?dd(left[0].e):'기한 확인'}) — 받았으면 「받기 전」을 눌러 표시해 두세요`:'✅ 지금 받을 우편을 다 받았어요';
   setTimeout(()=>{const box=document.getElementById('myBox');if(box){let a=box.querySelector('.mlmy');if(left.length){if(!a){a=document.createElement('a');a.className='mlmy';a.href='#coupons';box.prepend(a)}a.innerHTML=`📬 안 받은 우편 <b>${left.length}</b>${left[0].e?' · '+dd(left[0].e):''}`;box.hidden=false}else if(a)a.remove()}},400)}
  draw();setInterval(draw,6e4)})();
+// ---------- 오늘의 퀴즈 · 출석 · 업적 ----------
+(()=>{const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const ls=(k,v)=>{try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||'null');localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}};
+ const kd=()=>Math.floor((Date.now()+9*36e5)/864e5),TD=kd();
+ // 출석: 어느 페이지든 들어오면 오늘 도장
+ const A=ls('tn_att')||[];if(A[A.length-1]!==TD){A.push(TD);while(A.length>400)A.shift();ls('tn_att',A)}
+ const streak=(arr,last)=>{const s=new Set(arr);let d=s.has(last)?last:last-1,n=0;while(s.has(d)){n++;d--}return n};
+ const Q=Object.assign({hist:{},best:0,pr:0,pc:0},ls('tn_daily')||{});const putQ=()=>ls('tn_daily',Q);
+ const qDays=()=>Object.keys(Q.hist).map(Number).filter(d=>Q.hist[d]&&Q.hist[d].length===5);
+ // ---- 업적 ----
+ const cnt=(k,f)=>{const v=ls(k);try{return f(v)||0}catch(e){return 0}};
+ const ACH=[
+  ['a1','📅','첫 도장','대장간노트 첫 출석',()=>A.length>=1],
+  ['a3','🔥','사흘 연속','3일 연속 출석',()=>streak(A,TD)>=3],
+  ['a7','⚒️','일주일 개근','7일 연속 출석',()=>streak(A,TD)>=7],
+  ['a30','🏰','단골 대장장이','누적 30일 출석',()=>A.length>=30],
+  ['q1','🧠','첫 퀴즈','오늘의 퀴즈 처음 완료',()=>qDays().length>=1],
+  ['q5','💯','만점','오늘의 퀴즈 5문제 전부 정답',()=>Object.values(Q.hist).some(h=>h.length===5&&h.every(x=>x))],
+  ['qs3','📚','공부하는 랭커','퀴즈 3일 연속 완료',()=>streak(qDays(),TD)>=3],
+  ['qs7','🎓','템빨 박사','퀴즈 7일 연속 완료',()=>streak(qDays(),TD)>=7],
+  ['pr50','🏋️','연습벌레','연습 문제 50개 풀기',()=>Q.pr>=50],
+  ['h10','🗝️','히든 탐험가','히든 퀘스트 10개 완료 체크',()=>cnt('tn_hq',v=>Object.keys(v.done).length)>=10],
+  ['h50','🧭','히든 사냥꾼','히든 퀘스트 50개 완료 체크',()=>cnt('tn_hq',v=>Object.keys(v.done).length)>=50],
+  ['c50','📦','수집가','수집품 50개 완료 체크',()=>cnt('tn_col',v=>Object.values(v.done).filter(x=>x===2).length)>=50],
+  ['sv','⭐','우리 서버','서버 목록에서 내 서버 정하기',()=>{try{return !!localStorage.getItem('tn_sv')}catch(e){return false}}],
+  ['ml','📬','우편 챙김','쿠폰 페이지에서 우편 3개 받음 체크',()=>cnt('tn_mail',v=>Object.values(v).filter(Boolean).length)>=3],
+  ['hw','📋','숙제 끝','오늘의 숙제 다 끝내기',()=>cnt('dn-hw',v=>v.items.length&&v.items.every(i=>i.c)?1:0)>=1],
+  ['bk','💾','유비무환','내 기록 백업 파일 받기',()=>{try{return !!localStorage.getItem('tn_bk_done')}catch(e){return false}}]];
+ const toast=t=>{const d=document.createElement('div');d.className='dqtoast';d.innerHTML=t;document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add('on'));setTimeout(()=>{d.classList.remove('on');setTimeout(()=>d.remove(),400)},4200)};
+ const checkAch=()=>{const got=ls('tn_ach')||{};const nw=ACH.filter(a=>!got[a[0]]&&a[4]());if(!nw.length)return;nw.forEach(a=>got[a[0]]=TD);ls('tn_ach',got);
+  const first=Object.keys(got).length===nw.length&&nw.length>1;toast(first?`🏅 업적 ${nw.length}개를 얻었어요! <a href="/daily/" style="color:var(--gold2)">보기</a>`:`🏅 새 업적 「${esc(nw[0][2])}」${nw.length>1?' 외 '+(nw.length-1)+'개':''} <a href="/daily/" style="color:var(--gold2)">보기</a>`);drawAch()};
+ setTimeout(checkAch,2500);document.addEventListener('visibilitychange',()=>{if(!document.hidden)setTimeout(checkAch,800)});
+ window.tnAch=()=>setTimeout(checkAch,300);
+ document.addEventListener('click',e=>{if(e.target.closest('button,a'))setTimeout(checkAch,1200)},true);
+ // ---- 페이지 ----
+ const C=document.getElementById('dqCard');if(!C)return;
+ const AT=document.getElementById('dqAtt'),AC=document.getElementById('dqAch');
+ function drawAch(){if(!AC)return;const got=ls('tn_ach')||{};const n=ACH.filter(a=>got[a[0]]).length;
+  AC.innerHTML=`<div class="ch"><span class="med sm"><svg><use href="#i-crown"/></svg></span><h3>내 업적 <small class="mute" style="font-weight:500">${n} / ${ACH.length}</small></h3></div><div class="dqach">${ACH.map(a=>`<div class="${got[a[0]]?'on':''}"><span class="ic">${a[1]}</span><b>${esc(a[2])}</b>${esc(a[3])}</div>`).join('')}</div><p class="small mute" style="margin:10px 0 0">기록은 이 기기 브라우저에만 저장돼요. 기기를 바꾸면 <a href="/backup/">내 기록 백업</a>으로 옮기세요.</p>`}
+ function drawAtt(){const now=new Date(Date.now()+9*36e5),y=now.getUTCFullYear(),m=now.getUTCMonth();const first=Date.UTC(y,m,1)/864e5,days=new Date(Date.UTC(y,m+1,0)).getUTCDate(),wd=new Date(Date.UTC(y,m,1)).getUTCDay();const s=new Set(A);
+  let h=['일','월','화','수','목','금','토'].map(x=>`<span class="h">${x}</span>`).join('')+'<span class="e"></span>'.repeat(wd);
+  for(let i=0;i<days;i++){const d=first+i;h+=`<span class="${s.has(d)?'on':''}${d===TD?' td':''}">${s.has(d)?'✓':i+1}</span>`}
+  const mon=A.filter(d=>d>=first&&d<first+days).length;
+  AT.innerHTML=`<div class="ch"><span class="med sm"><svg><use href="#i-check"/></svg></span><h3>출석 도장 <small class="mute" style="font-weight:500">${m+1}월</small></h3></div><div class="dqres"><div class="st"><div><b>${streak(A,TD)}일</b>연속</div><div><b>${mon}일</b>이번 달</div><div><b>${A.length}일</b>누적</div></div></div><div class="dqcal">${h}</div><p class="small mute" style="margin:10px 0 0">대장간노트 아무 페이지나 열면 그날 도장이 찍혀요.</p>`}
+ drawAtt();drawAch();
+ let P=null,today=[],mode='day',pq=null,pi=0;
+ const rng=seed=>()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+ const TYP=['boss','blv','mon','item','hid','ul','ulq','cls','clt'];
+ function pick(d){const r=rng(d*7919+13);const by={};P.forEach((q,i)=>(by[q[0]]=by[q[0]]||[]).push(i));
+  const ty=TYP.filter(t=>by[t]).sort(()=>r()-.5);const out=[];const order=['mon','item','hid','boss',...ty];
+  for(const t of order){if(out.length>=5)break;if(out.some(i=>P[i][0]===t)&&out.length<4)continue;const L=by[t];if(!L)continue;let i=L[Math.floor(r()*L.length)],g=0;while(out.includes(i)&&g++<9)i=L[Math.floor(r()*L.length)];if(!out.includes(i))out.push(i)}
+  return out.slice(0,5).map(i=>{const q=P[i];const o=[q[2],...q[3]];for(let j=o.length-1;j>0;j--){const k=Math.floor(r()*(j+1));[o[j],o[k]]=[o[k],o[j]]}return{q,o}})}
+ const LK={drops:'보스 드롭에서 보기',hunt:'사냥터 페이지에서 보기',codex:'아이템 도감에서 보기',hidden:'히든 퀘스트에서 보기',growth:'성장 도감에서 보기',weapons:'클래스 도감에서 보기'};
+ const left=()=>{const ms=864e5-((Date.now()+9*36e5)%864e5),h=Math.floor(ms/36e5),m=Math.floor(ms%36e5/6e4);return h+'시간 '+m+'분'};
+ const sq=a=>a.map(x=>x?'🟩':'🟥').join('');
+ function head(ans,cur){return `<div class="dqtop"><b>${mode==='day'?'📅 '+new Date((TD)*864e5).toISOString().slice(5,10).replace('-','/')+' 오늘의 퀴즈':'🏋️ 연습 문제 '+(Q.pr+1)+'번째'}</b>${mode==='day'?`<div class="dqdots">${[0,1,2,3,4].map(i=>`<i class="${i<ans.length?(ans[i]?'ok':'no'):(i===cur?'cur':'')}"></i>`).join('')}</div>`:`<span class="small mute">맞힌 ${Q.pc} / 푼 ${Q.pr}</span>`}</div>`}
+ function ask(it,ans,cur){C.innerHTML=head(ans,cur)+`<div class="dqq">${esc(it.q[1])}</div><div class="dqo">${it.o.map((o,i)=>`<button type="button" data-i="${i}">${esc(o)}</button>`).join('')}</div><div id="dqAfter"></div>`;
+  C.querySelector('.dqo').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled)return;const ok=it.o[+b.dataset.i]===it.q[2];
+   C.querySelectorAll('.dqo button').forEach(x=>{x.disabled=true;if(it.o[+x.dataset.i]===it.q[2])x.classList.add('ok')});if(!ok)b.classList.add('no');
+   if(mode==='day'){const h=Q.hist[TD]=Q.hist[TD]||[];h.push(ok);putQ();C.querySelector('.dqtop').outerHTML=head(h,h.length)}else{Q.pr++;if(ok)Q.pc++;putQ()}
+   const last=mode==='day'&&Q.hist[TD].length>=5;
+   document.getElementById('dqAfter').innerHTML=`<div class="dqex">${ok?'✅ 정답!':'❌ 아쉬워요. 정답은 <b>'+esc(it.q[2])+'</b>'} · ${esc(it.q[4])} <a href="#${it.q[5]}">${LK[it.q[5]]||'자세히'} →</a></div><div class="dqnext"><button type="button" class="btn" id="dqGo">${last?'결과 보기':'다음 문제 →'}</button></div>`;
+   document.getElementById('dqGo').onclick=()=>mode==='day'?run():practice();document.getElementById('dqGo').focus({preventScroll:true});checkAch()}}
+ function result(){const h=Q.hist[TD],sc=h.filter(Boolean).length;Q.best=Math.max(Q.best||0,sc);putQ();const st=streak(qDays(),TD);
+  const msg=sc===5?'완벽해요! 진짜 템빨 고인물':sc>=4?'거의 다 맞혔어요!':sc>=3?'좋아요, 절반 넘게 맞혔어요':sc>=1?'내일은 더 잘할 거예요':'오늘은 공부하는 날!';
+  C.innerHTML=head(h,5)+`<div class="dqres"><div class="big">${sc} / 5</div><div class="grid">${sq(h)}</div><p style="margin:4px 0 0;font-weight:700">${msg}</p><div class="st"><div><b>🔥 ${st}일</b>퀴즈 연속</div><div><b>${qDays().length}일</b>푼 날</div><div><b>${left()}</b>다음 문제까지</div></div>
+  <div class="dqnext" style="justify-content:center"><button type="button" class="btn" id="dqShare">📤 결과 자랑하기</button><button type="button" class="btn ghost" id="dqPr">🏋️ 연습 문제 더 풀기</button></div><p class="small mute" id="dqMsg" style="margin:8px 0 0"></p></div>`;
+  document.getElementById('dqShare').onclick=async()=>{const t=`대장간노트 오늘의 템빨 퀴즈 ${new Date(TD*864e5).toISOString().slice(5,10).replace('-','/')}\n${sq(h)} ${sc}/5${st>1?' 🔥'+st+'일 연속':''}\nhttps://tempalnote.com/daily/`;
+   try{if(navigator.share){await navigator.share({text:t});return}}catch(e){if(e&&e.name==='AbortError')return}
+   try{await navigator.clipboard.writeText(t);document.getElementById('dqMsg').textContent='복사했어요! 단톡방에 붙여 넣으세요.'}catch(e){document.getElementById('dqMsg').textContent=t}};
+  document.getElementById('dqPr').onclick=()=>{mode='pr';practice()};checkAch()}
+ function practice(){mode='pr';if(!pq){const r=rng(Date.now()%1e9);pq=()=>{const q=P[Math.floor(r()*P.length)];const o=[q[2],...q[3]].sort(()=>r()-.5);return{q,o}}}ask(pq(),[],0);
+  const a=document.createElement('p');a.className='small mute';a.style.margin='10px 0 0';a.innerHTML='연습 문제는 기록(연속·점수)에 들어가지 않아요. <a href="#" id="dqBack">오늘 결과로 돌아가기</a>';C.appendChild(a);document.getElementById('dqBack').onclick=e=>{e.preventDefault();mode='day';run()}}
+ function run(){mode='day';const h=Q.hist[TD]||[];if(h.length>=5)return result();ask(today[h.length],h,h.length)}
+ function boot(j){P=j.q;today=pick(TD);
+  for(const d in Q.hist)if(+d<TD-60)delete Q.hist[d];putQ();run()}
+ let loading=false;const load=()=>{if(P||loading)return;loading=true;fetch('/data/quiz.json').then(r=>r.json()).then(boot).catch(()=>{loading=false;C.innerHTML='<p class="mute small">문제를 못 불러왔어요. 새로고침해 주세요.</p>'})};
+ if(/\/daily/.test(location.pathname)||location.hash==='#daily'||!('IntersectionObserver' in window))load();else{const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io.disconnect();load()}},{rootMargin:'1500px'});io.observe(C)}
+})();
+// ---------- 레벨별 할 일 ----------
+(()=>{const OUT=document.getElementById('lvOut');if(!OUT)return;
+ const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const ls=(k,v)=>{try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||'null');localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}};
+ const L=document.getElementById('lvL'),R=document.getElementById('lvR');let D=null,loading=false;
+ const getLv=()=>{const h=ls('tn_hq');let v=h&&+h.lv;if(!v){try{v=+localStorage.getItem('dn-hulv')}catch(e){}}return v>0?Math.min(90,v):30};
+ const setLv=v=>{v=Math.max(1,Math.min(90,Math.round(+v||1)));L.value=R.value=v;const h=ls('tn_hq')||{};h.lv=String(v);ls('tn_hq',h);try{localStorage.setItem('dn-hulv',String(v))}catch(e){}draw()};
+ const n=x=>Math.round(x).toLocaleString();
+ function draw(){if(!D){OUT.innerHTML='<p class="mute small">자료를 불러오는 중…</p>';return}const v=+L.value;
+  const open=D.ul.filter(u=>u[1]<=v),next=D.ul.filter(u=>u[1]>v);
+  const g=D.g.filter(x=>x[3]<=v+2&&x[3]>=v-6).sort((a,b)=>b[4]-a[4]).slice(0,6);
+  const gAll=g.length?g:D.g.filter(x=>x[3]<=v).sort((a,b)=>b[3]-a[3]||b[4]-a[4]).slice(0,4);
+  const bs=D.b.filter(b=>b[2]>=v-6&&b[2]<=v+6).sort((a,b)=>a[2]-b[2]);
+  const nb=D.b.filter(b=>b[2]>v+6).sort((a,b)=>a[2]-b[2])[0];
+  const nxu=next[0],nxg=D.g.filter(x=>x[2]>v).sort((a,b)=>a[2]-b[2])[0];
+  const goals=[];
+  if(nxu)goals.push(`<a href="/growth/"><span class="small mute">다음에 열리는 기능</span><b>${esc(nxu[0])} · Lv.${nxu[1]}</b><span class="small">${nxu[1]-v}레벨 남음</span><div class="lvbar"><i style="width:${Math.min(100,v/nxu[1]*100)}%"></i></div></a>`);
+  if(nxg)goals.push(`<a href="/hunt/"><span class="small mute">다음 사냥터</span><b>${esc(nxg[0])} · Lv.${nxg[2]}</b><span class="small">${esc(nxg[1])} · 몬스터 경험치 평균 ${n(nxg[4])}</span></a>`);
+  if(nb)goals.push(`<a href="/drops/"><span class="small mute">다음 도전 보스</span><b>${esc(nb[0])} · Lv.${nb[2]}</b><span class="small">${esc(nb[1])} · ${esc(nb[3])}</span></a>`);
+  OUT.innerHTML=`<div class="card" style="margin-bottom:14px"><div class="ch"><span class="med sm"><svg><use href="#i-arrow"/></svg></span><h3>Lv.${v} 다음 목표</h3></div><div class="lvgoal">${goals.join('')||'<p class="small">모든 목표를 지났어요! 최고 레벨 구간이에요.</p>'}</div></div>
+  <div class="lvg">
+   <div class="card"><div class="ch"><span class="med sm"><svg><use href="#i-map"/></svg></span><h3>경험치 잘 나오는 사냥터</h3></div><ul class="lvl">${gAll.map(x=>`<li><span><b>${esc(x[0])}</b> <span class="small mute">${esc(x[1])}</span></span><span class="r">Lv.${x[2]===x[3]?x[2]:x[2]+'~'+x[3]} · 평균 ${n(x[4])}</span></li>`).join('')||'<li>해당 레벨 사냥터 자료가 없어요</li>'}</ul><p class="small" style="margin:8px 0 0"><a href="/hunt/">시간당 경험치 계산하기 →</a></p></div>
+   <div class="card"><div class="ch"><span class="med sm"><svg><use href="#i-raid"/></svg></span><h3>잡을 만한 보스 · 오염된 존재</h3></div><ul class="lvl">${bs.map(b=>`<li class="${b[2]<=v?'':'soon'}"><span><b>${esc(b[0])}</b> <span class="small mute">${esc(b[1])}</span></span><span class="r">Lv.${b[2]} · ${esc(b[3])}</span></li>`).join('')||'<li>±6레벨 안에 보스가 없어요</li>'}</ul><p class="small" style="margin:8px 0 0"><a href="/drops/">보스별 드롭 보기 →</a></p></div>
+   <div class="card"><div class="ch"><span class="med sm"><svg><use href="#i-check"/></svg></span><h3>레벨로 열리는 기능</h3></div><ul class="lvl">${D.ul.map(u=>`<li class="${u[1]<=v?'ok':u[1]-v<=5?'soon':''}"><span><b>${esc(u[0])}</b></span><span class="r">${u[1]<=v?'열림':'Lv.'+u[1]+' ('+(u[1]-v)+' 남음)'}</span></li>`).join('')}</ul></div>
+   <div class="card"><div class="ch"><span class="med sm"><svg><use href="#i-book"/></svg></span><h3>퀘스트로 열리는 기능</h3></div><ul class="lvl">${D.uq.map(u=>`<li><span><b>${esc(u[0])}</b></span><span class="r">${esc(u[1].replace(/ 완료$/,''))}</span></li>`).join('')}</ul><p class="small" style="margin:8px 0 0"><a href="/hidden/">내 진행으로 받을 수 있는 히든 퀘스트 보기 →</a></p></div>
+  </div>
+  <p class="small mute" style="margin:12px 0 0">사냥터 레벨은 몬스터 레벨 기준이에요. 자료 기준일 ${esc(D.at)}.</p>`}
+ L.oninput=()=>{if(L.value)setLv(L.value)};R.oninput=()=>setLv(R.value);
+ document.querySelector('[data-v="lvplan"] .lvrow').addEventListener('click',e=>{const b=e.target.closest('[data-d]');if(b)setLv(+L.value+ +b.dataset.d)});
+ L.value=R.value=getLv();
+ const boot=j=>{D=j;L.value=R.value=getLv();draw()};
+ const load=()=>{if(D||loading)return;loading=true;fetch('/data/lvplan.json').then(r=>r.json()).then(boot).catch(()=>{loading=false;OUT.innerHTML='<p class="mute small">자료를 못 불러왔어요. 새로고침해 주세요.</p>'})};
+ if(/\/lvplan/.test(location.pathname)||location.hash==='#lvplan'||!('IntersectionObserver' in window))load();else{const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io.disconnect();load()}},{rootMargin:'1500px'});io.observe(OUT)}
+})();
+// ---------- 주간 투표 ----------
+(()=>{const VA=document.getElementById('vtA');if(!VA)return;const VB=document.getElementById('vtB');
+ const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const ls=(k,v)=>{try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||'null');localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}};
+ const FS='https://firestore.googleapis.com/v1/projects/tempalnote/databases/(default)/documents',DOC='projects/tempalnote/databases/(default)/documents',KEY='AIzaSyCDIjNyGscJBDEGk2r6dCKgC8d2xFibeiA';
+ const WK='w'+Math.floor((Math.floor((Date.now()+9*36e5)/864e5)+3)/7);
+ const W=[['wgs','대검','근접 · 탱커 · 광역'],['wbow','활','원거리 · 기동'],['wstf','지팡이','마법 · 광역 딜'],['wbib','바이블','회복 · 지원']];
+ const CL=(typeof CLS!=='undefined'?CLS:[]).filter(c=>c.tier==='유니크'||c.tier==='레전드리').map(c=>['c'+c.id.replace(/\D/g,''),c.n,c.tier+' · '+c.w]);
+ let S=ls('tn_vote')||{};if(S.w!==WK)S={w:WK};let R={},peek={};
+ const get=()=>fetch(FS+'/vote/'+WK+'?key='+KEY).then(r=>r.ok?r.json():{}).then(j=>{const f=j.fields||{};R={};for(const k in f)R[k]=+(f[k].integerValue||0)}).catch(()=>{});
+ const vote=k=>fetch(FS+':commit?key='+KEY,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({writes:[{transform:{document:DOC+'/vote/'+WK,fieldTransforms:[{fieldPath:k,increment:{integerValue:'1'}}]}}]})}).then(r=>r.ok);
+ function box(el,id,title,ops){const mine=S[id];const tot=ops.reduce((a,o)=>a+(R[o[0]]||0),0);
+  if(mine||peek[id]){const rows=ops.map(o=>[o,R[o[0]]||0]).sort((a,b)=>b[1]-a[1]).filter((x,i)=>x[1]>0||x[0][0]===mine||i<6);
+   el.innerHTML=`<div class="ch"><span class="med sm"><svg><use href="#i-crown"/></svg></span><h3>${title} <small class="mute" style="font-weight:500">이번 주 ${tot.toLocaleString()}표</small></h3></div><ul class="vtr">${rows.map(([o,c])=>{const p=tot?Math.round(c/tot*1000)/10:0;return `<li><div class="t"><b class="${o[0]===mine?'me':''}">${esc(o[1])}</b><span>${p}% · ${c}표</span></div><div class="bar"><i style="width:${p}%"></i></div></li>`}).join('')}</ul>${mine?'':`<button type="button" class="btn sm" data-back="${id}">투표하러 가기</button>`}`;
+   const b=el.querySelector('[data-back]');if(b)b.onclick=()=>{peek[id]=0;box(el,id,title,ops)};return}
+  el.innerHTML=`<div class="ch"><span class="med sm"><svg><use href="#i-crown"/></svg></span><h3>${title}</h3></div><div class="vto">${ops.map(o=>`<button type="button" data-k="${o[0]}">${esc(o[1])}<small>${esc(o[2])}</small></button>`).join('')}</div><p class="small" style="margin:10px 0 0"><a href="#" data-peek="1">투표 없이 결과 먼저 보기</a></p>`;
+  el.querySelector('.vto').onclick=async e=>{const b=e.target.closest('button');if(!b)return;el.querySelectorAll('.vto button').forEach(x=>x.disabled=true);b.textContent='투표하는 중…';
+   const ok=await vote(b.dataset.k);if(ok){S[id]=b.dataset.k;ls('tn_vote',S);R[b.dataset.k]=(R[b.dataset.k]||0)+1;await get();if(!R[b.dataset.k])R[b.dataset.k]=1;box(el,id,title,ops)}else{el.querySelectorAll('.vto button').forEach(x=>x.disabled=false);b.textContent='다시 눌러 주세요'}};
+  el.querySelector('[data-peek]').onclick=e=>{e.preventDefault();peek[id]=1;box(el,id,title,ops)}}
+ const draw=()=>{box(VA,'a','지금 쓰는 무기는?',W);if(CL.length)box(VB,'b','목표 클래스는? (유니크 · 레전드리)',CL);else VB.remove()};
+ let done=false;const load=()=>{if(done)return;done=true;get().then(draw)};
+ if(/\/vote/.test(location.pathname)||location.hash==='#vote'||!('IntersectionObserver' in window))load();else{const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io.disconnect();load()}},{rootMargin:'800px'});io.observe(VA)}
+})();
 // ---------- 탐사 지도 ----------
 (function(){const S=document.getElementById('mpSvg');if(!S)return;
  const CMAP={"노튼":{"w":360,"h":204,"f":[["얼음 가시 숲",59,155],["망자의 설원",129,130],["북쪽 설원",148,84],["북쪽 절벽 해안",129,48],["서릿빛 오크 부락",280,94]],"b":[["망자의 설원",132,101],["서릿빛 오크 부락",231,97]],"t":[],"c":[[1,"북쪽 절벽 해안",140,50],[2,"북쪽 설원",145,92],[3,"망자의 설원",112,123],[4,"얼음 가시 숲",50,136],[5,"서릿빛 오크 부락",314,66]]},"라인하르트":{"w":195,"h":300,"f":[["순찰대 고원 남부",91,75],["무바이드 유적 발굴지",144,249],["은총의 땅",38,77],["독안개 사원",43,245]],"b":[["무바이드 유적지",168,231],["남부 순찰대 고원",79,92]],"t":[["라인하르트",111,144]],"c":[[1,"무바이드 유적 발굴지",155,261],[2,"독안개 사원",60,248],[3,"은총의 땅",51,73],[4,"순찰대 고원 남부",88,40],[5,"순찰대 고원 남부",76,67]]},"윈스톤":{"w":360,"h":288,"f":[["오크 습격지",53,61],["윈스톤 호수",107,62],["회색 숲",166,175],["윈스톤 묘지",303,221]],"b":[["오크 습격지",20,58],["윈스톤 묘지",235,197]],"t":[],"c":[[1,"오크 습격지",49,47],[2,"윈스톤 호수",139,65],[3,"윈스톤 묘지",313,240],[4,"회색 숲",156,141],[5,"회색 숲",219,200]]},"킨바이":{"w":261,"h":300,"f":[["폐허가 된 마을",75,261],["케산 협곡 입구",106,155],["케산 협곡",223,77],["야탄 제단",92,72],["야탄의 눈",56,43]],"b":[["폐허가 된 마을",80,294],["야탄 신전",126,113],["케산 협곡",184,51]],"t":[],"c":[[1,"폐허가 된 마을",71,261],[2,"야탄 제단",113,92],[3,"야탄의 눈",71,67],[4,"야탄의 눈",41,41],[5,"케산 협곡",217,81]]},"알테스":{"w":313,"h":300,"f":[["레이단 협곡",271,46],["메마른 사막",162,161],["사막 말벌 군락",40,172],["빼앗긴 오아시스",72,258]],"b":[["메마른 사막",96,152]],"t":[["벨두인 마을",262,257]],"c":[[1,"레이단 협곡",260,42],[2,"사막 말벌 군락",51,164],[3,"메마른 사막",118,156],[4,"메마른 사막",180,147],[5,"빼앗긴 오아시스",96,257]]},"벨두인":{"w":317,"h":300,"f":[["서부 사막",51,169],["거대 구덩이",167,149],["모래 폭포 지대",146,88],["사막 유적지",75,256],["동부 사막",262,71]],"b":[["서부 사막",60,149],["모래 폭포 지대",185,119],["동부 사막",218,71],["거대 구덩이",129,119],["레이단 밀밭",304,228]],"t":[["벨두인 마을",17,241],["레이단 마을",247,260]],"c":[[1,"서부 사막",43,174],[2,"거대 구덩이",124,159],[3,"사막 유적지",78,229],[4,"모래 폭포 지대",173,41],[5,"동부 사막",276,65]]},"엑카루":{"w":299,"h":300,"f":[["머맨 점령지",52,64],["휩쓸린 폐허",195,84],["붉은 바위 고원",73,174],["잊혀진 뱀파이어 유적",194,198]],"b":[["머맨 점령지",106,81],["붉은 바위 고원",134,176]],"t":[],"c":[[1,"머맨 점령지",38,41],[2,"휩쓸린 폐허",186,94],[3,"붉은 바위 고원",100,136],[4,"붉은 바위 고원",95,192],[5,"잊혀진 뱀파이어 유적",261,262]]},"레이단":{"w":263,"h":300,"f":[["레이단 밀밭",72,58],["신비의 숲",63,199],["레이단 벌목지",220,122],["옐로우 미스릴 광산",193,251]],"b":[["레이단 벌목지",183,115],["신비의 숲",136,258],["레이단 밀밭",19,96]],"t":[],"c":[[1,"신비의 숲",78,157],[2,"신비의 숲",39,214],[3,"레이단 밀밭",76,39],[4,"레이단 벌목지",224,111],[5,"옐로우 미스릴 광산",154,260]]},"수아즈 협곡":{"w":360,"h":209,"f":[["사하란 국경 초소",48,136],["수아즈 격전지",100,58],["수아즈 협곡",183,67],["영광의 길",203,130],["뒤틀린 땅",301,76]],"b":[["사하란 국경 초소",97,96],["뒤틀린 땅",264,93],["수아즈 협곡",144,62]],"t":[["롤링 마을",124,132]],"c":[[1,"사하란 국경 초소",53,108],[2,"수아즈 격전지",108,70],[3,"수아즈 협곡",191,49],[4,"영광의 길",204,162],[5,"뒤틀린 땅",312,87]]},"코크로 섬":{"w":170,"h":300,"f":[["코크로 섬 1구역",129,59],["코크로 섬 2구역",117,116],["코크로 섬 3구역",40,224]],"b":[],"t":[],"c":[[1,"코크로 섬 1구역",125,41],[2,"코크로 섬 1구역",78,43],[3,"코크로 섬 2구역",127,115],[4,"코크로 섬 2구역",82,93],[5,"코크로 섬 3구역",74,260]]},"크라임 숲":{"w":360,"h":288,"f":[["크라임 숲",291,49],["적기사 주둔지",289,210],["어스름 전장",173,147],["붉은 송곳니 동굴",73,221],["어스름 오크 부락",81,95]],"b":[["적기사 주둔지",329,183],["어스름 전장",185,166],["크라임 숲",281,84],["어스름 오크 부락",66,138]],"t":[],"c":[[1,"크라임 숲",313,87],[2,"적기사 주둔지",292,207],[3,"어스름 전장",209,141],[4,"붉은 송곳니 동굴",46,240],[5,"어스름 오크 부락",98,74]]},"레베카":{"w":335,"h":300,"f":[["비밀의 숲",51,110],["여신의 정원",89,232],["순례자의 고개",277,201],["바람향기 고원",276,59]],"b":[["비밀의 숲",55,155],["바람향기 고원",261,85]],"t":[["레베카 교황청",150,143]],"c":[[1,"비밀의 숲",45,114],[2,"여신의 정원",86,255],[3,"순례자의 고개",277,205],[4,"바람향기 고원",292,67],[5,"바람향기 고원",238,44]]},"지브라":{"w":263,"h":300,"f":[["기사의 안식처",58,100],["혼돈의 둥지",111,146],["가리온의 상흔",207,92],["비탄의 대지",48,214],["지브라 백작성",183,214]],"b":[["비탄의 대지",53,190],["혼돈의 둥지",110,111],["가리온의 상흔",173,96],["지브라 백작성",136,206]],"t":[],"c":[[1,"기사의 안식처",74,111],[2,"혼돈의 둥지",108,187],[3,"가리온의 상흔",222,39],[4,"비탄의 대지",41,214],[5,"지브라 백작성",189,260]]},"바이란":{"w":173,"h":300,"f":[["바이란 북쪽 숲",76,149],["바이란 평원",40,239],["바이란 폐광",131,55],["순찰대 고원",129,204]],"b":[["바이란 폐광",126,112],["바이란 평원",5,215]],"t":[["바이란 마을",63,197]],"c":[[1,"바이란 평원",51,262],[2,"바이란 북쪽 숲",85,133],[3,"바이란 폐광",125,41],[4,"순찰대 고원",102,198],[5,"순찰대 고원",119,188]]}};
