@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
+<script>if(location.protocol==='http:'&&/(^|\.)tempalnote\.com$/.test(location.hostname))location.replace('https://tempalnote.com'+location.pathname+location.search+location.hash)</script>
 <meta name="naver-site-verification" content="c65ce1ea58206df31b6a25912fab1166af619034" />
 <meta name="google-site-verification" content="-ZVWYOURdM4IsokpUrCfPqulq1IA4Tg6osfK5-Ax1UI" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -2669,14 +2670,15 @@ document.addEventListener('click',e=>{const b=e.target.closest('.bsadd');if(!b)r
 setInterval(()=>{if(!$('[data-v="timer"]').classList.contains('on')&&!tmN)return;tmRender();if(tmN){const now=Date.now();TM.forEach(b=>{if(b.at&&!b.w&&b.at-now<60000){b.w=1;save('dn-boss',TM);try{new Notification('템빨 보스 타이머',{body:b.n+' 곧 출현 (1분 전)'})}catch(e){toast(b.n+' 1분 전!')}}})}},1000);
 tmRender();
 /* 백업 */
-const bkKeys=()=>{const o={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('dn-'))o[k]=localStorage.getItem(k)}}catch(e){}return o};
-const BKN={'dn-enh':'강화 기록','dn-calc':'계산기 입력','dn-gh':'갓 핸드 프리셋','dn-hw':'오늘의 숙제','dn-boss':'보스 타이머','dn-sched':'매일 일정표'};
-function bkRender(){const o=bkKeys();const ks=Object.keys(o);$('#bkList').innerHTML=ks.length?'<ul class="facts" style="margin:0">'+ks.map(k=>{let n='';try{const v=JSON.parse(o[k]);n=Array.isArray(v)?v.length+'개':(v&&v.items?v.items.length+'개':'')}catch(e){}return `<li>${BKN[k]||k} <span class="mute small">${n}</span></li>`}).join('')+'</ul>':'<p class="mute" style="margin:0">아직 저장된 기록이 없어요.</p>'}
+const BKU=['tn_hq','tn_col','tn_core','tn_alc','tn_cmp'],bkOk=k=>k&&(k.startsWith('dn-')||BKU.includes(k));
+const bkKeys=()=>{const o={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(bkOk(k))o[k]=localStorage.getItem(k)}}catch(e){}return o};
+const BKN={'dn-enh':'강화 기록','dn-calc':'계산기 입력','dn-gh':'갓 핸드 프리셋','dn-hw':'오늘의 숙제','dn-boss':'보스 타이머','dn-sched':'매일 일정표','dn-arc':'탐사 체크리스트','tn_hq':'히든 퀘스트 체크','tn_col':'수집 등록 표시','tn_core':'코어 점수','tn_alc':'연금 계산기','tn_cmp':'장비 비교'};
+function bkRender(){const o=bkKeys();const ks=Object.keys(o);$('#bkList').innerHTML=ks.length?'<ul class="facts" style="margin:0">'+ks.map(k=>{let n='';try{const v=JSON.parse(o[k]);n=Array.isArray(v)?v.length+'개':(v&&v.items?v.items.length+'개':(v&&v.done?Object.keys(v.done).length+'개':''))}catch(e){}return `<li>${BKN[k]||k} <span class="mute small">${n}</span></li>`}).join('')+'</ul>':'<p class="mute" style="margin:0">아직 저장된 기록이 없어요.</p>'}
 const bkData=()=>JSON.stringify({site:'tempalnote',at:new Date().toISOString(),data:bkKeys()});
 $('#bkDl').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([bkData()],{type:'application/json'}));a.download='tempalnote-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();toast('백업 파일을 받았어요')};
 $('#bkCopy').onclick=()=>copy(btoa(unescape(encodeURIComponent(bkData()))),'백업 코드를 복사했어요');
 $('#bkFile').onchange=e=>{const f=e.target.files[0];if(!f)return;f.text().then(t=>{$('#bkTxt').value=t})};
-$('#bkRestore').onclick=()=>{let t=$('#bkTxt').value.trim();if(!t)return toast('백업 내용을 넣어 주세요');try{if(!t.startsWith('{'))t=decodeURIComponent(escape(atob(t)));const o=JSON.parse(t);if(o.site!=='tempalnote'||!o.data)throw 0;Object.entries(o.data).forEach(([k,v])=>{if(k.startsWith('dn-'))localStorage.setItem(k,v)});toast('복원했어요. 새로고침합니다');setTimeout(()=>location.reload(),800)}catch(e){toast('백업 형식이 맞지 않아요')}};
+$('#bkRestore').onclick=()=>{let t=$('#bkTxt').value.trim();if(!t)return toast('백업 내용을 넣어 주세요');try{if(!t.startsWith('{'))t=decodeURIComponent(escape(atob(t)));const o=JSON.parse(t);if(o.site!=='tempalnote'||!o.data)throw 0;Object.entries(o.data).forEach(([k,v])=>{if(bkOk(k))localStorage.setItem(k,v)});toast('복원했어요. 새로고침합니다');setTimeout(()=>location.reload(),800)}catch(e){toast('백업 형식이 맞지 않아요')}};
 bkRender();
 /* 피드백 */
 if($('#fbForm'))$('#fbForm').addEventListener('submit',e=>{e.preventDefault();const c=$('#fbCat').value,t=$('#fbTitle').value.trim(),b=$('#fbBody').value.trim();location.href='mailto:rnrwndgur124@naver.com?subject='+encodeURIComponent('[대장간노트 '+c+'] '+t)+'&body='+encodeURIComponent(b+'\n\n페이지: '+location.href)});
