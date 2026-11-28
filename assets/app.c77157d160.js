@@ -87,6 +87,7 @@ $('#homeGuides').innerHTML=['systems','weapons','bm','coupons'].map(tile).join('
  const d=pv.slice(5).replace('-','/');box.innerHTML=`<div class="since"><b>다시 오셨네요 👋</b> 지난 방문(${d}) 이후 바뀐 곳 <span class="mute">${ks.length}곳</span><div class="sl">${ks.slice(0,10).map(k=>`<a href="/${k}/">${esc(PAGES[k].t)}</a>`).join('')}</div></div>`})();
 // ---------- 오늘 업데이트 ----------
 const CHG=[
+ ['2026-11-28','차원 카드: 내 카드 레벨 고르면 보유 점수·다음 보상 계산 / 도안: 등록 체크 → 켜진 능력치·다음 보상까지 개수','growth'],
  ['2026-11-28','14일 출석부 보상표를 공식 아이템 이름으로 교체 (파브라늄 총 40 · 7일 삭제 아이템 표시)','coupons'],
  ['2026-11-28','사전등록·웹 이벤트 보상 전체 구성표 + 칭호 「전설의 시작」 12/24 만료 안내','coupons'],
  ['2026-11-28','8주 미션 계산기: 점수 6~48 보상 8단계 표시 (공식 공지 기준)','coupons'],
@@ -825,7 +826,7 @@ tmRender();
  fetch('/data/drops.json').then(r=>r.json()).then(j=>{D=j;draw()}).catch(()=>{});
 })();
 /* 백업 */
-const BKU=['tn_msn','tn_cube','tn_hq','tn_col','tn_core','tn_alc','tn_cmp','tn_att','tn_daily','tn_ach','tn_sv','tn_mail','tn_vote'],bkOk=k=>k&&(k.startsWith('dn-')||BKU.includes(k));
+const BKU=['tn_dc','tn_bp','tn_msn','tn_cube','tn_hq','tn_col','tn_core','tn_alc','tn_cmp','tn_att','tn_daily','tn_ach','tn_sv','tn_mail','tn_vote'],bkOk=k=>k&&(k.startsWith('dn-')||BKU.includes(k));
 const bkKeys=()=>{const o={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(bkOk(k))o[k]=localStorage.getItem(k)}}catch(e){}return o};
 const BKN={'dn-enh':'강화 기록','dn-calc':'계산기 입력','dn-gh':'갓 핸드 프리셋','dn-hw':'오늘의 숙제','dn-boss':'보스 타이머','dn-sched':'매일 일정표','dn-arc':'탐사 체크리스트','tn_hq':'히든 퀘스트 체크','tn_col':'수집 등록 표시','tn_core':'코어 점수','tn_alc':'연금 계산기','tn_cmp':'장비 비교'};
 function bkRender(){const o=bkKeys();const ks=Object.keys(o);$('#bkList').innerHTML=ks.length?'<ul class="facts" style="margin:0">'+ks.map(k=>{let n='';try{const v=JSON.parse(o[k]);n=Array.isArray(v)?v.length+'개':(v&&v.items?v.items.length+'개':(v&&v.done?Object.keys(v.done).length+'개':''))}catch(e){}return `<li>${BKN[k]||k} <span class="mute small">${n}</span></li>`}).join('')+'</ul>':'<p class="mute" style="margin:0">아직 저장된 기록이 없어요.</p>'}
@@ -1523,9 +1524,15 @@ const cmSvg=n=>{const m=CMAP[n];if(!m)return '';const e=x=>String(x).replace(/[&
   `<h4 style="margin:14px 0 4px">마스터리 (메모리 파워 합계로 단계가 열려요)</h4>`+tbl(['단계','필요 파워','전투력','고르는 옵션'],D.ghm.map(s=>[s[0],n(s[1]),n(s[2]),s[3].map(o=>`<b>${esc(o[0])}</b> ${stx(o[2])}`).join('<br>')]))+
   `<h4 style="margin:14px 0 4px">메모리 ${D.gh.length}종 · 파워</h4>`+chips('ghK',K.map(k=>[k,k]),S.ghk)+tbl(['이름','등급','파워'],M.map(m=>[esc(m[0]),esc(m[2]),n(m[3])]))};
  // 6 차원 카드
- R.dc=()=>`<h3 style="margin-top:0">차원 카드 ${D.dc.length}장</h3><p class="grsub">카드를 모을수록 보유 점수가 쌓이고, 점수 구간마다 능력치 · 장착 슬롯 보상이 있어요.</p>`+tbl(['카드','등급','점수','효과','레벨별 수치'],D.dc.map(c=>[`<b>${esc(c[0])}</b>${c[4]?' <span class="hqt">시즌</span>':''}`,esc(c[1]),c[2],esc(c[5])+(c[6]?`<br><span class="grsub">${esc(c[6])}</span>`:''),c[7].map((l,i)=>l.length?`Lv.${i+1} ${stx(l)}`:'').filter(Boolean).join('<br>')||'—']))+`<h4 style="margin:14px 0 4px">보유 점수 보상</h4>`+tbl(['점수','보상'],D.dcx.map(r=>[n(r[0]),r[1].length?stx(r[1]):esc(r[2])]));
+ const lsg=(k)=>{try{return JSON.parse(localStorage.getItem(k)||'{}')||{}}catch(e){return {}}},lss=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+ R.dc=()=>{const M=lsg('tn_dc');const sc=D.dc.reduce((a,c,i)=>a+(+M[i]||0)*c[2],0);const nx=D.dcx.find(r=>r[0]>sc);const got=D.dcx.filter(r=>r[0]<=sc).length;
+  return `<h3 style="margin-top:0">차원 카드 ${D.dc.length}장</h3><p class="grsub">가진 카드의 레벨을 고르면 <b>보유 점수</b>와 다음 보상까지 남은 점수가 바로 나와요(카드 점수 × 레벨). 이 기기에 저장돼요.</p>
+  <div class="dcsum"><div><small>내 보유 점수</small><b>${n(sc)}점</b></div><div><small>받은 보상</small><b>${got} / ${D.dcx.length}단계</b></div><div><small>다음 보상</small><b>${nx?`${n(nx[0])}점 · ${nx[0]-sc}점 남음`:'전부 달성'}</b></div></div>${nx?`<p class="small" style="margin:6px 0 10px">다음: ${nx[1].length?stx(nx[1]):esc(nx[2])}</p>`:''}`+
+  tbl(['카드','등급','내 레벨','점수/레벨','효과','레벨별 수치'],D.dc.map((c,i)=>{const mx=c[7].length||1,v=+M[i]||0;return [`<b>${esc(c[0])}</b>${c[4]?' <span class="hqt">시즌</span>':''}`,esc(c[1]),`<select class="dcL" data-i="${i}">${Array.from({length:mx+1},(_,l)=>`<option value="${l}"${l===v?' selected':''}>${l?'Lv.'+l:'없음'}</option>`).join('')}</select>`,c[2],esc(c[5])+(c[6]?`<br><span class="grsub">${esc(c[6])}</span>`:''),c[7].map((l,j)=>l.length?`Lv.${j+1} ${stx(l)}`:'').filter(Boolean).join('<br>')||'—']}))+
+  `<h4 style="margin:14px 0 4px">보유 점수 보상 ${D.dcx.length}단계</h4>`+tbl(['점수','보상','상태'],D.dcx.map(r=>[n(r[0]),r[1].length?stx(r[1]):esc(r[2]),r[0]<=sc?'<span class="hqt ok">✅ 받음</span>':`${n(r[0]-sc)}점 남음`]))};
  // 7 도안
- R.bp=()=>`<h3 style="margin-top:0">도안 등록 보상</h3><p class="grsub">등급별로 등록한 도안 개수가 쌓이면 능력치가 켜져요.</p>`+D.bp.map(b=>`<h4 style="margin:12px 0 4px">${esc(b[0])} 도안 ${b[1].length}종</h4><p class="grsub" style="margin:0 0 4px">${esc(b[1].join(' · '))}</p>`+tbl(['등록 개수','능력치'],b[2].map(r=>[r[0]+'개',stx(r[1])]))).join('');
+ R.bp=()=>{const M=lsg('tn_bp');return `<h3 style="margin-top:0">도안 등록 보상</h3><p class="grsub">게임에서 등록한 도안을 체크하면 등급별로 <b>켜진 능력치</b>와 <b>다음 보상까지 몇 개</b>인지 보여 줘요. 이 기기에 저장돼요.</p>`+D.bp.map(b=>{const c=b[1].filter(x=>M[x]).length,nx=b[2].find(r=>r[0]>c);
+  return `<h4 style="margin:14px 0 4px">${esc(b[0])} 도안 · 등록 ${c} / ${b[1].length}${nx?` · <span style="color:var(--gold2)">다음 보상까지 ${nx[0]-c}개</span>`:' · ✅ 전부'}</h4><div class="bpck">${b[1].map(x=>`<label class="${M[x]?'on':''}"><input type="checkbox" class="bpC" data-k="${esc(x)}"${M[x]?' checked':''}>${esc(x.replace('[도안] ',''))}</label>`).join('')}</div>`+tbl(['등록 개수','능력치','상태'],b[2].map(r=>[r[0]+'개',stx(r[1]),r[0]<=c?'<span class="hqt ok">✅ 켜짐</span>':`${r[0]-c}개 남음`]))}).join('')};
  // 8 왕실 무기고
  R.ar=()=>{const sl=Object.entries(D.ar.slots);S.ars=S.ars||'1';const r=D.ar.rules[S.ars]||{};const G=['노멀','레어','에픽','유니크'];
   return `<h3 style="margin-top:0">왕실 무기고 납품</h3><p class="grsub">강화한 장비를 납품하면 템빨 코인을 받아요. 등급 · 강화 단계마다 성공 확률과 코인이 달라요. 실패하면 재료를 대신 줘요.</p>`+chips('arS',sl,S.ars)+
@@ -1545,6 +1552,7 @@ const cmSvg=n=>{const m=CMAP[n];if(!m)return '';const e=x=>String(x).replace(/[&
  TB.onclick=e=>{const b=e.target.closest('button');if(!b)return;S.t=b.dataset.t;draw()};
  V.addEventListener('click',e=>{const b=e.target.closest('.chips button[data-k]');if(!b)return;const id=b.parentNode.id,k=b.dataset.k;
   ({ogP:()=>S.ogp=+k,skW:()=>{S.skw=k;S.ski=null},skI:()=>S.ski=+k,ptB:()=>S.ptb=+k,wmI:()=>S.wmi=+k,ghK:()=>S.ghk=k,arS:()=>S.ars=k,pK:()=>S.pk=k}[id]||(()=>0))();draw()});
+ V.addEventListener('change',e=>{const t=e.target;if(t.classList.contains('dcL')){const M=lsg('tn_dc');M[t.dataset.i]=+t.value;lss('tn_dc',M);draw()}else if(t.classList.contains('bpC')){const M=lsg('tn_bp');if(t.checked)M[t.dataset.k]=1;else delete M[t.dataset.k];lss('tn_bp',M);draw()}});
  V.addEventListener('input',e=>{const t=e.target;if(t.id==='ogF'||t.id==='ogT'){S[t.id==='ogF'?'ogf':'ogt']=t.value;const p=t.selectionStart;draw();const x=document.getElementById(t.id);x.focus();try{x.setSelectionRange(p,p)}catch(_){}}
   else if(t.id==='mgQ'){S.mgq=t.value;draw();const x=document.getElementById('mgQ');x.focus();x.setSelectionRange(x.value.length,x.value.length)}});
  const load=()=>{if(D||loading)return;loading=true;fetch('/data/growth.json').then(r=>r.json()).then(d=>{D=d;draw()}).catch(()=>{loading=false;V.innerHTML='<p class="mute small">자료를 못 불러왔어요. 새로고침해 주세요.</p>'})};
