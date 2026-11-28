@@ -87,6 +87,8 @@ $('#homeGuides').innerHTML=['systems','weapons','bm','coupons'].map(tile).join('
  const d=pv.slice(5).replace('-','/');box.innerHTML=`<div class="since"><b>다시 오셨네요 👋</b> 지난 방문(${d}) 이후 바뀐 곳 <span class="mute">${ks.length}곳</span><div class="sl">${ks.slice(0,10).map(k=>`<a href="/${k}/">${esc(PAGES[k].t)}</a>`).join('')}</div></div>`})();
 // ---------- 오늘 업데이트 ----------
 const CHG=[
+ ['2026-11-28','내 미션 진행 계산기: 강화 지원 미션 누계 넣으면 다음 보상까지 남은 수 · 8주 미션 48개 체크','coupons'],
+ ['2026-11-28','오늘의 숙제: 다음 일일 · 주간 초기화까지 남은 시간 표시','homework'],
  ['2026-11-28','HOT WEEKEND 접속 선물 12개 시간표 · 지금 받을 수 있는 선물 표시 (우편 보관 1일 주의)','coupons'],
  ['2026-11-28','루나 서버도 캐릭터 생성 제한 (27일 오후 8:27)','streamers'],
  ['2026-11-28','레벨별 할 일: 43~50레벨 정체 구간 팁 9개 (차원 퀘스트 · 영웅 장비 순서 · 야탄 신전 · 성배)','lvplan'],
@@ -127,6 +129,7 @@ const CHG=[
   it.unshift(h&&h.length>=5?`<a href="/daily/">🧠 오늘의 퀴즈 <b>${h.filter(Boolean).length}/5</b>${st>1?' · 📅 '+st+'일 연속':''}</a>`:`<a href="/daily/" class="hot">🧠 오늘의 퀴즈 <b>${h&&h.length?h.length+'/5 푸는 중':'풀기'}</b>${st>1?' · 📅 '+st+'일 연속 출석':''}</a>`)}
  {const hr=g('tn_here'),cm0=g('tn_cube')||{};if(hr&&hr.r){const l=5-Object.keys(cm0).filter(k=>k.startsWith(hr.r+'|')).length;it.unshift(`<a href="/here/" class="hot">📍 ${esc(hr.r)} ${l>0?'큐브 '+l+'개 남음':'큐브 완료'} · 이어서 하기</a>`)}else it.push(`<a href="/here/">📍 지금 여기 — 지역별 남은 것</a>`)}
  {const cm=g('tn_cube');const n=cm?Object.keys(cm).length:0;if(n)it.push(`<a href="/archive/">📦 데이터 큐브 <b>${n}/70</b>${n>=70?' 완료!':''}</a>`)}
+ {const ms=g('tn_msn');if(ms){const p=Object.values(ms.w||{}).filter(Boolean).length;it.push(`<a href="/coupons/">🎯 8주 미션 <b>${p}/48</b></a>`)}}
  let sv='';try{sv=localStorage.getItem('tn_sv')||''}catch(e){}if(sv)it.unshift(`<a href="/streamers/">⭐ 내 서버 <b>${esc(sv)}</b></a>`);
  const hq=g('tn_hq');if(hq&&hq.done){const n=Object.keys(hq.done).length;if(n)it.push(`<a href="/hidden/">🗝 히든 퀘스트 <b>${n}/156</b></a>`)}
  const cl=g('tn_col');if(cl&&cl.done){const v=Object.values(cl.done);if(v.length)it.push(`<a href="/collect/">📦 수집 완료 <b>${v.filter(x=>x===2).length}</b>${v.some(x=>x===1)?' · 절반 '+v.filter(x=>x===1).length:''}</a>`)}
@@ -781,7 +784,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('.bsadd');if(!b)r
 setInterval(()=>{if(!$('[data-v="timer"]').classList.contains('on')&&!tmN)return;tmRender();if(tmN){const now=Date.now();TM.forEach(b=>{if(b.at&&!b.w&&b.at-now<60000){b.w=1;save('dn-boss',TM);try{new Notification('템빨 보스 타이머',{body:b.n+' 곧 출현 (1분 전)'})}catch(e){toast(b.n+' 1분 전!')}}})}},1000);
 tmRender();
 /* 백업 */
-const BKU=['tn_cube','tn_hq','tn_col','tn_core','tn_alc','tn_cmp','tn_att','tn_daily','tn_ach','tn_sv','tn_mail','tn_vote'],bkOk=k=>k&&(k.startsWith('dn-')||BKU.includes(k));
+const BKU=['tn_msn','tn_cube','tn_hq','tn_col','tn_core','tn_alc','tn_cmp','tn_att','tn_daily','tn_ach','tn_sv','tn_mail','tn_vote'],bkOk=k=>k&&(k.startsWith('dn-')||BKU.includes(k));
 const bkKeys=()=>{const o={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(bkOk(k))o[k]=localStorage.getItem(k)}}catch(e){}return o};
 const BKN={'dn-enh':'강화 기록','dn-calc':'계산기 입력','dn-gh':'갓 핸드 프리셋','dn-hw':'오늘의 숙제','dn-boss':'보스 타이머','dn-sched':'매일 일정표','dn-arc':'탐사 체크리스트','tn_hq':'히든 퀘스트 체크','tn_col':'수집 등록 표시','tn_core':'코어 점수','tn_alc':'연금 계산기','tn_cmp':'장비 비교'};
 function bkRender(){const o=bkKeys();const ks=Object.keys(o);$('#bkList').innerHTML=ks.length?'<ul class="facts" style="margin:0">'+ks.map(k=>{let n='';try{const v=JSON.parse(o[k]);n=Array.isArray(v)?v.length+'개':(v&&v.items?v.items.length+'개':(v&&v.done?Object.keys(v.done).length+'개':''))}catch(e){}return `<li>${BKN[k]||k} <span class="mute small">${n}</span></li>`}).join('')+'</ul>':'<p class="mute" style="margin:0">아직 저장된 기록이 없어요.</p>'}
@@ -976,7 +979,7 @@ function hwRender(){const C=cur(),n=C.items.length,c=C.items.filter(i=>i.c).leng
   $('#hwChars').innerHTML=HW.cs.map((x,k)=>{const d=x.items.filter(i=>i.c).length;return `<button type="button" class="${k===HW.ci?'on':''}" data-ci="${k}">${esc(x.n)} <small>${d}/${x.items.length}</small></button>`}).join('')+`<button type="button" class="add" data-add="1">＋ 캐릭터</button>`;
   const all=HW.cs.reduce((a,x)=>a+x.items.length,0),done=HW.cs.reduce((a,x)=>a+x.items.filter(i=>i.c).length,0);
   $('#hwSum').innerHTML=(HW.cs.length>1?`전체 캐릭터 <b>${done} / ${all}</b> 완료 · `:'')+`<a href="#" data-ren="1">「${esc(C.n)}」 이름 바꾸기</a>`+(HW.cs.length>1?` · <a href="#" data-rm="1">이 캐릭터 지우기</a>`:'');
-  $('#hwBar').style.width=(n?c/n*100:0)+'%';$('#hwCnt').textContent=`${C.n} · 오늘 ${c} / ${n} 완료`;$('#hwDate').textContent=HW.d;
+  $('#hwBar').style.width=(n?c/n*100:0)+'%';{const nd=document.getElementById('hwNext');if(nd){const z=Date.now()+9*36e5,t=new Date(z);let r=Date.UTC(t.getUTCFullYear(),t.getUTCMonth(),t.getUTCDate(),5);if(z>=r)r+=864e5;let wr=r;while(new Date(wr).getUTCDay()!==HW.wd)wr+=864e5;const f=x=>{const m=Math.round((x-z)/6e4);return m>=1440?Math.floor(m/1440)+'일 '+Math.floor(m%1440/60)+'시간':Math.floor(m/60)+'시간 '+(m%60)+'분'};nd.textContent='다음 초기화: 일일 '+f(r)+' 뒤 · 주간 '+f(wr)+' 뒤'}}$('#hwCnt').textContent=`${C.n} · 오늘 ${c} / ${n} 완료`;$('#hwDate').textContent=HW.d;
   $('#hwList').innerHTML=C.items.map((i,k)=>row(i,k,'k')).join('')||'<p class="mute">숙제가 없어요. 아래에서 추가하세요.</p>';
   $('#hwwBar').style.width=(wn?wc/wn*100:0)+'%';$('#hwwCnt').textContent=`주간 숙제 ${wc} / ${wn}`;$('#hwwDay').value=String(HW.wd);
   $('#hwwList').innerHTML=C.w.map((i,k)=>row(i,k,'w')).join('')||'<p class="mute">주간 숙제가 없어요.</p>'}
@@ -1112,6 +1115,28 @@ try{initScene()}catch(e){}
    `<details><summary>전체 시간표 12개 보기</summary><ol class="hwgl">${G.map(g=>`<li class="${n>g.e?'past':n>=g.s?'on':''}"><b>${esc(g.lab)}</b> ${esc(g.it)}</li>`).join('')}</ol></details></div>`;
   B.forEach(b=>b.innerHTML=h)}
  draw();setInterval(draw,60000)})();
+// 미션 진행 계산기 (장비 강화 지원 미션 + 8주 미션) — 게임 화면 숫자를 넣으면 남은 것만 보여 줌
+(()=>{const C=document.getElementById('msnCard');const esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+ const ls=(k,v)=>{try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||'null');localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}};
+ const S=Object.assign({en:0,ds:0,mk:0,w:{}},ls('tn_msn')||{});const put=()=>ls('tn_msn',S);
+ const EN=[['en',50,'강화 재료 상자 ×5'],['en',100,'강화 재료 상자 ×5'],['en',200,'강화 재료 상자 ×10'],['ds',50,'보급 상자 ×10'],['ds',100,'보급 상자 ×20'],['mk',10000,'골드 5만'],['mk',30000,'골드 5만'],['mk',50000,'골드 10만']];
+ const LB={en:'아이템 강화 시도',ds:'아이템 분해',mk:'일반 몬스터 처치'};
+ const W=[['아이템 제작 20','강화 시도 100','속도의 물약 50','골렘의 미궁 몬스터 500','일일 미션 30','히든 퀘스트 5'],['파브라늄 사용 50','야탄 신전 몬스터 2,000','1차 각성 1','골드 사용 500만','히든 퀘스트 10','칭호 10'],['에픽 장비 강화 시도 20','히든 퀘스트 15','오염된 존재 10','인마대전 몬스터 100','연금 10','일일 미션 150'],['차원 몬스터 5,000','캐릭터 Lv.65','파브라늄 사용 500','메인 퀘스트 8막 완료','잠재력 「성찰의 두 번째 결속」','에픽 이상 갓 핸드 장착'],['아이템 제작 100','강화 시도 500','속도의 물약 300','골렘의 미궁 몬스터 20,000','일일 미션 250','히든 퀘스트 25'],['파브라늄 사용 800','야탄 신전 몬스터 20,000','베니스의 행운 상자 10','골드 사용 3,000만','히든 퀘스트 30','칭호 35'],['유니크 장비 강화 시도 5','히든 퀘스트 35','오염된 존재 30','인마대전 몬스터 500','연금 50','일일 미션 350'],['차원 몬스터 35,000','캐릭터 Lv.75','파브라늄 사용 1,500','뱀파이어 도시의 주인 처치','잠재력 「성찰의 일곱 번째 결속」','차원 미션 30']];
+ const open=k=>Date.now()>=Date.parse('2026-11-26T00:00:00+09:00')+(k?(4+7*(k-1))*864e5+5*36e5:0);
+ const pts=()=>Object.values(S.w).filter(Boolean).length;
+ if(C){let wk=0;for(let k=0;k<8;k++)if(open(k))wk=k;
+  function draw(){const p=pts(),nx=[6,12,18,24,30,36,42,48].find(x=>x>p);const enDone=EN.filter(e=>S[e[0]]>=e[1]).length;
+   const rows=['en','ds','mk'].map(k=>{const L=EN.filter(e=>e[0]===k),n=L.find(e=>S[k]<e[1]);return `<div class="msr"><label>${LB[k]} 누계 <input type="number" min="0" inputmode="numeric" data-k="${k}" value="${S[k]||''}" placeholder="0"></label><span>${n?`다음 <b>${n[1].toLocaleString()}</b>까지 <b class="g">${(n[1]-S[k]).toLocaleString()}</b> 남음 → ${esc(n[2])}`:'✅ 이 줄 전부 달성'}</span></div>`}).join('');
+   C.innerHTML=`<div class="ch"><span class="med sm"><svg><use href="#i-check"/></svg></span><h3>내 미션 진행 계산기</h3></div><p class="small mute" style="margin:0 0 10px">게임 이벤트 화면의 누적 숫자만 넣으면 다음 보상까지 남은 걸 알려 줘요. 이 브라우저에 저장돼요.</p>
+   <h4 class="msh">장비 강화 지원 미션 <small>${enDone} / 8 · 12월 9일 새벽까지</small></h4>${rows}${enDone>=8?'<p class="msok">🎉 8개 전부 달성 — 추가 보상 상자 ×50 받으세요</p>':''}
+   <h4 class="msh">8주 미션 <small>${p} / 48점${nx?' · 다음 보상 '+nx+'점까지 '+(nx-p)+'개':' · 전부 완료!'}</small></h4><div class="lvbar" style="height:8px"><i style="width:${p/48*100}%"></i></div>
+   <div class="mswk">${W.map((_,k)=>`<button type="button" data-w="${k}" class="${k===wk?'on':''}${open(k)?'':' lock'}">${k+1}주${W[k].every((x,j)=>S.w[k+'-'+j])?' ✅':''}</button>`).join('')}</div>
+   <div class="msl">${W[wk].map((m,j)=>{const on=!!S.w[wk+'-'+j];return `<button type="button" class="${on?'on':''}" data-m="${wk}-${j}"${open(wk)?'':' disabled'}>${on?'✓ ':''}${esc(m)}</button>`}).join('')}</div>
+   <p class="small mute" style="margin:6px 0 0">${open(wk)?'다 한 미션을 눌러 체크하세요.':(wk+1)+'주차는 '+new Date(Date.parse('2026-11-26T00:00:00+09:00')+(4+7*(wk-1))*864e5+5*36e5+9*36e5).toISOString().slice(5,10).replace('-','/')+' 월요일 새벽 5시에 열려요 (미리 보기).'}</p>`}
+  C.addEventListener('input',e=>{const k=e.target.dataset.k;if(!k)return;S[k]=Math.max(0,+e.target.value||0);put();const f=document.activeElement===e.target;const pos=e.target.selectionStart;draw();if(f){const n=C.querySelector('[data-k="'+k+'"]');n.focus();try{n.setSelectionRange(pos,pos)}catch(x){}}});
+  C.addEventListener('click',e=>{const b=e.target.closest('[data-w]');if(b){wk=+b.dataset.w;draw();return}const m=e.target.closest('[data-m]');if(m){S.w[m.dataset.m]=!S.w[m.dataset.m];if(!S.w[m.dataset.m])delete S.w[m.dataset.m];put();draw()}});
+  draw()}
+})();
 // 쿠폰 마지막 확인 시각 (아침 업데이트 때 LASTCHK 를 바꾼다)
 const LASTCHK='2026-11-28T08:55:00+09:00';
 document.querySelectorAll('.lastchk').forEach(e=>{const t=new Date(Date.parse(LASTCHK)+9*36e5),n=new Date(Date.now()+9*36e5),kd=x=>Math.floor(x/864e5),dd=kd(n)-kd(t),h=t.getUTCHours(),m=t.getUTCMinutes();e.textContent=(dd===0?'오늘':dd===1?'어제':(t.getUTCMonth()+1)+'월 '+t.getUTCDate()+'일')+' '+(h<12?'오전 ':'오후 ')+((h%12)||12)+'시'+(m?' '+m+'분':'')});
@@ -1756,7 +1781,7 @@ const cmSvg=n=>{const m=CMAP[n];if(!m)return '';const e=x=>String(x).replace(/[&
   const hs=R.h.map(h=>({h,ok:!!H.done[r+'|'+h[0]],op:open(h,H)})).sort((a,b)=>(a.ok-b.ok)||((b.op===true)-(a.op===true))||(mk(a.h[1])||[0,0])[0]-(mk(b.h[1])||[0,0])[0]||(mk(a.h[1])||[0,0])[1]-(mk(b.h[1])||[0,0])[1]);
   const vis=x=>!S.left||!x.ok;const cL=cs.filter(vis),hL=hs.filter(vis);const cOk=cs.filter(x=>x.ok).length,hOk=hs.filter(x=>x.ok).length;
   const nx=RG.find(x=>{const t=stat(x);return t.tot&&t.done<t.tot&&x!==r});
-  let h=`<div class="hrhead"><div class="hrring"><svg viewBox="0 0 96 96"><circle cx="48" cy="48" r="42" fill="none" stroke="#ffffff14" stroke-width="9"/><circle cx="48" cy="48" r="42" fill="none" stroke="${pct>=1?'#3fb96b':'#e2b04a'}" stroke-width="9" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-pct)}" style="transition:stroke-dashoffset .6s"/></svg><b>${Math.round(pct*100)}%<small>${s.done} / ${s.tot}</small></b></div><div style="flex:1;min-width:200px"><h2>${esc(r)}</h2><div class="small mute">📦 큐브 ${cOk}/${cs.length} · 🗝 히든 ${hOk}/${hs.length}${H.main||H.lv?` · 내 진행 ${H.main?'메인 '+esc(H.main):''}${H.main&&H.lv?' · ':''}${H.lv?'Lv.'+esc(H.lv):''}`:' · <a href="/hidden/">내 메인 퀘스트 넣기</a>'}</div><div class="hrtools" id="hrTools"><button type="button" data-t="left" class="on">✓ 남은 것만</button><button type="button" data-t="wl" class="">🔅 화면 켜두기</button><a class="btnlink ghost" href="/map/" data-mpr="바이란" style="padding:7px 12px;border-radius:99px;font-size:13px;min-height:0">🗺 지도</a></div></div></div>`;
+  let h=`<div class="hrhead"><div class="hrring"><svg viewBox="0 0 96 96"><circle cx="48" cy="48" r="42" fill="none" stroke="#ffffff14" stroke-width="9"/><circle cx="48" cy="48" r="42" fill="none" stroke="${pct>=1?'#3fb96b':'#e2b04a'}" stroke-width="9" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-pct)}" style="transition:stroke-dashoffset .6s"/></svg><b>${Math.round(pct*100)}%<small>${s.done} / ${s.tot}</small></b></div><div style="flex:1;min-width:200px"><h2>${esc(r)}</h2><div class="small mute">📦 큐브 ${cOk}/${cs.length} · 🗝 히든 ${hOk}/${hs.length}${H.main||H.lv?` · 내 진행 ${H.main?'메인 '+esc(H.main):''}${H.main&&H.lv?' · ':''}${H.lv?'Lv.'+esc(H.lv):''}`:' · <a href="/hidden/">내 메인 퀘스트 넣기</a>'}</div><div class="hrtools" id="hrTools"></div></div></div>`;
   {const L=hs.filter(x=>!x.ok).map(x=>x.h);if(L.length){const ex=L.reduce((a,q)=>a+q[6],0),gd=L.reduce((a,q)=>a+(q[7]||0),0),cn=L.reduce((a,q)=>a+(q[8]||0),0),gf=[...new Set(L.flatMap(q=>q[9]||[]))];
    h+=`<div class="hrrw"><b>🎁 남은 히든 ${L.length}개 다 하면</b><div class="hrrwg"><span>EXP <b>${man(ex)}</b></span>${gd?`<span>골드 <b>${man(gd)}</b></span>`:''}${cn?`<span>코인 <b>${cn.toLocaleString()}</b></span>`:''}</div>${gf.length?`<div class="small" style="margin-top:4px;color:#cfd8e6">보상 아이템: ${gf.slice(0,6).map(esc).join(' · ')}${gf.length>6?' 외 '+(gf.length-6)+'종':''}</div>`:''}</div>`}}
   if(s.tot&&s.done>=s.tot)h+=`<div class="hrdone"><div class="big">🎉</div><b>${esc(r)} 탐사 완료!</b><span class="small mute">큐브 ${cs.length}개 · 히든 퀘스트 ${hs.length}개 전부 끝냈어요.</span>${nx?`<div style="margin-top:10px"><button type="button" class="btn" data-go="${esc(nx)}">다음 지역 ${esc(nx)} →</button></div>`:''}</div>`;
