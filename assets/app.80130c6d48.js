@@ -87,6 +87,7 @@ $('#homeGuides').innerHTML=['systems','weapons','bm','coupons'].map(tile).join('
  const d=pv.slice(5).replace('-','/');box.innerHTML=`<div class="since"><b>다시 오셨네요 👋</b> 지난 방문(${d}) 이후 바뀐 곳 <span class="mute">${ks.length}곳</span><div class="sl">${ks.slice(0,10).map(k=>`<a href="/${k}/">${esc(PAGES[k].t)}</a>`).join('')}</div></div>`})();
 // ---------- 오늘 업데이트 ----------
 const CHG=[
+ ['2026-11-28','8주 미션 계산기: 점수 6~48 보상 8단계 표시 (공식 공지 기준)','coupons'],
  ['2026-11-28','사냥터 계산기: 고른 사냥터 전리품 등급순 · 다른 사냥터와 1시간 경험치 비교','hunt'],
  ['2026-11-28','보스 33종 카드: 종류별 색 · 내 레벨 대비 색 · 주요 드롭 · 타이머 남은 시간 한눈에','timer'],
  ['2026-11-28','보스 타이머: 서버별 기록 · 게임에 보이는 남은 시간으로 맞추기 · 길드원에게 공유 링크','timer'],
@@ -1162,12 +1163,13 @@ try{initScene()}catch(e){}
  const W=[['아이템 제작 20','강화 시도 100','속도의 물약 50','골렘의 미궁 몬스터 500','일일 미션 30','히든 퀘스트 5'],['파브라늄 사용 50','야탄 신전 몬스터 2,000','1차 각성 1','골드 사용 500만','히든 퀘스트 10','칭호 10'],['에픽 장비 강화 시도 20','히든 퀘스트 15','오염된 존재 10','인마대전 몬스터 100','연금 10','일일 미션 150'],['차원 몬스터 5,000','캐릭터 Lv.65','파브라늄 사용 500','메인 퀘스트 8막 완료','잠재력 「성찰의 두 번째 결속」','에픽 이상 갓 핸드 장착'],['아이템 제작 100','강화 시도 500','속도의 물약 300','골렘의 미궁 몬스터 20,000','일일 미션 250','히든 퀘스트 25'],['파브라늄 사용 800','야탄 신전 몬스터 20,000','베니스의 행운 상자 10','골드 사용 3,000만','히든 퀘스트 30','칭호 35'],['유니크 장비 강화 시도 5','히든 퀘스트 35','오염된 존재 30','인마대전 몬스터 500','연금 50','일일 미션 350'],['차원 몬스터 35,000','캐릭터 Lv.75','파브라늄 사용 1,500','뱀파이어 도시의 주인 처치','잠재력 「성찰의 일곱 번째 결속」','차원 미션 30']];
  const open=k=>Date.now()>=Date.parse('2026-11-26T00:00:00+09:00')+(k?(4+7*(k-1))*864e5+5*36e5:0);
  const pts=()=>Object.values(S.w).filter(Boolean).length;
+ const SR={6:'파브라늄 30',12:'성물 선택 상자 2',18:'펫 주얼 11회 소환권',24:'에픽 갓 핸드 메모리 1회 소환권',30:'미지의 갓 핸드 메모리 11회 소환권',36:'에픽 갓 핸드 메모리 1회 소환권',42:'미지의 클래스 11회 소환권',48:'에픽 갓 핸드 메모리 1회 소환권'};
  if(C){let wk=0;for(let k=0;k<8;k++)if(open(k))wk=k;
   function draw(){const p=pts(),nx=[6,12,18,24,30,36,42,48].find(x=>x>p);const enDone=EN.filter(e=>S[e[0]]>=e[1]).length;
    const rows=['en','ds','mk'].map(k=>{const L=EN.filter(e=>e[0]===k),n=L.find(e=>S[k]<e[1]);return `<div class="msr"><label>${LB[k]} 누계 <input type="number" min="0" inputmode="numeric" data-k="${k}" value="${S[k]||''}" placeholder="0"></label><span>${n?`다음 <b>${n[1].toLocaleString()}</b>까지 <b class="g">${(n[1]-S[k]).toLocaleString()}</b> 남음 → ${esc(n[2])}`:'✅ 이 줄 전부 달성'}</span></div>`}).join('');
    C.innerHTML=`<div class="ch"><span class="med sm"><svg><use href="#i-check"/></svg></span><h3>내 미션 진행 계산기</h3></div><p class="small mute" style="margin:0 0 10px">게임 이벤트 화면의 누적 숫자만 넣으면 다음 보상까지 남은 걸 알려 줘요. 이 브라우저에 저장돼요.</p>
    <h4 class="msh">장비 강화 지원 미션 <small>${enDone} / 8 · 12월 9일 새벽까지</small></h4>${rows}${enDone>=8?'<p class="msok">🎉 8개 전부 달성 — 추가 보상 상자 ×50 받으세요</p>':''}
-   <h4 class="msh">8주 미션 <small>${p} / 48점${nx?' · 다음 보상 '+nx+'점까지 '+(nx-p)+'개':' · 전부 완료!'}</small></h4><div class="lvbar" style="height:8px"><i style="width:${p/48*100}%"></i></div>
+   <h4 class="msh">8주 미션 <small>${p} / 48점${nx?' · 다음 보상 '+nx+'점('+SR[nx]+')까지 '+(nx-p)+'개':' · 전부 완료!'}</small></h4><div class="lvbar" style="height:8px"><i style="width:${p/48*100}%"></i></div><div class="mssr">${Object.keys(SR).map(k=>`<span class="${p>=k?'on':''}"><b>${k}점</b>${SR[k]}</span>`).join('')}</div><p class="small mute" style="margin:6px 0 0">미션 하나마다 「전설의 시작 보상 확정 상자」(5주차부터 「특별 보상 확정 상자」)도 따로 받아요. 같은 종류 미션은 진행도가 다음 주차로 이어져요(예: 1주 강화 100회 → 5주 500회에 같이 쌓임).</p>
    <div class="mswk">${W.map((_,k)=>`<button type="button" data-w="${k}" class="${k===wk?'on':''}${open(k)?'':' lock'}">${k+1}주${W[k].every((x,j)=>S.w[k+'-'+j])?' ✅':''}</button>`).join('')}</div>
    <div class="msl">${W[wk].map((m,j)=>{const on=!!S.w[wk+'-'+j];return `<button type="button" class="${on?'on':''}" data-m="${wk}-${j}"${open(wk)?'':' disabled'}>${on?'✓ ':''}${esc(m)}</button>`}).join('')}</div>
    <p class="small mute" style="margin:6px 0 0">${open(wk)?'다 한 미션을 눌러 체크하세요.':(wk+1)+'주차는 '+new Date(Date.parse('2026-11-26T00:00:00+09:00')+(4+7*(wk-1))*864e5+5*36e5+9*36e5).toISOString().slice(5,10).replace('-','/')+' 월요일 새벽 5시에 열려요 (미리 보기).'}</p>`}
