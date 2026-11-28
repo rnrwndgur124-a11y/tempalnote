@@ -87,6 +87,7 @@ $('#homeGuides').innerHTML=['systems','weapons','bm','coupons'].map(tile).join('
  const d=pv.slice(5).replace('-','/');box.innerHTML=`<div class="since"><b>다시 오셨네요 👋</b> 지난 방문(${d}) 이후 바뀐 곳 <span class="mute">${ks.length}곳</span><div class="sl">${ks.slice(0,10).map(k=>`<a href="/${k}/">${esc(PAGES[k].t)}</a>`).join('')}</div></div>`})();
 // ---------- 오늘 업데이트 ----------
 const CHG=[
+ ['2026-11-28','사냥터 계산기: 고른 사냥터 전리품 등급순 · 다른 사냥터와 1시간 경험치 비교','hunt'],
  ['2026-11-28','보스 33종 카드: 종류별 색 · 내 레벨 대비 색 · 주요 드롭 · 타이머 남은 시간 한눈에','timer'],
  ['2026-11-28','보스 타이머: 서버별 기록 · 게임에 보이는 남은 시간으로 맞추기 · 길드원에게 공유 링크','timer'],
  ['2026-11-28','내 미션 진행 계산기: 강화 지원 미션 누계 넣으면 다음 보상까지 남은 수 · 8주 미션 48개 체크','coupons'],
@@ -1583,10 +1584,22 @@ const cmSvg=n=>{const m=CMAP[n];if(!m)return '';const e=x=>String(x).replace(/[&
   if(!lv){RH.textContent='한 마리 경험치가 많은 사냥터 (위에서 「내 레벨」을 넣으면 맞춤 순위)';}else RH.textContent=`Lv.${lv} 추천 — 내 레벨 -6 ~ +2 사냥터 중 한 마리 경험치 순`;
   const L=D.g.map((g,i)=>[g,i,avg(g),lvr(g)]).filter(x=>!lv||(x[3][0]>=lv-6&&x[3][0]<=lv+2)).sort((a,b)=>b[2]-a[2]).slice(0,8);
   RK.innerHTML=L.length?`<div class="scroll"><table class="ptbl grtbl"><thead><tr><th>#</th><th>사냥터</th><th>레벨</th><th class="n">한 마리</th><th class="n">1시간 (${S.k}마리/분)</th></tr></thead><tbody>${L.map((x,j)=>`<tr><td>${j+1}</td><td><button type="button" class="hqp" data-i="${x[1]}">${esc(x[0][0])}</button> <span class="mute small">${esc(x[0][1])}</span></td><td>Lv.${x[3][0]}${x[3][1]>x[3][0]?'~'+x[3][1]:''}</td><td class="n">${n(x[2])}</td><td class="n">${n(x[2]*(+S.k||0)*60*(1+(+S.b||0)/100))}</td></tr>`).join('')}</tbody></table></div>`:'<p class="small mute">이 레벨 근처 사냥터가 없어요.</p>'}
- function all(){calc();rank()}
+ let DR=null;fetch('/data/drops.json').then(r=>r.json()).then(j=>{DR=j;if(D)all()}).catch(()=>{});
+ const RG={'레전드리':0,'유니크':1,'에픽':2,'레어':3,'노멀':4};const GC={'레전드리':'#ff9f43','유니크':'#e2b04a','에픽':'#a46bff','레어':'#3fa7e0','노멀':'#9aa'};
+ function drops(){const E=document.getElementById('hxDrop');if(!E)return;const g=D.g[S.g]||D.g[0];if(!DR){E.innerHTML='';return}const gr=DR.grounds.find(x=>x[0]===g[0]);if(!gr){E.innerHTML='';return}
+  const ids=[...new Set(gr[3].flatMap(m=>m[2].concat(m[3]||[])))];const it=ids.map(i=>DR.items[i]).filter(Boolean).sort((a,b)=>(RG[a[1]]??9)-(RG[b[1]]??9));
+  E.innerHTML=`<div class="hxdr"><b>🎁 이 사냥터 전리품 ${it.length}종</b> <span class="small mute">일반 몬스터 기준 · 등급 높은 순</span><div class="hxdl">${it.slice(0,14).map(x=>`<a href="/drops/" data-drq="${esc(x[0])}" style="--gc:${GC[x[1]]||'#9aa'}">${esc(x[0])}</a>`).join('')}${it.length>14?`<a href="/drops/" data-drq="${esc(g[0])}" class="more">+${it.length-14}종 더 보기</a>`:''}</div></div>`}
+ function cmp(){const E=document.getElementById('hxCmp');if(!E)return;const o=D.g.map((g,i)=>`<option value="${i}"${i==S.c?' selected':''}>${esc(g[1])} · ${esc(g[0])} (Lv.${lvr(g)[0]})</option>`).join('');
+  const a=D.g[S.g]||D.g[0],b=S.c!=null&&S.c!==''?D.g[S.c]:null;const k=(+S.k||0)*60*(1+(+S.b||0)/100);
+  const row=(g)=>{const r=lvr(g),av=avg(g);return `<div class="hxcc"><b>${esc(g[0])}</b><span class="small mute">${esc(g[1])} · Lv.${r[0]}${r[1]>r[0]?'~'+r[1]:''}</span><div>한 마리 <b>${n(av)}</b></div><div>1시간 <b>${n(av*k)}</b></div></div>`};
+  let diff='';if(b){const d=(avg(b)-avg(a))/avg(a)*100;diff=`<p class="small" style="margin:6px 0 0">${esc(b[0])}이(가) 1시간에 <b style="color:${d>=0?'#7de0a8':'#f19b9e'}">${d>=0?'+':''}${Math.round(d)}%</b> ${d>=0?'더 많아요':'적어요'} (같은 마릿수 기준)</p>`}
+  E.innerHTML=`<details class="hxcd"${b?' open':''}><summary>⚖ 다른 사냥터와 비교</summary><select id="hxC"><option value="">비교할 사냥터 고르기</option>${o}</select>${b?`<div class="hxcg">${row(a)}${row(b)}</div>${diff}`:''}</details>`;
+  document.getElementById('hxC').onchange=e=>{S.c=e.target.value===''?'':+e.target.value;put();cmp()}}
+ document.getElementById('hxCard').addEventListener('click',e=>{const a=e.target.closest('[data-drq]');if(a){try{sessionStorage.setItem('tn_drq',a.dataset.drq)}catch(x){}}});
+ function all(){calc();rank();drops();cmp()}
  function boot(d){D=d;G.innerHTML=D.g.map((g,i)=>`<option value="${i}">${esc(g[1])} · ${esc(g[0])} (Lv.${lvr(g)[0]})</option>`).join('');G.value=S.g;K.value=S.k;B.value=S.b;all()}
- G.onchange=()=>{S.g=+G.value;put();calc()};K.oninput=()=>{S.k=K.value;put();all()};B.oninput=()=>{S.b=B.value;put();all()};
- RK.addEventListener('click',e=>{const b=e.target.closest('button[data-i]');if(!b)return;S.g=+b.dataset.i;G.value=S.g;put();calc();G.scrollIntoView({behavior:'smooth',block:'center'})});
+ G.onchange=()=>{S.g=+G.value;put();calc();drops();cmp()};K.oninput=()=>{S.k=K.value;put();all()};B.oninput=()=>{S.b=B.value;put();all()};
+ RK.addEventListener('click',e=>{const b=e.target.closest('button[data-i]');if(!b)return;S.g=+b.dataset.i;G.value=S.g;put();calc();drops();cmp();G.scrollIntoView({behavior:'smooth',block:'center'})});
  const hl=document.getElementById('huLv');if(hl)hl.addEventListener('input',()=>{if(D)rank()});
  const load=()=>{if(D||loading)return;loading=true;fetch('/data/huntxp.json').then(r=>r.json()).then(boot).catch(()=>{loading=false;OUT.innerHTML='<p class="mute small">자료를 못 불러왔어요.</p>'})};
  if(/\/hunt/.test(location.pathname)||location.hash==='#hunt'||!('IntersectionObserver' in window))load();else{const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io.disconnect();load()}},{rootMargin:'1500px'});io.observe(G)}
