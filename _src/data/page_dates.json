@@ -1,7 +1,7 @@
 {
 "home": {
-"h": "0e7aa1f2118066d04ff092684f3c219d93e820fa",
-"d": "2026-11-27"
+"h": "7c4a86e330bd0feebc1c4bcad130e679449fa3db",
+"d": "2026-11-28"
 },
 "quiz": {
 "h": "deb1085fd12ab7fcbef8804ce5dcffeb4d983370",
@@ -24,7 +24,7 @@
 "d": "2026-11-27"
 },
 "starter": {
-"h": "320b86461860a1b4392da0dc1839ee46fecf216b",
+"h": "6b8feb79a8581089ee114bd8e6f992bd3ad5448e",
 "d": "2026-11-28"
 },
 "weapons": {
@@ -44,15 +44,15 @@
 "d": "2026-11-27"
 },
 "coupons": {
-"h": "c511e0066fae092ee1759b55e1082a950921cb5e",
-"d": "2026-11-27"
+"h": "86ba088537f28dfcc7f4def4a971a452a79f53fb",
+"d": "2026-11-28"
 },
 "community": {
 "h": "a1dd9b2cba05af479fac4ffbe02c4af74b9172f2",
 "d": "2026-11-26"
 },
 "streamers": {
-"h": "e0edce70f4f1e1f5288a95931aaf84cfba59b7b0",
+"h": "1e6436f01b1d642e336dc57c36b8458ebbbf357d",
 "d": "2026-11-28"
 },
 "news": {
