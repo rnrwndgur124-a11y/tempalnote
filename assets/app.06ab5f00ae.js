@@ -87,6 +87,7 @@ $('#homeGuides').innerHTML=['systems','weapons','bm','coupons'].map(tile).join('
  const d=pv.slice(5).replace('-','/');box.innerHTML=`<div class="since"><b>다시 오셨네요 👋</b> 지난 방문(${d}) 이후 바뀐 곳 <span class="mute">${ks.length}곳</span><div class="sl">${ks.slice(0,10).map(k=>`<a href="/${k}/">${esc(PAGES[k].t)}</a>`).join('')}</div></div>`})();
 // ---------- 오늘 업데이트 ----------
 const CHG=[
+ ['2026-11-28','보스 33종 카드: 종류별 색 · 내 레벨 대비 색 · 주요 드롭 · 타이머 남은 시간 한눈에','timer'],
  ['2026-11-28','보스 타이머: 서버별 기록 · 게임에 보이는 남은 시간으로 맞추기 · 길드원에게 공유 링크','timer'],
  ['2026-11-28','내 미션 진행 계산기: 강화 지원 미션 누계 넣으면 다음 보상까지 남은 수 · 8주 미션 48개 체크','coupons'],
  ['2026-11-28','오늘의 숙제: 다음 일일 · 주간 초기화까지 남은 시간 표시','homework'],
@@ -797,6 +798,28 @@ $('#tmNotif').onclick=async()=>{if(!tmN&&'Notification' in window&&Notification.
 document.addEventListener('click',e=>{const b=e.target.closest('.bsadd');if(!b)return;const i=$('#tmName');if(!i)return;i.value=b.dataset.b;const m=$('#tmMin');(m||i).focus();i.scrollIntoView({block:'center',behavior:'smooth'})});
 setInterval(()=>{if(!$('[data-v="timer"]').classList.contains('on')&&!tmN)return;tmRender();if(tmN){const now=Date.now();TM.forEach(b=>{if(b.at&&!b.w&&b.at-now<60000){b.w=1;save('dn-boss',TM);try{new Notification('템빨 보스 타이머',{body:b.n+' 곧 출현 (1분 전)'})}catch(e){toast(b.n+' 1분 전!')}}})}},1000);
 tmRender();
+// 보스 카드: 종류 색 · 이름 머리글자 · 내 레벨 대비 색 · 타이머 상태 · 주요 드롭
+(function(){const G=document.getElementById('bxGrid');if(!G)return;const T=document.getElementById('bxTools');
+ const TY={'필드 보스':['👑','#e2b04a'],'오염된 존재':['☣','#a46bff'],'던전':['🏰','#e0565b'],'필드':['⚔','#3fa7e0']};
+ const L=[];document.querySelectorAll('#bossdex table.ptbl').forEach(t=>{const h=(t.closest('.scroll').previousElementSibling||{}).textContent||'';const ty=/오염된/.test(h)?'오염된 존재':/필드 보스/.test(h)?'필드 보스':'필드';const nat=(h.split('·')[1]||'').trim();
+  t.querySelectorAll('tbody tr').forEach(r=>{const c=r.cells;const n=(c[1].querySelector('.bsadd')||c[1]).textContent.trim();const rg=c[2].textContent.trim();const lv=+(c[0].textContent.match(/\d+/)||[0])[0];const t2=/던전/.test(rg)?'던전':ty;L.push({n,lv,rg:rg.replace(/\s*\((필드 보스|던전)\)/,''),ty:t2,nat})})});
+ let F='all',Q='',D=null;const myLv=()=>{let v=0;try{v=+(JSON.parse(localStorage.getItem('tn_hq')||'{}').lv)||+localStorage.getItem('dn-hulv')||0}catch(e){}return v};
+ const hue=n=>{let h=0;for(const c of n)h=(h*31+c.charCodeAt(0))%360;return h};
+ const top=n=>{if(!D)return '';const b=D.bosses.find(x=>x[0]===n);if(!b)return '';const R={'레전드리':0,'유니크':1,'에픽':2};const it=[...new Set(b[6].map(i=>D.items[i]).filter(x=>x&&R[x[1]]!=null).sort((a,b)=>R[a[1]]-R[b[1]]).map(x=>x[0]))].slice(0,3);return it.length?'<div class="bxd">'+it.map(x=>'<span>'+esc(x)+'</span>').join('')+'</div>':''};
+ function draw(){const lv=myLv(),now=Date.now();
+  T.innerHTML=`<div class="bxf">${[['all','전체 '+L.length],['필드 보스','👑 필드 보스'],['오염된 존재','☣ 오염된 존재'],['던전','🏰 던전 · 기타'],['mine','내 레벨에 맞는 것']].map(([k,t])=>`<button type="button" data-f="${k}" class="${F===k?'on':''}">${t}</button>`).join('')}<input id="bxQ" type="search" placeholder="보스 · 지역 찾기" value="${esc(Q)}"></div>${lv?'':`<p class="small mute" style="margin:4px 0 0">내 레벨을 <a href="/lvplan/">레벨별 할 일</a>에 넣으면 잡을 만한 보스가 초록색으로 표시돼요.</p>`}`;
+  const tm=n=>{const b=tmMine().find(x=>x.n===n&&x.at);if(!b)return '';const l=b.at-now;return `<span class="bxt ${l<=0?'go':l<3e5?'soon':''}">⏱ ${l<=0?'출현!':fmtT(l)}</span>`};
+  const V=L.filter(b=>(F==='all'||F===b.ty||(F==='던전'&&(b.ty==='던전'||b.ty==='필드'))||(F==='mine'&&lv&&b.lv<=lv+3&&b.lv>=lv-10))&&(!Q||(b.n+b.rg).includes(Q)));
+  {const nn=document.getElementById('bxN');if(nn)nn.textContent=L.length}
+  G.innerHTML=V.map(b=>{const t=TY[b.ty]||TY['필드'],cl=!lv?'':b.lv<=lv?'ok':b.lv<=lv+3?'near':'hi',h=hue(b.n);
+   return `<div class="bxc" style="--bc:${t[1]}"><div class="bxm" style="background:linear-gradient(135deg,hsl(${h} 55% 42%),hsl(${(h+40)%360} 60% 26%))"><span>${esc(b.n.replace(/^(서릿빛|숲의|킹|교황|맹독|침 흘리는|검은 턱|울부짖는|왜곡된|진격의|독안개|광분한|매복자|추격자|목마른|수문장|먼지 걸음|모래 발굽|웅크린|변절자|지키는 자|웃는 얼굴|처형자|돌 주먹|노려보는|뼈 주먹|영원의|약탈자|도굴꾼)\s*/,'').slice(0,2))}</span><i>${t[0]}</i></div>
+    <div class="bxb"><div class="bxn"><b>${esc(b.n)}</b><em class="lvb ${cl}">Lv.${b.lv}</em></div><div class="bxr">${esc(b.ty)} · ${esc(b.rg)}</div>${top(b.n)}<div class="bxa">${tm(b.n)}<button type="button" class="bsadd" data-b="${esc(b.n)}">+ 타이머</button><a href="/drops/" data-drq="${esc(b.n)}">드롭 전체 →</a></div></div></div>`}).join('')||'<p class="mute small">조건에 맞는 보스가 없어요.</p>'}
+ T.addEventListener('click',e=>{const b=e.target.closest('[data-f]');if(b){F=b.dataset.f;draw()}});T.addEventListener('input',e=>{if(e.target.id==='bxQ'){Q=e.target.value.trim();const p=e.target.selectionStart;draw();const q=document.getElementById('bxQ');q.focus();try{q.setSelectionRange(p,p)}catch(x){}}});
+ G.addEventListener('click',e=>{const a=e.target.closest('[data-drq]');if(a){try{sessionStorage.setItem('tn_drq',a.dataset.drq)}catch(x){}}});
+ draw();setInterval(()=>{if(document.querySelector('[data-v="timer"].on'))G.querySelectorAll('.bxt').length&&draw()},5000);
+ document.getElementById('tmList').addEventListener('click',()=>setTimeout(draw,50));document.getElementById('tmSv').addEventListener('click',()=>setTimeout(draw,50));
+ fetch('/data/drops.json').then(r=>r.json()).then(j=>{D=j;draw()}).catch(()=>{});
+})();
 /* 백업 */
 const BKU=['tn_msn','tn_cube','tn_hq','tn_col','tn_core','tn_alc','tn_cmp','tn_att','tn_daily','tn_ach','tn_sv','tn_mail','tn_vote'],bkOk=k=>k&&(k.startsWith('dn-')||BKU.includes(k));
 const bkKeys=()=>{const o={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(bkOk(k))o[k]=localStorage.getItem(k)}}catch(e){}return o};
@@ -1795,7 +1818,7 @@ const cmSvg=n=>{const m=CMAP[n];if(!m)return '';const e=x=>String(x).replace(/[&
   const hs=R.h.map(h=>({h,ok:!!H.done[r+'|'+h[0]],op:open(h,H)})).sort((a,b)=>(a.ok-b.ok)||((b.op===true)-(a.op===true))||(mk(a.h[1])||[0,0])[0]-(mk(b.h[1])||[0,0])[0]||(mk(a.h[1])||[0,0])[1]-(mk(b.h[1])||[0,0])[1]);
   const vis=x=>!S.left||!x.ok;const cL=cs.filter(vis),hL=hs.filter(vis);const cOk=cs.filter(x=>x.ok).length,hOk=hs.filter(x=>x.ok).length;
   const nx=RG.find(x=>{const t=stat(x);return t.tot&&t.done<t.tot&&x!==r});
-  let h=`<div class="hrhead"><div class="hrring"><svg viewBox="0 0 96 96"><circle cx="48" cy="48" r="42" fill="none" stroke="#ffffff14" stroke-width="9"/><circle cx="48" cy="48" r="42" fill="none" stroke="${pct>=1?'#3fb96b':'#e2b04a'}" stroke-width="9" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-pct)}" style="transition:stroke-dashoffset .6s"/></svg><b>${Math.round(pct*100)}%<small>${s.done} / ${s.tot}</small></b></div><div style="flex:1;min-width:200px"><h2>${esc(r)}</h2><div class="small mute">📦 큐브 ${cOk}/${cs.length} · 🗝 히든 ${hOk}/${hs.length}${H.main||H.lv?` · 내 진행 ${H.main?'메인 '+esc(H.main):''}${H.main&&H.lv?' · ':''}${H.lv?'Lv.'+esc(H.lv):''}`:' · <a href="/hidden/">내 메인 퀘스트 넣기</a>'}</div><div class="hrtools" id="hrTools"><button type="button" data-t="left" class="on">✓ 남은 것만</button><button type="button" data-t="wl" class="">🔅 화면 켜두기</button><a class="btnlink ghost" href="/map/" data-mpr="바이란" style="padding:7px 12px;border-radius:99px;font-size:13px;min-height:0">🗺 지도</a></div></div></div>`;
+  let h=`<div class="hrhead"><div class="hrring"><svg viewBox="0 0 96 96"><circle cx="48" cy="48" r="42" fill="none" stroke="#ffffff14" stroke-width="9"/><circle cx="48" cy="48" r="42" fill="none" stroke="${pct>=1?'#3fb96b':'#e2b04a'}" stroke-width="9" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-pct)}" style="transition:stroke-dashoffset .6s"/></svg><b>${Math.round(pct*100)}%<small>${s.done} / ${s.tot}</small></b></div><div style="flex:1;min-width:200px"><h2>${esc(r)}</h2><div class="small mute">📦 큐브 ${cOk}/${cs.length} · 🗝 히든 ${hOk}/${hs.length}${H.main||H.lv?` · 내 진행 ${H.main?'메인 '+esc(H.main):''}${H.main&&H.lv?' · ':''}${H.lv?'Lv.'+esc(H.lv):''}`:' · <a href="/hidden/">내 메인 퀘스트 넣기</a>'}</div><div class="hrtools" id="hrTools"></div></div></div>`;
   {const L=hs.filter(x=>!x.ok).map(x=>x.h);if(L.length){const ex=L.reduce((a,q)=>a+q[6],0),gd=L.reduce((a,q)=>a+(q[7]||0),0),cn=L.reduce((a,q)=>a+(q[8]||0),0),gf=[...new Set(L.flatMap(q=>q[9]||[]))];
    h+=`<div class="hrrw"><b>🎁 남은 히든 ${L.length}개 다 하면</b><div class="hrrwg"><span>EXP <b>${man(ex)}</b></span>${gd?`<span>골드 <b>${man(gd)}</b></span>`:''}${cn?`<span>코인 <b>${cn.toLocaleString()}</b></span>`:''}</div>${gf.length?`<div class="small" style="margin-top:4px;color:#cfd8e6">보상 아이템: ${gf.slice(0,6).map(esc).join(' · ')}${gf.length>6?' 외 '+(gf.length-6)+'종':''}</div>`:''}</div>`}}
   if(s.tot&&s.done>=s.tot)h+=`<div class="hrdone"><div class="big">🎉</div><b>${esc(r)} 탐사 완료!</b><span class="small mute">큐브 ${cs.length}개 · 히든 퀘스트 ${hs.length}개 전부 끝냈어요.</span>${nx?`<div style="margin-top:10px"><button type="button" class="btn" data-go="${esc(nx)}">다음 지역 ${esc(nx)} →</button></div>`:''}</div>`;
