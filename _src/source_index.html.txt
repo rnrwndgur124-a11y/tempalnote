@@ -1287,15 +1287,16 @@ footer{border-top:1px solid #e3c27a33;background:#03070e;color:var(--mute);font-
   <div class="card"><div class="ch"><span class="med sm"><svg><use href="#i-gift"/></svg></span><h3>런칭 기념 14일 출석부</h3></div>
     <p class="small" style="margin-top:0">계정 단위 · 12월 16일 새벽까지 <span class="dleft" data-end="2026-12-16"></span></p>
     <div class="scroll"><table class="stack"><thead><tr><th>일차</th><th>보상</th><th>일차</th><th>보상</th></tr></thead><tbody>
-      <tr><td>1</td><td><b>골드 50,000</b></td><td>8</td><td><b>골드 150,000</b></td></tr>
-      <tr><td>2</td><td>재료 상자 ×5</td><td>9</td><td>재료 상자 ×10</td></tr>
-      <tr><td>3</td><td>보라 상자</td><td>10</td><td>펫 먹이 ×5</td></tr>
-      <tr><td>4</td><td>재료 상자 ×5</td><td>11</td><td>보급 상자 ×5</td></tr>
-      <tr><td>5</td><td>보라 상자</td><td>12</td><td>회중시계 아이템</td></tr>
-      <tr><td>6</td><td>금 재화 ×10</td><td>13</td><td>금 재화 ×30</td></tr>
-      <tr><td><b>7</b></td><td><b>편지 ×3 (특별)</b></td><td><b>14</b></td><td><b>붉은 상자 ×5 (특별)</b></td></tr>
+      <tr><td><b>1</b></td><td>골드 5만</td><td><b>8</b></td><td>골드 15만</td></tr>
+      <tr><td><b>2</b></td><td>강화 선택 상자 5</td><td><b>9</b></td><td>강화 선택 상자 10</td></tr>
+      <tr><td><b>3</b></td><td>레어 기본 방어구 선택 상자 (가죽 투구·갑옷·각반·장갑·신발·망토 중 1)</td><td><b>10</b></td><td>하급 펫 먹이 5</td></tr>
+      <tr><td><b>4</b></td><td>강화 선택 상자 5</td><td><b>11</b></td><td>일반 제작 재료 선택 상자 5</td></tr>
+      <tr><td><b>5</b></td><td>레어 기본 장신구 선택 상자 (나뭇잎 목걸이·귀걸이·반지·허리띠 중 1)</td><td><b>12</b></td><td>골렘의 미궁 시간 충전석 1 (30분, Lv.35부터, <b>받고 7일 뒤 삭제</b>)</td></tr>
+      <tr><td><b>6</b></td><td><b>파브라늄 10</b></td><td><b>13</b></td><td><b>파브라늄 30</b></td></tr>
+      <tr><td><b>7</b></td><td>베니스의 호감도 편지 3</td><td><b>14</b></td><td><b>미지의 클래스 / 갓 핸드 메모리 1회 소환권 선택 상자 5</b> (Lv.30부터, <b>받고 7일 뒤 삭제</b>)</td></tr>
     </tbody></table></div>
-    <p class="small mute" style="margin-bottom:0">아이템 이름은 아이콘 기준이라 정확한 이름은 확인되는 대로 고칠게요.</p></div>
+    <p class="small" style="margin:8px 0 0">파브라늄은 6일차 10 + 13일차 30 = <b>총 40</b>. 강화 선택 상자는 총 20개(무기·방어구·장신구 강화석 중 1개씩 골라 받기). 하루를 빼먹어도 <b>다음 접속 때 밀린 일차를 한꺼번에</b> 받아요. 12일차·14일차 선물은 받고 7일 안에 써야 하니 레벨이 낮으면 늦게 받아도 돼요(12월 16일 새벽 4:59 전까지).</p>
+    <p class="small mute" style="margin:4px 0 0">수배 단계 「학살자」는 해제될 때까지 수령 불가. 출처: 공식 이벤트 공지 「런칭 기념 14일 출석부」</p></div>
   <figure class="shot"><img loading="lazy" src="https://tempalnote.com/img/ui/mission8.webp" alt="새로운 전설의 시작! 8주 미션 게임 화면" width="1280" height="591" data-zoom="1"><figcaption>새로운 전설의 시작! 8주 미션 게임 화면</figcaption></figure>
   <div class="card" style="margin-top:16px"><div class="ch"><span class="med sm"><svg><use href="#i-check"/></svg></span><h3>새로운 전설의 시작! 8주 미션</h3></div>
     <ul class="facts">
@@ -2144,6 +2145,7 @@ $('#homeGuides').innerHTML=['systems','weapons','bm','coupons'].map(tile).join('
  const d=pv.slice(5).replace('-','/');box.innerHTML=`<div class="since"><b>다시 오셨네요 👋</b> 지난 방문(${d}) 이후 바뀐 곳 <span class="mute">${ks.length}곳</span><div class="sl">${ks.slice(0,10).map(k=>`<a href="#${k}">${esc(PAGES[k].t)}</a>`).join('')}</div></div>`})();
 // ---------- 오늘 업데이트 ----------
 const CHG=[
+ ['2026-11-28','14일 출석부 보상표를 공식 아이템 이름으로 교체 (파브라늄 총 40 · 7일 삭제 아이템 표시)','coupons'],
  ['2026-11-28','사전등록·웹 이벤트 보상 전체 구성표 + 칭호 「전설의 시작」 12/24 만료 안내','coupons'],
  ['2026-11-28','8주 미션 계산기: 점수 6~48 보상 8단계 표시 (공식 공지 기준)','coupons'],
  ['2026-11-28','사냥터 계산기: 고른 사냥터 전리품 등급순 · 다른 사냥터와 1시간 경험치 비교','hunt'],

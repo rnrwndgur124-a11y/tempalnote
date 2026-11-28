@@ -87,6 +87,7 @@ $('#homeGuides').innerHTML=['systems','weapons','bm','coupons'].map(tile).join('
  const d=pv.slice(5).replace('-','/');box.innerHTML=`<div class="since"><b>다시 오셨네요 👋</b> 지난 방문(${d}) 이후 바뀐 곳 <span class="mute">${ks.length}곳</span><div class="sl">${ks.slice(0,10).map(k=>`<a href="/${k}/">${esc(PAGES[k].t)}</a>`).join('')}</div></div>`})();
 // ---------- 오늘 업데이트 ----------
 const CHG=[
+ ['2026-11-28','14일 출석부 보상표를 공식 아이템 이름으로 교체 (파브라늄 총 40 · 7일 삭제 아이템 표시)','coupons'],
  ['2026-11-28','사전등록·웹 이벤트 보상 전체 구성표 + 칭호 「전설의 시작」 12/24 만료 안내','coupons'],
  ['2026-11-28','8주 미션 계산기: 점수 6~48 보상 8단계 표시 (공식 공지 기준)','coupons'],
  ['2026-11-28','사냥터 계산기: 고른 사냥터 전리품 등급순 · 다른 사냥터와 1시간 경험치 비교','hunt'],
